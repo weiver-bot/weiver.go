@@ -1,10 +1,12 @@
 package slash_commands
 
 import (
-	"log"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/y2hO0ol23/weiver/utils"
+	"github.com/y2hO0ol23/weiver/db"
+	"github.com/y2hO0ol23/weiver/utils/prisma"
+	"github.com/y2hO0ol23/weiver/utils/simple"
 )
 
 var (
@@ -29,38 +31,79 @@ func init() {
 		},
 		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			options := i.ApplicationCommandData().Options
-			subjectId := options[0].Value.(string)
+			fromId := i.Interaction.Member.User.ID
+			toId := options[0].Value.(string)
 
-			subject, err := s.State.Member(i.GuildID, subjectId)
-			if err != nil {
+			if fromId == toId {
+				err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+					Type: discordgo.InteractionResponseChannelMessageWithSource,
+					Data: &discordgo.InteractionResponseData{
+						Content: "`Can't review yourself`",
+						Flags:   discordgo.MessageFlagsEphemeral,
+					},
+				})
+				if err != nil {
+					panic(err)
+				}
+				return
+			}
+
+			to, err := s.State.Member(i.GuildID, toId)
+			if err != nil || to == nil {
 				return // can not find subject
 			}
 
-			modal := utils.Modal(&discordgo.InteractionResponseData{
-				CustomID: "review#" + i.Interaction.Member.User.ID + "#" + subjectId,
-				Title:    "Review " + subject.User.Username,
+			review_db := prisma.LoadReivewByIds(fromId, toId)
+
+			modal := simple.Modal(&discordgo.InteractionResponseData{
+				CustomID: "review#" + fromId + "#" + toId,
+				Title:    "Review " + to.User.Username,
 				Components: []discordgo.MessageComponent{
 					discordgo.ActionsRow{
 						Components: []discordgo.MessageComponent{
 							discordgo.TextInput{
-								CustomID:    "opinion",
-								Label:       "What is your opinion on them?",
-								Style:       discordgo.TextInputShort,
-								Placeholder: "Don't be shy, share your opinion with us",
-								Required:    true,
-								MaxLength:   300,
-								MinLength:   10,
+								CustomID: "score",
+								Label:    "score",
+								Value: func(db *db.ReviewModel) string {
+									if review_db == nil {
+										return "★★★★★"
+									}
+									return strings.Repeat("★", review_db.Score)
+								}(review_db),
+								Style:     discordgo.TextInputShort,
+								MinLength: 1, MaxLength: 5, Required: true,
 							},
 						},
 					},
 					discordgo.ActionsRow{
 						Components: []discordgo.MessageComponent{
 							discordgo.TextInput{
-								CustomID:  "suggestions",
-								Label:     "What would you suggest to improve them?",
+								CustomID: "title",
+								Label:    "title",
+								Style:    discordgo.TextInputShort,
+								Value: func(db *db.ReviewModel) string {
+									if review_db == nil {
+										return ""
+									}
+									return review_db.Title
+								}(review_db),
+								MinLength: 1, MaxLength: 16, Required: true,
+							},
+						},
+					},
+					discordgo.ActionsRow{
+						Components: []discordgo.MessageComponent{
+							discordgo.TextInput{
+								CustomID: "content",
+								Label:    "content",
+								Value: func(db *db.ReviewModel) string {
+									if review_db == nil {
+										return ""
+									}
+									return review_db.Content
+								}(review_db),
 								Style:     discordgo.TextInputParagraph,
-								Required:  false,
-								MaxLength: 2000,
+								MinLength: 1, MaxLength: 256, Required: true,
 							},
 						},
 					},
@@ -69,7 +112,7 @@ func init() {
 
 			err = s.InteractionRespond(i.Interaction, modal)
 			if err != nil {
-				log.Fatalf("%v", err)
+				panic(err)
 			}
 		},
 	})

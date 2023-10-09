@@ -2,7 +2,6 @@ package events
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -22,7 +21,7 @@ func init() {
 			},
 		})
 		if err != nil {
-			log.Fatalf("%v", err)
+			panic(err)
 		}
 		data := i.ModalSubmitData()
 
@@ -38,7 +37,7 @@ func init() {
 			data.Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value,
 		))
 		if err != nil {
-			log.Fatalf("%v", err)
+			panic(err)
 		}
 	})
 }

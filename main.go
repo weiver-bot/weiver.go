@@ -10,6 +10,7 @@ import (
 
 	"github.com/y2hO0ol23/weiver/handler"
 	"github.com/y2hO0ol23/weiver/handler/slash_commands"
+	_ "github.com/y2hO0ol23/weiver/utils/prisma"
 )
 
 var (
@@ -20,7 +21,7 @@ func init() {
 	err := godotenv.Load(".env")
 
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf("Error loading .env file\n%v", err)
 	}
 
 	Token = os.Getenv("Token")
@@ -29,7 +30,7 @@ func init() {
 func main() {
 	s, err := discordgo.New("Bot " + Token)
 	if err != nil {
-		log.Fatalf("error creating Discord session, %v", err)
+		log.Fatalf("Error creating Discord session\n%v", err)
 	}
 
 	s.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
@@ -38,7 +39,7 @@ func main() {
 
 	err = s.Open()
 	if err != nil {
-		log.Fatalf("error opening connection, %v", err)
+		log.Fatalf("Error opening connection\n%v", err)
 	}
 
 	s.Identify.Intents = discordgo.IntentsGuildMessages
