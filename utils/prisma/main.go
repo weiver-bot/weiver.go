@@ -18,38 +18,3 @@ func init() {
 		panic(err)
 	}
 }
-
-func LoadUserById(id string) *db.UserModel {
-	user, err := client.User.FindUnique(
-		db.User.ID.Equals(id),
-	).Exec(ctx)
-	if err != nil {
-		panic(err)
-	}
-
-	if user == nil {
-		user, err = client.User.CreateOne(
-			db.User.ID.Set(id),
-		).Exec(ctx)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	return user
-}
-
-func LoadReivewByIds(fromId string, toId string) *db.ReviewModel {
-	review, err := client.Review.FindMany(
-		db.Review.FromID.Equals(fromId),
-		db.Review.ToID.Equals(toId),
-	).Exec(ctx)
-	if err != nil {
-		panic(err)
-	}
-
-	if len(review) == 0 {
-		return nil
-	}
-	return &review[0]
-}

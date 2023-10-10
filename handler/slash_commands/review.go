@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/y2hO0ol23/weiver/db"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	"github.com/y2hO0ol23/weiver/utils/prisma"
 )
@@ -60,12 +59,12 @@ func init() {
 			score := builder.TextInput().
 				SetCustomId("score").
 				SetLable("score").
-				SetValue(func(db *db.ReviewModel) string {
+				SetValue(func() string {
 					if review_db == nil {
 						return "★★★★★"
 					}
 					return strings.Repeat("★", review_db.Score)
-				}(review_db)).
+				}()).
 				SetStyle(discordgo.TextInputShort).
 				SetMinLength(1).
 				SetMaxLength(5).SetRequired(true)
@@ -73,24 +72,24 @@ func init() {
 			title := builder.TextInput().
 				SetCustomId("title").
 				SetLable("title").
-				SetValue(func(db *db.ReviewModel) string {
+				SetValue(func() string {
 					if review_db == nil {
 						return ""
 					}
 					return review_db.Title
-				}(review_db)).
+				}()).
 				SetStyle(discordgo.TextInputShort).
 				SetMinLength(1).SetMaxLength(20).SetRequired(true)
 
 			content := builder.TextInput().
 				SetCustomId("content").
 				SetLable("content").
-				SetValue(func(db *db.ReviewModel) string {
+				SetValue(func() string {
 					if review_db == nil {
 						return ""
 					}
 					return review_db.Title
-				}(review_db)).
+				}()).
 				SetStyle(discordgo.TextInputParagraph).
 				SetMinLength(1).SetMaxLength(300).SetRequired(true)
 
@@ -100,7 +99,7 @@ func init() {
 				builder.ActionRow().AddComponents(content),
 			)
 
-			err = s.InteractionRespond(i.Interaction, modal.Data())
+			err = s.InteractionRespond(i.Interaction, modal.InteractionResponse)
 			if err != nil {
 				panic(err)
 			}

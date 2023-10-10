@@ -3,7 +3,7 @@ package builder
 import "github.com/bwmarrin/discordgo"
 
 type TextInputStructure struct {
-	data discordgo.TextInput
+	discordgo.TextInput
 }
 
 func TextInput() *TextInputStructure {
@@ -11,41 +11,41 @@ func TextInput() *TextInputStructure {
 }
 
 func (t *TextInputStructure) SetCustomId(value string) *TextInputStructure {
-	t.data.CustomID = value
+	t.CustomID = value
 	return t
 }
 
 func (t *TextInputStructure) SetLable(value string) *TextInputStructure {
-	t.data.Label = value
+	t.Label = value
 	return t
 }
 
 func (t *TextInputStructure) SetMaxLength(value int) *TextInputStructure {
-	t.data.MaxLength = value
+	t.MaxLength = value
 	return t
 }
 
 func (t *TextInputStructure) SetMinLength(value int) *TextInputStructure {
-	t.data.MinLength = value
+	t.MinLength = value
 	return t
 }
 
 func (t *TextInputStructure) SetPlaceholder(value string) *TextInputStructure {
-	t.data.Placeholder = value
+	t.Placeholder = value
 	return t
 }
 
 func (t *TextInputStructure) SetRequired(value bool) *TextInputStructure {
-	t.data.Required = value
+	t.Required = value
 	return t
 }
 
 func (t *TextInputStructure) SetStyle(value discordgo.TextInputStyle) *TextInputStructure {
-	t.data.Style = value
+	t.Style = value
 	return t
 }
 
 func (t *TextInputStructure) SetValue(value string) *TextInputStructure {
-	t.data.Value = value
+	t.Value = value
 	return t
 }

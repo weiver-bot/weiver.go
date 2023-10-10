@@ -42,7 +42,12 @@ func main() {
 		log.Fatalf("Error opening connection\n%v", err)
 	}
 
-	s.Identify.Intents = discordgo.IntentsGuildMessages
+	botintents := 0 |
+		discordgo.IntentsGuilds |
+		discordgo.IntentsGuildMessages |
+		discordgo.IntentsGuildMembers
+
+	s.Identify.Intents = discordgo.MakeIntent(botintents)
 
 	handler.Setup(s)
 

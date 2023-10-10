@@ -3,21 +3,26 @@ package builder
 import "github.com/bwmarrin/discordgo"
 
 type ActionRowStructure struct {
-	data discordgo.ActionsRow
+	discordgo.ActionsRow
 }
 
 func ActionRow() *ActionRowStructure {
 	return &ActionRowStructure{}
 }
 
-func (a *ActionRowStructure) AddComponents(values ...*TextInputStructure) *ActionRowStructure {
+func (a *ActionRowStructure) AddComponents(values ...interface{}) *ActionRowStructure {
 	for _, value := range values {
-		a.data.Components = append(a.data.Components, value.data)
+		switch value.(type) {
+		case *TextInputStructure:
+			a.Components = append(a.Components, value.(*TextInputStructure).TextInput)
+		case *ButtonStructure:
+			a.Components = append(a.Components, value.(*ButtonStructure).Button)
+		}
 	}
 	return a
 }
 
-func (a *ActionRowStructure) SetComponents(values ...*TextInputStructure) *ActionRowStructure {
-	a.data.Components = make([]discordgo.MessageComponent, 0)
+func (a *ActionRowStructure) SetComponents(values ...interface{}) *ActionRowStructure {
+	a.Components = make([]discordgo.MessageComponent, 0)
 	return a.AddComponents(values...)
 }

@@ -1,10 +1,12 @@
 package events
 
 import (
-	"strings"
+	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+	parse "github.com/y2hO0ol23/weiver/handler/events/modal"
 	"github.com/y2hO0ol23/weiver/utils/builder"
+	"github.com/y2hO0ol23/weiver/utils/prisma"
 )
 
 func init() {
@@ -14,12 +16,12 @@ func init() {
 		}
 
 		data := i.ModalSubmitData()
-		fromId, toId, ok := parseCustomID(data.CustomID)
-		if ok {
+		fromId, toId, ok := parse.Review.CustomID(data.CustomID)
+		if !ok {
 			return
 		}
-		score, title, content, ok := parseModalComponents(data.Components)
-		if ok {
+		score, title, content, ok := parse.Review.ModalComponents(data.Components)
+		if !ok {
 			return
 		}
 
@@ -28,57 +30,59 @@ func init() {
 			return
 		}
 
-		embed := builder.Message(&discordgo.InteractionResponseData{
+		// remove old reivew
+		review := prisma.LoadReivewByIds(fromId, toId)
+		if channelId, ok := review.ChannelID(); ok {
+			if messageId, ok := review.MessageID(); ok {
+				s.ChannelMessageDelete(channelId, messageId)
+			}
+		}
+
+		// set db
+		review = prisma.ModifyReviewByIds(fromId, toId, score, title, content)
+
+		// set embed
+		embed := builder.Embed().
+			SetDescription("<@" + fromId + "> → <@" + toId + ">").
+			SetField(&discordgo.MessageEmbedField{
+				Name:  fmt.Sprintf("📝 %s [%s%s]", title, "★★★★★"[:score*3], "☆☆☆☆☆"[score*3:]),
+				Value: fmt.Sprintf("```%s```", content),
+			}).
+			SetFooter(&discordgo.MessageEmbedFooter{
+				Text: "👍 0",
+			}).
+			SetThumbnail(&discordgo.MessageEmbedThumbnail{
+				URL: to.User.AvatarURL(""),
+			})
+
+		button_good := builder.Button().
+			SetCustomId(fmt.Sprintf("like_review_%d", review.ID)).
+			SetLable("👍").
+			SetStyle(discordgo.SecondaryButton)
+
+		button_bad := builder.Button().
+			SetCustomId(fmt.Sprintf("hate_review_%d", review.ID)).
+			SetLable("👎").
+			SetStyle(discordgo.SecondaryButton)
+
+		err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 			Embeds: []*discordgo.MessageEmbed{
-				{
-					Description: "<@" + fromId + "> → <@" + toId + ">",
-					Fields: []*discordgo.MessageEmbedField{
-						{
-							Name:  "📝 " + title + " [" + "★★★★★"[:score*3] + "☆☆☆☆☆]"[score*3:],
-							Value: "```" + content + "```",
-						},
-					},
-					Footer: &discordgo.MessageEmbedFooter{
-						Text: "👍 0",
-					},
-					Thumbnail: &discordgo.MessageEmbedThumbnail{
-						URL: to.User.AvatarURL(""),
-					},
-				},
+				embed.MessageEmbed,
+			},
+			Components: []discordgo.MessageComponent{
+				builder.ActionRow().SetComponents(button_good, button_bad).ActionsRow,
 			},
 			AllowedMentions: &discordgo.MessageAllowedMentions{},
-		})
-		err = s.InteractionRespond(i.Interaction, embed)
+		}))
 		if err != nil {
 			panic(err)
 		}
-	})
-}
 
-func parseCustomID(value string) (string, string, bool) {
-	if strings.HasPrefix(value, "review") {
-		data := strings.Split(value, "#")
-		if len(data) == 3 {
-			return data[1], data[2], false
+		// add msg data on db
+		msg, err := s.InteractionResponse(i.Interaction)
+		if err != nil {
+			panic(err)
 		}
-	}
-	return "", "", true
-}
-
-func parseModalComponents(components []discordgo.MessageComponent) (int, string, string, bool) {
-	if len(components) == 3 {
-		score := func(value string) int {
-			count := strings.Count(value, "★")
-			if count == 0 {
-				return 1
-			}
-			return count
-		}(components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value)
-
-		title := components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
-		content := components[2].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
-
-		return score, title, content, false
-	}
-	return 0, "", "", true
+		prisma.UpdateIdsById(review.ID, i.GuildID, msg.ChannelID, msg.ID)
+	})
 }
