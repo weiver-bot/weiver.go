@@ -5,8 +5,8 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/y2hO0ol23/weiver/db"
+	"github.com/y2hO0ol23/weiver/utils/builder"
 	"github.com/y2hO0ol23/weiver/utils/prisma"
-	"github.com/y2hO0ol23/weiver/utils/simple"
 )
 
 var (
@@ -35,13 +35,11 @@ func init() {
 			toId := options[0].Value.(string)
 
 			if fromId == toId {
-				err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-					Type: discordgo.InteractionResponseChannelMessageWithSource,
-					Data: &discordgo.InteractionResponseData{
-						Content: "`Can't review yourself`",
-						Flags:   discordgo.MessageFlagsEphemeral,
-					},
+				message := builder.Message(&discordgo.InteractionResponseData{
+					Content: "`Can't review yourself`",
+					Flags:   discordgo.MessageFlagsEphemeral,
 				})
+				err := s.InteractionRespond(i.Interaction, message)
 				if err != nil {
 					panic(err)
 				}
@@ -55,62 +53,54 @@ func init() {
 
 			review_db := prisma.LoadReivewByIds(fromId, toId)
 
-			modal := simple.Modal(&discordgo.InteractionResponseData{
-				CustomID: "review#" + fromId + "#" + toId,
-				Title:    "Review " + to.User.Username,
-				Components: []discordgo.MessageComponent{
-					discordgo.ActionsRow{
-						Components: []discordgo.MessageComponent{
-							discordgo.TextInput{
-								CustomID: "score",
-								Label:    "score",
-								Value: func(db *db.ReviewModel) string {
-									if review_db == nil {
-										return "★★★★★"
-									}
-									return strings.Repeat("★", review_db.Score)
-								}(review_db),
-								Style:     discordgo.TextInputShort,
-								MinLength: 1, MaxLength: 5, Required: true,
-							},
-						},
-					},
-					discordgo.ActionsRow{
-						Components: []discordgo.MessageComponent{
-							discordgo.TextInput{
-								CustomID: "title",
-								Label:    "title",
-								Style:    discordgo.TextInputShort,
-								Value: func(db *db.ReviewModel) string {
-									if review_db == nil {
-										return ""
-									}
-									return review_db.Title
-								}(review_db),
-								MinLength: 1, MaxLength: 16, Required: true,
-							},
-						},
-					},
-					discordgo.ActionsRow{
-						Components: []discordgo.MessageComponent{
-							discordgo.TextInput{
-								CustomID: "content",
-								Label:    "content",
-								Value: func(db *db.ReviewModel) string {
-									if review_db == nil {
-										return ""
-									}
-									return review_db.Content
-								}(review_db),
-								Style:     discordgo.TextInputParagraph,
-								MinLength: 1, MaxLength: 256, Required: true,
-							},
-						},
-					},
-				},
-			})
+			modal := builder.Modal().
+				SetCustomId("review#" + fromId + "#" + toId).
+				SetTitle("Review " + to.User.Username)
 
-			err = s.InteractionRespond(i.Interaction, modal)
+			score := builder.TextInput().
+				SetCustomId("score").
+				SetLable("score").
+				SetValue(func(db *db.ReviewModel) string {
+					if review_db == nil {
+						return "★★★★★"
+					}
+					return strings.Repeat("★", review_db.Score)
+				}(review_db)).
+				SetStyle(discordgo.TextInputShort).
+				SetMinLength(1).
+				SetMaxLength(5).SetRequired(true)
+
+			title := builder.TextInput().
+				SetCustomId("title").
+				SetLable("title").
+				SetValue(func(db *db.ReviewModel) string {
+					if review_db == nil {
+						return ""
+					}
+					return review_db.Title
+				}(review_db)).
+				SetStyle(discordgo.TextInputShort).
+				SetMinLength(1).SetMaxLength(20).SetRequired(true)
+
+			content := builder.TextInput().
+				SetCustomId("content").
+				SetLable("content").
+				SetValue(func(db *db.ReviewModel) string {
+					if review_db == nil {
+						return ""
+					}
+					return review_db.Title
+				}(review_db)).
+				SetStyle(discordgo.TextInputParagraph).
+				SetMinLength(1).SetMaxLength(300).SetRequired(true)
+
+			modal.AddComponents(
+				builder.ActionRow().AddComponents(score),
+				builder.ActionRow().AddComponents(title),
+				builder.ActionRow().AddComponents(content),
+			)
+
+			err = s.InteractionRespond(i.Interaction, modal.Data())
 			if err != nil {
 				panic(err)
 			}

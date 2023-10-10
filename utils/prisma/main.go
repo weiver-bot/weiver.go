@@ -11,9 +11,6 @@ var (
 	ctx    context.Context
 )
 
-type Review struct {
-}
-
 func init() {
 	client = db.NewClient()
 	ctx = context.Background()

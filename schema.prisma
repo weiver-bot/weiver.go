@@ -20,8 +20,7 @@ model User {
 }
 
 model Review {
-  id          Int       @id @default(autoincrement())
-  messageLink String?
+  id          String       @id
 
   score       Int
   title       String
