@@ -1,6 +1,7 @@
 package slash_commands
 
 import (
+	"log"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -40,13 +41,14 @@ func init() {
 				})
 				err := s.InteractionRespond(i.Interaction, message)
 				if err != nil {
-					panic(err)
+					log.Printf("Error on sending message\n")
 				}
 				return
 			}
 
-			to, err := s.State.Member(i.GuildID, toId)
-			if err != nil || to == nil {
+			to, err := s.GuildMember(i.GuildID, toId)
+			if err != nil {
+				log.Println("Error on loadding user")
 				return // can not find subject
 			}
 
@@ -66,8 +68,7 @@ func init() {
 					return strings.Repeat("★", review_db.Score)
 				}()).
 				SetStyle(discordgo.TextInputShort).
-				SetMinLength(1).
-				SetMaxLength(5).SetRequired(true)
+				SetMinLength(1).SetMaxLength(5).SetRequired(true)
 
 			title := builder.TextInput().
 				SetCustomId("title").
@@ -101,7 +102,7 @@ func init() {
 
 			err = s.InteractionRespond(i.Interaction, modal.InteractionResponse)
 			if err != nil {
-				panic(err)
+				log.Printf("Error on sending modal\n")
 			}
 		},
 	})

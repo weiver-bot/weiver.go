@@ -37,6 +37,7 @@ func ModifyReviewByIds(fromId string, toId string, score int, title string, cont
 				db.Review.From.Link(
 					db.User.ID.Equals(fromId),
 				),
+				db.Review.LikeTotal.Set(0),
 			).Exec(ctx)
 		} else {
 			return client.Review.FindUnique(
@@ -64,6 +65,56 @@ func UpdateIdsById(id int, guildId string, channelId string, messageId string) *
 		db.Review.GuildID.Set(guildId),
 		db.Review.ChannelID.Set(channelId),
 		db.Review.MessageID.Set(messageId),
+	).Exec(ctx)
+
+	if err != nil {
+		panic(err)
+	}
+	return review
+}
+
+var (
+	ReviewActionHandler = map[string]func(id string) []db.ReviewSetParam{
+		"like": func(id string) []db.ReviewSetParam {
+			return []db.ReviewSetParam{
+				db.Review.Likes.Link(
+					db.User.ID.Equals(id),
+				),
+				db.Review.Hates.Unlink(
+					db.User.ID.Equals(id),
+				),
+			}
+		},
+		"hate": func(id string) []db.ReviewSetParam {
+			return []db.ReviewSetParam{
+				db.Review.Likes.Unlink(
+					db.User.ID.Equals(id),
+				),
+				db.Review.Hates.Link(
+					db.User.ID.Equals(id),
+				),
+			}
+		},
+	}
+)
+
+func ReviewAction(id int, values []db.ReviewSetParam) *db.ReviewModel {
+	review, err := client.Review.FindUnique(
+		db.Review.ID.Equals(id),
+	).With(
+		db.Review.Likes.Fetch(),
+		db.Review.Hates.Fetch(),
+	).Update(
+		values...,
+	).Exec(ctx)
+
+	if err != nil {
+		panic(err)
+	}
+	review, err = client.Review.FindUnique(
+		db.Review.ID.Equals(id),
+	).Update(
+		db.Review.LikeTotal.Set(len(review.Likes()) - len(review.Hates())),
 	).Exec(ctx)
 
 	if err != nil {

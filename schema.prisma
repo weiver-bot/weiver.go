@@ -38,6 +38,8 @@ model Review {
   likes       User[]    @relation("like")
   hates       User[]    @relation("hate")
 
+  like_total  Int       @default(0)
+
   TimeStamp   DateTime  @default(now())
 }
 

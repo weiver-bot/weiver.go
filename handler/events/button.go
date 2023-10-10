@@ -1,7 +1,14 @@
 package events
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/bwmarrin/discordgo"
+	"github.com/y2hO0ol23/weiver/db"
+	parse "github.com/y2hO0ol23/weiver/handler/events/button"
+	"github.com/y2hO0ol23/weiver/utils/builder"
+	"github.com/y2hO0ol23/weiver/utils/prisma"
 )
 
 func init() {
@@ -9,62 +16,69 @@ func init() {
 		if i.Type != discordgo.InteractionMessageComponent {
 			return
 		}
-		/*
-			return
+		data := i.MessageComponentData()
 
-			data := i.MessageComponentData()
-			fromId, toId, ok := parseCustomID(data.CustomID)
-			if ok {
-				return
-			}
-			score, title, content, ok := parseModalComponents(data.Components)
-			if ok {
-				return
-			}
+		for key, _ := range prisma.ReviewActionHandler {
+			func(key string) {
+				var review *db.ReviewModel
 
-			to, err := s.State.Member(i.GuildID, toId)
-			if err != nil {
-				return
-			}
+				if reviewId, ok := parse.Like.CustomID(data.CustomID, key); ok {
+					s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+						Type: discordgo.InteractionResponseDeferredMessageUpdate,
+					})
 
-			// set db
-			review := prisma.ModifyReviewByIds(fromId, toId, score, title, content)
+					prisma.LoadUserById(i.Interaction.Member.User.ID)
+					review = prisma.ReviewAction(reviewId, prisma.ReviewActionHandler[key](i.Interaction.Member.User.ID))
+				} else {
+					return
+				}
 
-			// set embed
-			embed := builder.Embed().
-				SetDescription("<@" + fromId + "> → <@" + toId + ">").
-				SetField(&discordgo.MessageEmbedField{
-					Name:  fmt.Sprintf("📝 %s [%s%s]", title, "★★★★★"[:score*3], "☆☆☆☆☆"[score*3:]),
-					Value: fmt.Sprintf("```%s```", content),
-				}).
-				SetFooter(&discordgo.MessageEmbedFooter{
-					Text: "👍 0",
-				}).
-				SetThumbnail(&discordgo.MessageEmbedThumbnail{
-					URL: to.User.AvatarURL(""),
-				})
+				to, err := s.GuildMember(i.GuildID, review.ToID)
+				if err != nil {
+					log.Println("Error on loadding member")
+					return
+				}
 
-			button_good := builder.Button().
-				SetCustomId(fmt.Sprintf("like_review_%d", review.ID)).
-				SetLable("👍").
-				SetStyle(discordgo.SecondaryButton)
+				if channelId, messageId, ok := func() (string, string, bool) {
+					if channelId, ok := review.ChannelID(); ok {
+						if messageId, ok := review.MessageID(); ok {
+							_, err := s.ChannelMessage(channelId, messageId)
+							if err == nil {
+								return channelId, messageId, true
+							}
+						}
+					}
+					return "", "", false
+				}(); ok {
+					embed := builder.Embed().
+						SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
+						SetField(&discordgo.MessageEmbedField{
+							Name:  fmt.Sprintf("📝 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
+							Value: fmt.Sprintf("```%s```", review.Content),
+						}).
+						SetFooter(&discordgo.MessageEmbedFooter{
+							Text: "👍 " + func(like_total int) string {
+								if like_total >= 100 {
+									return "100+"
+								}
+								if like_total >= 50 {
+									return "50+"
+								}
+								return fmt.Sprintf("%d", like_total)
+							}(review.LikeTotal),
+						}).
+						SetThumbnail(&discordgo.MessageEmbedThumbnail{
+							URL: to.User.AvatarURL(""),
+						})
 
-			button_bad := builder.Button().
-				SetCustomId(fmt.Sprintf("hate_review_%d", review.ID)).
-				SetLable("👎").
-				SetStyle(discordgo.SecondaryButton)
-
-			err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-				Embeds: []*discordgo.MessageEmbed{
-					embed.MessageEmbed,
-				},
-				Components: []discordgo.MessageComponent{
-					builder.ActionRow().SetComponents(button_good, button_bad).ActionsRow,
-				},
-				AllowedMentions: &discordgo.MessageAllowedMentions{},
-			}))
-			if err != nil {
-				panic(err)
-			}*/
+					s.ChannelMessageEditEmbeds(channelId, messageId, []*discordgo.MessageEmbed{
+						embed.MessageEmbed,
+					})
+				} else {
+					log.Println("Error on editing Embeds")
+					return
+				}
+			}(key)
+		}
 	})
 }
