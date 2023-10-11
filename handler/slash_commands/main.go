@@ -6,6 +6,11 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+var (
+	dmPermission = false
+	err          error
+)
+
 type form struct {
 	data    *discordgo.ApplicationCommand
 	execute func(s *discordgo.Session, i *discordgo.InteractionCreate)
@@ -32,8 +37,8 @@ func Setup(s *discordgo.Session) {
 			return
 		}
 
-		if execute, exist := commandHandlers[i.ApplicationCommandData().Name]; exist {
-			execute(s, i)
+		if exec, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
+			exec(s, i)
 		}
 	})
 }

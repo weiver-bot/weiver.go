@@ -64,7 +64,7 @@ func init() {
 			Embeds: []*discordgo.MessageEmbed{
 				builder.Embed().
 					SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
-					SetField(&discordgo.MessageEmbedField{
+					SetFields(&discordgo.MessageEmbedField{
 						Name:  fmt.Sprintf("📝 %s [%s%s]", title, "★★★★★"[:score*3], "☆☆☆☆☆"[score*3:]),
 						Value: fmt.Sprintf("```%s```", content),
 					}).
@@ -99,16 +99,13 @@ func init() {
 		if err != nil {
 			log.Printf("Error on sending DM, to %v\n", channel)
 		}
-		_, err = s.ChannelMessageSendEmbeds(channel.ID, []*discordgo.MessageEmbed{
+		s.ChannelMessageSendEmbeds(channel.ID, []*discordgo.MessageEmbed{
 			builder.Embed().
-				SetField(&discordgo.MessageEmbedField{
-					Name:  "🔔 You were reviewed",
+				SetFields(&discordgo.MessageEmbedField{
+					Name:  "🔔 Your review has written",
 					Value: fmt.Sprintf("➥ https://discord.com/channels/%s/%s/%s", i.GuildID, msg.ChannelID, msg.ID),
 				}).
 				MessageEmbed,
 		})
-		if err != nil {
-			log.Printf("Error on sending DM, to %v\n", channel)
-		}
 	})
 }

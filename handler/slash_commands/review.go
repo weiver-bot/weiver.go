@@ -9,11 +9,6 @@ import (
 	"github.com/y2hO0ol23/weiver/utils/prisma"
 )
 
-var (
-	dmPermission = false
-	err          error
-)
-
 func init() {
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
@@ -39,7 +34,7 @@ func init() {
 					Content: "`Can't review yourself`",
 					Flags:   discordgo.MessageFlagsEphemeral,
 				})
-				err := s.InteractionRespond(i.Interaction, message)
+				err = s.InteractionRespond(i.Interaction, message)
 				if err != nil {
 					log.Printf("Error on sending message\n")
 				}

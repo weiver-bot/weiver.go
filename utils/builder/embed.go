@@ -20,12 +20,12 @@ func (e *EmbedStructure) SetDescription(description string) *EmbedStructure {
 	return e
 }
 
-func (e *EmbedStructure) SetField(values ...*discordgo.MessageEmbedField) *EmbedStructure {
+func (e *EmbedStructure) SetFields(values ...*discordgo.MessageEmbedField) *EmbedStructure {
 	e.Fields = values
 	return e
 }
 
-func (e *EmbedStructure) AddField(values ...*discordgo.MessageEmbedField) *EmbedStructure {
+func (e *EmbedStructure) AddFields(values ...*discordgo.MessageEmbedField) *EmbedStructure {
 	e.Fields = append(e.Fields, values...)
 	return e
 }

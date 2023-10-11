@@ -74,7 +74,7 @@ func UpdateIdsById(id int, guildId string, channelId string, messageId string) *
 }
 
 var (
-	ReviewActionHandler = map[string]func(id string) []db.ReviewSetParam{
+	ReviewActionHandlers = map[string]func(id string) []db.ReviewSetParam{
 		"like": func(id string) []db.ReviewSetParam {
 			return []db.ReviewSetParam{
 				db.Review.Likes.Link(
