@@ -7,7 +7,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	parse "github.com/y2hO0ol23/weiver/handler/events/modal"
 	"github.com/y2hO0ol23/weiver/utils/builder"
-	"github.com/y2hO0ol23/weiver/utils/prisma"
+	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
 func init() {
@@ -17,7 +17,7 @@ func init() {
 		}
 
 		data := i.ModalSubmitData()
-		fromId, toId, ok := parse.Review.CustomID(data.CustomID)
+		fromID, toID, ok := parse.Review.CustomID(data.CustomID)
 		if !ok {
 			log.Println("Error on parse CustomID")
 			return
@@ -28,84 +28,88 @@ func init() {
 			return
 		}
 
-		to, err := s.GuildMember(i.GuildID, toId)
-		if err != nil {
-			log.Println("Error on loadding user")
-			return
-		}
-
 		// remove old reivew
-		review := prisma.LoadReivewByIds(fromId, toId)
+		review := db.LoadReivewByInfo(fromID, toID)
 		if review != nil {
-			if channelId, ok := review.ChannelID(); ok {
-				if messageId, ok := review.MessageID(); ok {
-					_, err := s.ChannelMessage(channelId, messageId)
-					if err == nil {
-						s.ChannelMessageDelete(channelId, messageId)
-					}
-				}
+			_, err := s.ChannelMessage(review.ChannelID, review.MessageID)
+			if err == nil {
+				s.ChannelMessageDelete(review.ChannelID, review.MessageID)
 			}
 		}
 
 		// set db
-		review = prisma.ModifyReviewByIds(fromId, toId, score, title, content)
+		review = db.ModifyReviewByInfo(fromID, toID, score, title, content)
+		ResendReview(s, i, review, "written")
+	})
+}
 
-		button_good := builder.Button().
-			SetCustomId(fmt.Sprintf("like_review_%d", review.ID)).
-			SetLable("👍").
-			SetStyle(discordgo.SecondaryButton)
+func ResendReview(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.ReviewModel, comment string) bool {
+	to, err := s.GuildMember(i.GuildID, review.ToID)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
 
-		button_bad := builder.Button().
-			SetCustomId(fmt.Sprintf("hate_review_%d", review.ID)).
-			SetLable("👎").
-			SetStyle(discordgo.SecondaryButton)
+	button_good := builder.Button().
+		SetCustomID(fmt.Sprintf("like_review_%d", review.ID)).
+		SetLable("👍").
+		SetStyle(discordgo.SecondaryButton)
 
-		err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-			Embeds: []*discordgo.MessageEmbed{
-				builder.Embed().
-					SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
-					SetFields(&discordgo.MessageEmbedField{
-						Name:  fmt.Sprintf("📝 %s [%s%s]", title, "★★★★★"[:score*3], "☆☆☆☆☆"[score*3:]),
-						Value: fmt.Sprintf("```%s```", content),
-					}).
-					SetFooter(&discordgo.MessageEmbedFooter{
-						Text: "👍 0",
-					}).
-					SetThumbnail(&discordgo.MessageEmbedThumbnail{
-						URL: to.User.AvatarURL(""),
-					}).
-					MessageEmbed,
-			},
-			Components: []discordgo.MessageComponent{
-				builder.ActionRow().SetComponents(button_good, button_bad).ActionsRow,
-			},
-			AllowedMentions: &discordgo.MessageAllowedMentions{},
-		}))
-		if err != nil {
-			log.Printf("Error on sending embed\n")
-			return
-		}
+	button_bad := builder.Button().
+		SetCustomID(fmt.Sprintf("hate_review_%d", review.ID)).
+		SetLable("👎").
+		SetStyle(discordgo.SecondaryButton)
 
-		// add msg data on db
-		msg, err := s.InteractionResponse(i.Interaction)
-		if err != nil {
-			log.Printf("Error on loading interaction\n")
-			return
-		}
-		prisma.UpdateIdsById(review.ID, i.GuildID, msg.ChannelID, msg.ID)
+	err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
+		Embeds: []*discordgo.MessageEmbed{
+			builder.Embed().
+				SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
+				SetFields(&discordgo.MessageEmbedField{
+					Name:  fmt.Sprintf("📝 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
+					Value: fmt.Sprintf("```%s```", review.Content),
+				}).
+				SetFooter(&discordgo.MessageEmbedFooter{
+					Text: fmt.Sprintf("👍 %d", review.LikeTotal),
+				}).
+				SetThumbnail(&discordgo.MessageEmbedThumbnail{
+					URL: to.User.AvatarURL(""),
+				}).
+				SetTimeStamp(review.TimeStamp).
+				MessageEmbed,
+		},
+		Components: []discordgo.MessageComponent{
+			builder.ActionRow().SetComponents(button_good, button_bad).ActionsRow,
+		},
+		AllowedMentions: &discordgo.MessageAllowedMentions{},
+	}))
+	if err != nil {
+		log.Println(err)
+		return false
+	}
 
-		// send dm to subject
-		channel, err := s.UserChannelCreate(toId)
-		if err != nil {
-			log.Printf("Error on sending DM, to %v\n", channel)
-		}
+	// add msg data on db
+	msg, err := s.InteractionResponse(i.Interaction)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	db.UpdateMessageInfoByID(review.ID, i.GuildID, msg.ChannelID, msg.ID)
+
+	// send dm to subject
+	channel, err := s.UserChannelCreate(review.ToID)
+	if err != nil {
+		//log.Println(err)
+		// if bot, blocked, etc...
+	} else if channel != nil {
 		s.ChannelMessageSendEmbeds(channel.ID, []*discordgo.MessageEmbed{
 			builder.Embed().
 				SetFields(&discordgo.MessageEmbedField{
-					Name:  "🔔 Your review has written",
+					Name:  fmt.Sprintf("🔔 Your review has %s", comment),
 					Value: fmt.Sprintf("➥ https://discord.com/channels/%s/%s/%s", i.GuildID, msg.ChannelID, msg.ID),
 				}).
 				MessageEmbed,
 		})
-	})
+	}
+
+	return true
 }

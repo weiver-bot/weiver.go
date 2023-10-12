@@ -15,7 +15,7 @@ func Modal() *ModalStructure {
 	}
 }
 
-func (m *ModalStructure) SetCustomId(value string) *ModalStructure {
+func (m *ModalStructure) SetCustomID(value string) *ModalStructure {
 	m.Data.CustomID = value
 	return m
 }

@@ -6,7 +6,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/y2hO0ol23/weiver/utils/builder"
-	"github.com/y2hO0ol23/weiver/utils/prisma"
+	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
 func init() {
@@ -26,65 +26,65 @@ func init() {
 		},
 		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			options := i.ApplicationCommandData().Options
-			fromId := i.Interaction.Member.User.ID
-			toId := options[0].Value.(string)
+			fromID := i.Interaction.Member.User.ID
+			toID := options[0].Value.(string)
 
-			if fromId == toId {
+			if fromID == toID {
 				message := builder.Message(&discordgo.InteractionResponseData{
 					Content: "`Can't review yourself`",
 					Flags:   discordgo.MessageFlagsEphemeral,
 				})
 				err = s.InteractionRespond(i.Interaction, message)
 				if err != nil {
-					log.Printf("Error on sending message\n")
+					log.Println(err)
 				}
 				return
 			}
 
-			to, err := s.GuildMember(i.GuildID, toId)
+			to, err := s.GuildMember(i.GuildID, toID)
 			if err != nil {
-				log.Println("Error on loadding user")
+				log.Println(err)
 				return // can not find subject
 			}
 
-			review_db := prisma.LoadReivewByIds(fromId, toId)
+			review := db.LoadReivewByInfo(fromID, toID)
 
 			modal := builder.Modal().
-				SetCustomId("review#" + fromId + "#" + toId).
+				SetCustomID("review#" + fromID + "#" + toID).
 				SetTitle("Review " + to.User.Username)
 
 			score := builder.TextInput().
-				SetCustomId("score").
+				SetCustomID("score").
 				SetLable("score").
 				SetValue(func() string {
-					if review_db == nil {
+					if review == nil {
 						return "★★★★★"
 					}
-					return strings.Repeat("★", review_db.Score)
+					return strings.Repeat("★", review.Score)
 				}()).
 				SetStyle(discordgo.TextInputShort).
 				SetMinLength(1).SetMaxLength(5).SetRequired(true)
 
 			title := builder.TextInput().
-				SetCustomId("title").
+				SetCustomID("title").
 				SetLable("title").
 				SetValue(func() string {
-					if review_db == nil {
+					if review == nil {
 						return ""
 					}
-					return review_db.Title
+					return review.Title
 				}()).
 				SetStyle(discordgo.TextInputShort).
 				SetMinLength(1).SetMaxLength(20).SetRequired(true)
 
 			content := builder.TextInput().
-				SetCustomId("content").
+				SetCustomID("content").
 				SetLable("content").
 				SetValue(func() string {
-					if review_db == nil {
+					if review == nil {
 						return ""
 					}
-					return review_db.Title
+					return review.Content
 				}()).
 				SetStyle(discordgo.TextInputParagraph).
 				SetMinLength(1).SetMaxLength(300).SetRequired(true)
@@ -97,7 +97,7 @@ func init() {
 
 			err = s.InteractionRespond(i.Interaction, modal.InteractionResponse)
 			if err != nil {
-				log.Printf("Error on sending modal\n")
+				log.Println(err)
 			}
 		},
 	})

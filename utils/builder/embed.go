@@ -1,10 +1,16 @@
 package builder
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"time"
+
+	"github.com/bwmarrin/discordgo"
+)
 
 type EmbedStructure struct {
 	*discordgo.MessageEmbed
 }
+
+var ISO8601 = "2006-01-02T15:04:05Z0700"
 
 func Embed() *EmbedStructure {
 	return &EmbedStructure{&discordgo.MessageEmbed{}}
@@ -37,5 +43,10 @@ func (e *EmbedStructure) SetFooter(value *discordgo.MessageEmbedFooter) *EmbedSt
 
 func (e *EmbedStructure) SetThumbnail(value *discordgo.MessageEmbedThumbnail) *EmbedStructure {
 	e.Thumbnail = value
+	return e
+}
+
+func (e *EmbedStructure) SetTimeStamp(value time.Time) *EmbedStructure {
+	e.Timestamp = value.Format(ISO8601)
 	return e
 }

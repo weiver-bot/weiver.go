@@ -5,10 +5,9 @@ import (
 	"log"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/y2hO0ol23/weiver/db"
 	parse "github.com/y2hO0ol23/weiver/handler/events/button"
 	"github.com/y2hO0ol23/weiver/utils/builder"
-	"github.com/y2hO0ol23/weiver/utils/prisma"
+	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
 func init() {
@@ -16,58 +15,51 @@ func init() {
 		if i.Type != discordgo.InteractionMessageComponent {
 			return
 		}
-		data := i.MessageComponentData()
 
-		for key, handler := range prisma.ReviewActionHandlers {
+		data := i.MessageComponentData()
+		if data.ComponentType != discordgo.ButtonComponent {
+			return
+		}
+
+		for name, handler := range db.ReviewButtonHandler {
 			var review *db.ReviewModel
 
-			if reviewId, ok := parse.Like.CustomID(data.CustomID, key); ok {
+			if reviewID, ok := parse.Like.CustomID(data.CustomID, name); ok {
 				s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 					Type: discordgo.InteractionResponseDeferredMessageUpdate,
 				})
 
-				prisma.LoadUserById(i.Interaction.Member.User.ID)
-				review = prisma.ReviewAction(reviewId, handler(i.Interaction.Member.User.ID))
+				db.LoadUserByID(i.Interaction.Member.User.ID)
+				review = handler(reviewID, i.Interaction.Member.User.ID)
 			} else {
 				continue
 			}
 
 			to, err := s.GuildMember(i.GuildID, review.ToID)
 			if err != nil {
-				log.Println("Error on loadding member")
+				log.Println(err)
 				return
 			}
 
-			if channelId, messageId, ok := func() (string, string, bool) {
-				if channelId, ok := review.ChannelID(); ok {
-					if messageId, ok := review.MessageID(); ok {
-						_, err := s.ChannelMessage(channelId, messageId)
-						if err == nil {
-							return channelId, messageId, true
-						}
-					}
-				}
-				return "", "", false
-			}(); ok {
-				embed := builder.Embed().
-					SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
-					SetFields(&discordgo.MessageEmbedField{
-						Name:  fmt.Sprintf("📝 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-						Value: fmt.Sprintf("```%s```", review.Content),
-					}).
-					SetFooter(&discordgo.MessageEmbedFooter{
-						Text: fmt.Sprintf("👍 %d", review.LikeTotal),
-					}).
-					SetThumbnail(&discordgo.MessageEmbedThumbnail{
-						URL: to.User.AvatarURL(""),
-					})
+			embed := builder.Embed().
+				SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
+				SetFields(&discordgo.MessageEmbedField{
+					Name:  fmt.Sprintf("📝 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
+					Value: fmt.Sprintf("```%s```", review.Content),
+				}).
+				SetFooter(&discordgo.MessageEmbedFooter{
+					Text: fmt.Sprintf("👍 %d", review.LikeTotal),
+				}).
+				SetThumbnail(&discordgo.MessageEmbedThumbnail{
+					URL: to.User.AvatarURL(""),
+				}).
+				SetTimeStamp(review.TimeStamp)
 
-				s.ChannelMessageEditEmbeds(channelId, messageId, []*discordgo.MessageEmbed{
-					embed.MessageEmbed,
-				})
-			} else {
-				log.Println("Error on editing Embeds")
-				return
+			_, err = s.ChannelMessageEditEmbeds(review.ChannelID, review.MessageID, []*discordgo.MessageEmbed{
+				embed.MessageEmbed,
+			})
+			if err != nil {
+				log.Println(err)
 			}
 		}
 	})

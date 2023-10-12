@@ -17,6 +17,8 @@ func (a *ActionRowStructure) AddComponents(values ...interface{}) *ActionRowStru
 			a.Components = append(a.Components, value.(*TextInputStructure).TextInput)
 		case *ButtonStructure:
 			a.Components = append(a.Components, value.(*ButtonStructure).Button)
+		case *SelectMenuStructure:
+			a.Components = append(a.Components, value.(*SelectMenuStructure).SelectMenu)
 		}
 	}
 	return a

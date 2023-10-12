@@ -10,7 +10,7 @@ func Button() *ButtonStructure {
 	return &ButtonStructure{}
 }
 
-func (b *ButtonStructure) SetCustomId(value string) *ButtonStructure {
+func (b *ButtonStructure) SetCustomID(value string) *ButtonStructure {
 	b.CustomID = value
 	return b
 }

@@ -10,7 +10,7 @@ func TextInput() *TextInputStructure {
 	return &TextInputStructure{}
 }
 
-func (t *TextInputStructure) SetCustomId(value string) *TextInputStructure {
+func (t *TextInputStructure) SetCustomID(value string) *TextInputStructure {
 	t.CustomID = value
 	return t
 }
