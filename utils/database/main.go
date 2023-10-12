@@ -23,6 +23,8 @@ type UserModel struct {
 	Written []ReviewModel  `gorm:"foreignKey:ToID;"`
 	Like    []*ReviewModel `gorm:"many2many:like;"`
 	Hate    []*ReviewModel `gorm:"many2many:hate;"`
+
+	Role []*RoleModel `gorm:"many2many:role;"`
 }
 
 type ReviewModel struct {
@@ -47,11 +49,31 @@ type ReviewModel struct {
 	TimeStamp time.Time
 }
 
+type GuildModel struct {
+	gorm.Model
+	ID        string `gorm:"primaryKey;size:64;"`
+	AllowRole bool   `gorm:"default:false"`
+
+	Role []RoleModel `gorm:"foreignKey:GuildID;"`
+}
+
+type RoleModel struct {
+	gorm.Model
+	ID      string `gorm:"primaryKey;size:128;"`
+	RoleID  string `gorm:"not null;"`
+	GuildID string `gorm:"not null;"`
+
+	Display string `gorm:"size:100"`
+
+	User []*UserModel `gorm:"many2many:role;"`
+}
+
 func init() {
 	db, err = gorm.Open(mysql.Open(os.Getenv("MYSQL_URL")), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Error loading mysql, ", err)
 	}
 
-	db.AutoMigrate(&UserModel{}, &ReviewModel{})
+	db.AutoMigrate(&UserModel{}, &GuildModel{})
+	db.AutoMigrate(&ReviewModel{}, &RoleModel{})
 }

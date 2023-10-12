@@ -10,11 +10,13 @@ import (
 )
 
 func init() {
+	var DMPermission bool = false
+
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
 			Name:         "reivew",
 			Description:  "review user",
-			DMPermission: &dmPermission,
+			DMPermission: &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
 					Name:        "subject",

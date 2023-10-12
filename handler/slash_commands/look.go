@@ -14,10 +14,13 @@ import (
 )
 
 func init() {
+	var DMPermission bool = false
+
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
-			Name:        "look",
-			Description: "Look about things",
+			Name:         "look",
+			Description:  "Look about things",
+			DMPermission: &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
 					Name:        "info",
@@ -118,7 +121,7 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 var pageRow int
 
 func init() {
-	pageRow, err = strconv.Atoi(os.Getenv("PAGE_ROW"))
+	pageRow, err := strconv.Atoi(os.Getenv("PAGE_ROW"))
 	if err != nil || pageRow < 1 || 25 < pageRow {
 		pageRow = 10
 	}
@@ -164,6 +167,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 		log.Println(err)
 	}
 
+	// make handler because bot can not find message that has ephemeral flag
 	var handler func(s *discordgo.Session, iter *discordgo.InteractionCreate)
 	handler = func(s *discordgo.Session, iter *discordgo.InteractionCreate) {
 		if iter.Type != discordgo.InteractionMessageComponent || iter.Interaction.Message.ID != msg.ID {
@@ -178,7 +182,29 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 		}
 
 		value := data.Values[0]
-		if strings.HasPrefix(value, "review") {
+		if strings.HasPrefix(value, "page/") { // move page
+			s.AddHandlerOnce(handler)
+
+			pageNow, err := strconv.Atoi(strings.Split(value, ":")[1])
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
+			selectMenu = BuildSelectMenu(*reviews, subject.User.Username, pageNow, pageCount)
+
+			s.InteractionRespond(iter.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseDeferredMessageUpdate,
+			})
+			_, err = s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
+				Components: &[]discordgo.MessageComponent{
+					builder.ActionRow().AddComponents(selectMenu).ActionsRow,
+				},
+			})
+			if err != nil {
+				log.Println(err)
+			}
+		} else if strings.HasPrefix(value, "review") { // show page link
 			id, err := strconv.Atoi(value[7:])
 			if err != nil {
 				log.Println(err)
@@ -230,28 +256,6 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				},
 				Components: &[]discordgo.MessageComponent{},
 			})
-		} else if strings.HasPrefix(value, "page/") {
-			s.AddHandlerOnce(handler)
-
-			pageNow, err := strconv.Atoi(strings.Split(value, ":")[1])
-			if err != nil {
-				log.Println(err)
-				return
-			}
-
-			selectMenu = BuildSelectMenu(*reviews, subject.User.Username, pageNow, pageCount)
-
-			s.InteractionRespond(iter.Interaction, &discordgo.InteractionResponse{
-				Type: discordgo.InteractionResponseDeferredMessageUpdate,
-			})
-			_, err = s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
-				Components: &[]discordgo.MessageComponent{
-					builder.ActionRow().AddComponents(selectMenu).ActionsRow,
-				},
-			})
-			if err != nil {
-				log.Println(err)
-			}
 		}
 	}
 	s.AddHandlerOnce(handler)

@@ -15,16 +15,15 @@ func LoadUserByID(id string) *UserModel {
 	}
 
 	if len(users) == 0 {
-		var user UserModel
-
-		err = db.Create(&UserModel{
+		var user = &UserModel{
 			ID: id,
-		}).Take(&user).Error
+		}
+		err = db.Create(user).Error
 		if err != nil {
 			log.Println(err)
 		}
 
-		return &user
+		return user
 	} else {
 		return &users[0]
 	}
@@ -33,14 +32,16 @@ func LoadUserByID(id string) *UserModel {
 func GetUserScoreAverage(id string) (float64, int) {
 	var users []UserModel
 
-	err = db.Model(&UserModel{ID: id}).
-		Limit(1).Preload("Written").
+	err = db.Model(&UserModel{}).
+		Where(UserModel{
+			ID: id,
+		}).Limit(1).Preload("Written").
 		Find(&users).Error
 	if err != nil {
 		log.Println(err)
 	}
 
-	if len(users) == 0 {
+	if len(users) == 0 || len(users[0].Written) == 0 {
 		return 0.0, 0
 	}
 

@@ -47,14 +47,15 @@ func ModifyReviewByInfo(fromID string, toID string, score int, title string, con
 	LoadUserByID(toID)
 
 	if review == nil {
-		err = db.Create(&ReviewModel{
+		review = &ReviewModel{
 			Score:     score,
 			Title:     title,
 			Content:   content,
 			ToID:      toID,
 			FromID:    fromID,
 			TimeStamp: time.Now(),
-		}).Error
+		}
+		err = db.Create(review).Error
 		if err != nil {
 			log.Println(err)
 		}
@@ -69,41 +70,41 @@ func ModifyReviewByInfo(fromID string, toID string, score int, title string, con
 		err = db.Model(&ReviewModel{ID: review.ID}).
 			Association("Hate").
 			Clear()
-
 		if err != nil {
 			log.Println(err)
 		}
 
 		err = db.Model(&ReviewModel{ID: review.ID}).
-			Updates(ReviewModel{
-				Score:     score,
-				Title:     title,
-				Content:   content,
-				LikeTotal: 0,
-				TimeStamp: time.Now(),
-			}).Error
+			Updates(map[string]interface{}{
+				"Score":     score,
+				"Title":     title,
+				"Content":   content,
+				"LikeTotal": 0,
+				"TimeStamp": time.Now(),
+			}).
+			Take(review).Error
 		if err != nil {
 			log.Println(err)
 		}
 	}
 
-	return LoadReivewByInfo(fromID, toID)
+	return review
 }
 
 func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID string) *ReviewModel {
 	var review ReviewModel
 
-	err := db.Model(&ReviewModel{ID: id}).
+	err = db.Model(&ReviewModel{ID: id}).
 		Updates(ReviewModel{
-			GuildID:   guildID,
 			ChannelID: channelID,
 			MessageID: messageID,
+			GuildID:   guildID,
 		}).
 		Take(&review).Error
-
 	if err != nil {
 		log.Println(err)
 	}
+
 	return &review
 }
 

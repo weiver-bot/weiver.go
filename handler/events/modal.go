@@ -8,6 +8,7 @@ import (
 	parse "github.com/y2hO0ol23/weiver/handler/events/modal"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
+	"github.com/y2hO0ol23/weiver/utils/role"
 )
 
 func init() {
@@ -37,9 +38,22 @@ func init() {
 			}
 		}
 
+		// remove old role
+		display := role.GetDisplay(toID)
+		roleList := db.GetRoleOnUser(toID)
+		for _, roleDB := range roleList {
+			role.Remove(s, roleDB.GuildID, toID, display)
+		}
+
 		// set db
 		review = db.ModifyReviewByInfo(fromID, toID, score, title, content)
 		ResendReview(s, i, review, "written")
+
+		// set role
+		display = role.GetDisplay(toID)
+		for _, roleDB := range roleList {
+			role.Set(s, roleDB.GuildID, toID, display)
+		}
 	})
 }
 

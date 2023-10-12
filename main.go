@@ -4,10 +4,11 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"syscall"
 
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/y2hO0ol23/weiver/handler"
+	"github.com/y2hO0ol23/weiver/handler/events"
 	"github.com/y2hO0ol23/weiver/handler/slash_commands"
 	_ "github.com/y2hO0ol23/weiver/utils/database"
 	_ "github.com/y2hO0ol23/weiver/utils/env"
@@ -18,14 +19,13 @@ func main() {
 	if err != nil {
 		log.Fatal("Error creating Discord session, ", err)
 	}
-	s.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
-		log.Printf("Logged in as %v#%v", s.State.User.Username, s.State.User.Discriminator)
-	})
 
 	s.Identify.Intents = 0 |
 		discordgo.IntentsGuilds |
 		discordgo.IntentsGuildMessages |
 		discordgo.IntentsGuildMembers
+
+	events.Setup(s)
 
 	err = s.Open()
 	if err != nil {
@@ -33,11 +33,11 @@ func main() {
 	}
 	defer s.Close()
 
-	handler.Setup(s)
+	// need appID, so execute after session is open
+	slash_commands.Setup(s)
+	defer slash_commands.RemoveCommands(s)
 
 	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, os.Interrupt)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-stop
-
-	slash_commands.Clean(s)
 }
