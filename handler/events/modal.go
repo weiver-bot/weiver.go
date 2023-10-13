@@ -39,21 +39,23 @@ func init() {
 			}
 		}
 
-		// remove old role
-		display := role.GetDisplay(toID)
+		// ready to change roles
+		displayWas := role.GetDisplay(toID)
 		roleList := db.GetRoleOnUser(toID)
-		for _, roleDB := range roleList {
-			role.Remove(s, roleDB.GuildID, toID, display)
-		}
 
 		// set db
 		review = db.ModifyReviewByInfo(fromID, toID, score, title, content)
 		ResendReview(s, i, review, "written")
 
 		// set role
-		display = role.GetDisplay(toID)
-		for _, roleDB := range roleList {
-			role.Set(s, roleDB.GuildID, toID, display)
+		displayNow := role.GetDisplay(toID)
+		if displayWas != displayNow {
+			for _, roleDB := range roleList {
+				role.Remove(s, roleDB.GuildID, toID, displayWas)
+			}
+			for _, roleDB := range roleList {
+				role.Set(s, roleDB.GuildID, toID, displayNow)
+			}
 		}
 	})
 }
