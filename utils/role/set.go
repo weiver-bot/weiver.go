@@ -20,9 +20,6 @@ func Set(s *discordgo.Session, guildID string, memberID string, display string) 
 		roleDB = db.CreateRole(role.ID, guildID, display)
 	}
 
-	err := s.GuildMemberRoleAdd(guildID, memberID, roleDB.RoleID)
-	if err != nil {
-		//log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-	}
+	s.GuildMemberRoleAdd(guildID, memberID, roleDB.RoleID)
 	db.AddRoleOnUser(roleDB.ID, memberID)
 }

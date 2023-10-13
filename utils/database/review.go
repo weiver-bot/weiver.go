@@ -9,8 +9,10 @@ import (
 func LoadReivewByID(id int) *ReviewModel {
 	var reviews []ReviewModel
 
-	err = db.Model(&ReviewModel{ID: id}).
-		Limit(1).
+	err = db.Model(&ReviewModel{}).
+		Where(ReviewModel{
+			ID: id,
+		}).Limit(1).
 		Find(&reviews).Error
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))

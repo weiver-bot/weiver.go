@@ -34,8 +34,9 @@ func init() {
 
 			if fromID == toID {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content: "`Can't review yourself`",
-					Flags:   discordgo.MessageFlagsEphemeral,
+					Content:         "`Can't review yourself`",
+					Flags:           discordgo.MessageFlagsEphemeral,
+					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))

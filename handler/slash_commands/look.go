@@ -9,9 +9,9 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/y2hO0ol23/weiver/handler/events"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
+	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
 )
 
 func init() {
@@ -111,8 +111,8 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 		Embeds: []*discordgo.MessageEmbed{
 			embed.MessageEmbed,
 		},
-		AllowedMentions: &discordgo.MessageAllowedMentions{},
 		Flags:           discordgo.MessageFlagsEphemeral,
+		AllowedMentions: &discordgo.MessageAllowedMentions{},
 	}))
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -138,8 +138,9 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 	reviews := db.GetReviewsByUserID(subjectID)
 	if reviews == nil {
 		message := builder.Message(&discordgo.InteractionResponseData{
-			Content: "`No review exists`",
-			Flags:   discordgo.MessageFlagsEphemeral,
+			Content:         "`No review exists`",
+			Flags:           discordgo.MessageFlagsEphemeral,
+			AllowedMentions: &discordgo.MessageAllowedMentions{},
 		})
 		err = s.InteractionRespond(i.Interaction, message)
 		if err != nil {
@@ -156,8 +157,8 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 		Components: []discordgo.MessageComponent{
 			builder.ActionRow().AddComponents(selectMenu).ActionsRow,
 		},
-		AllowedMentions: &discordgo.MessageAllowedMentions{},
 		Flags:           discordgo.MessageFlagsEphemeral,
+		AllowedMentions: &discordgo.MessageAllowedMentions{},
 	}))
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -169,16 +170,18 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 	}
 
 	// make handler because bot can not find message that has ephemeral flag
-	var handler func(s *discordgo.Session, iter *discordgo.InteractionCreate)
+	var handler func(*discordgo.Session, *discordgo.InteractionCreate)
 	handler = func(s *discordgo.Session, iter *discordgo.InteractionCreate) {
-		if iter.Type != discordgo.InteractionMessageComponent || iter.Interaction.Message.ID != msg.ID {
+		if iter.Type != discordgo.InteractionMessageComponent || i.Interaction.Member.User.ID != iter.Interaction.Member.User.ID {
 			s.AddHandlerOnce(handler)
+			return
+		}
+		if iter.Interaction.Message.ID != msg.ID {
 			return
 		}
 
 		data := iter.MessageComponentData()
 		if data.CustomID != "review-list" {
-			s.AddHandlerOnce(handler)
 			return
 		}
 
@@ -206,7 +209,8 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
 		} else if strings.HasPrefix(value, "review") { // show page link
-			id, err := strconv.Atoi(value[7:])
+			data := strings.Split(value[7:], "#")
+			id, err := strconv.Atoi(data[0])
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
@@ -214,10 +218,8 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 
 			embed := builder.Embed()
 			review := db.LoadReivewByID(id)
-			if review == nil {
-				embed.SetFields(&discordgo.MessageEmbedField{
-					Name: "❌ This review has been edited",
-				})
+			if review == nil || data[1] != fmt.Sprintf("%d", review.TimeStamp.Unix()) {
+				embed.SetDescription("❌ This review has been edited")
 			} else {
 				_, err := s.ChannelMessage(review.ChannelID, review.MessageID)
 				if err == nil {
@@ -232,7 +234,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				} else {
 					_, err := s.GuildMember(review.GuildID, review.FromID)
 					if err == nil {
-						if events.ResendReview(s, iter, review, "resend") {
+						if reviewutil.Resend(s, iter, review, "moved") {
 							if s.InteractionResponseDelete(i.Interaction) != nil {
 								log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 							}
@@ -242,7 +244,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 						embed.SetDescription(fmt.Sprintf("https://discord.com/channels/%s/%s/%s", review.GuildID, review.ChannelID, review.MessageID)).
 							SetFields(&discordgo.MessageEmbedField{
 								Name:  fmt.Sprintf("🔒 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-								Value: "`Review has removed and author not in this server`",
+								Value: "`Review has removed but author not in this server`",
 							})
 					}
 				}
@@ -289,7 +291,7 @@ func BuildSelectMenu(reviews []db.ReviewModel, subjectName string, pageNow int, 
 			builder.SelectMenuOption().
 				SetLabel(fmt.Sprintf("%s 〔%s%s〕", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:])).
 				SetDescription(fmt.Sprintf("👍 %d", review.LikeTotal)).
-				SetValue(fmt.Sprintf("review:%d", review.ID)),
+				SetValue(fmt.Sprintf("review:%d#%d", review.ID, review.TimeStamp.Unix())),
 		)
 	}
 

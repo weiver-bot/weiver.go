@@ -50,8 +50,9 @@ func init() {
 			guildDB := db.LoadGuildByID(i.GuildID)
 			if guildDB.InProgress == true {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content: "`Process is in progress`",
-					Flags:   discordgo.MessageFlagsEphemeral,
+					Content:         "`Process is in progress`",
+					Flags:           discordgo.MessageFlagsEphemeral,
+					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -67,6 +68,7 @@ func init() {
 							SetDescription("**Update Option** `AllowRole` - in progress").
 							MessageEmbed,
 					},
+					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -116,8 +118,9 @@ func init() {
 				db.EndOFGuildProgress(i.GuildID)
 			} else {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content: fmt.Sprintf("`Noting changes. AllowRole: %v`", value),
-					Flags:   discordgo.MessageFlagsEphemeral,
+					Content:         fmt.Sprintf("`Noting changes. AllowRole: %v`", value),
+					Flags:           discordgo.MessageFlagsEphemeral,
+					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
