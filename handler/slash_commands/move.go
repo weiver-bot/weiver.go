@@ -57,7 +57,7 @@ func init() {
 			_, err = s.ChannelMessage(review.ChannelID, review.MessageID)
 			if err != nil {
 				if review = reviewutil.Resend(s, i, review); review != nil {
-					reviewutil.SendDM(s, review)
+					reviewutil.ModifyDM(s, review)
 				}
 				return
 			}
@@ -120,7 +120,7 @@ func init() {
 				}
 				reviewutil.DeleteMessage(s, fromID, toID)
 				if review = reviewutil.Resend(s, iter, review); review != nil {
-					reviewutil.SendDM(s, review)
+					reviewutil.ModifyDM(s, review)
 				}
 			}
 			s.AddHandlerOnce(handler)

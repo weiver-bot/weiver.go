@@ -26,3 +26,11 @@ func EmbedMost(review *db.ReviewModel, thubnail string) *builder.EmbedStructure 
 		}).
 		SetTimeStamp(review.TimeStamp)
 }
+
+func embedDM(review *db.ReviewModel) *discordgo.MessageEmbed {
+	return builder.Embed().
+		SetDescription(fmt.Sprintf("https://discord.com/channels/%s/%s/%s → <@%s>", review.GuildID, review.ChannelID, review.MessageID, review.FromID)).
+		AddFields(&discordgo.MessageEmbedField{
+			Name: "🔔 Your review has written",
+		}).MessageEmbed
+}
