@@ -30,7 +30,7 @@ func init() {
 				} else {
 					err := s.GuildMemberRoleRemove(g.GuildID, g.User.ID, roleID)
 					if err != nil {
-						log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+						log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 					}
 				}
 			}

@@ -1,7 +1,6 @@
 package slash_commands
 
 import (
-	"fmt"
 	"log"
 	"runtime/debug"
 	"strings"
@@ -34,20 +33,19 @@ func init() {
 			toID := options[0].Value.(string)
 
 			if fromID == toID {
-				message := builder.Message(&discordgo.InteractionResponseData{
+				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 					Content: "`Can't review yourself`",
 					Flags:   discordgo.MessageFlagsEphemeral,
-				})
-				err = s.InteractionRespond(i.Interaction, message)
+				}))
 				if err != nil {
-					log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				}
 				return
 			}
 
 			to, err := s.GuildMember(i.GuildID, toID)
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return // can not find subject
 			}
 
@@ -101,7 +99,7 @@ func init() {
 
 			err = s.InteractionRespond(i.Interaction, modal.InteractionResponse)
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
 		},
 	})

@@ -71,7 +71,7 @@ func init() {
 func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID string) {
 	subject, err := s.GuildMember(i.GuildID, subjectID)
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		return
 	}
 
@@ -115,7 +115,7 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 		Flags:           discordgo.MessageFlagsEphemeral,
 	}))
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 }
 
@@ -131,7 +131,7 @@ func init() {
 func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID string) {
 	subject, err := s.GuildMember(i.GuildID, subjectID)
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		return
 	}
 
@@ -143,7 +143,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 		})
 		err = s.InteractionRespond(i.Interaction, message)
 		if err != nil {
-			log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}
 		return
 	}
@@ -160,12 +160,12 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 		Flags:           discordgo.MessageFlagsEphemeral,
 	}))
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	msg, err := s.InteractionResponse(i.Interaction)
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	// make handler because bot can not find message that has ephemeral flag
@@ -188,7 +188,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 
 			pageNow, err := strconv.Atoi(strings.Split(value, ":")[1])
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
 			}
 
@@ -203,12 +203,12 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				},
 			})
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
 		} else if strings.HasPrefix(value, "review") { // show page link
 			id, err := strconv.Atoi(value[7:])
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
 			}
 
@@ -234,7 +234,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 					if err == nil {
 						if events.ResendReview(s, iter, review, "resend") {
 							if s.InteractionResponseDelete(i.Interaction) != nil {
-								log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+								log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 							}
 						}
 						return

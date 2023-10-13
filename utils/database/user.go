@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"log"
 	"runtime/debug"
 )
@@ -15,7 +14,7 @@ func LoadUserByID(id string) *UserModel {
 		}).Limit(1).
 		Find(&users).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	if len(users) == 0 {
@@ -24,7 +23,7 @@ func LoadUserByID(id string) *UserModel {
 		}
 		err = db.Create(user).Error
 		if err != nil {
-			log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}
 
 		return user
@@ -42,7 +41,7 @@ func GetUserScoreAverage(id string) (float64, int) {
 		}).Limit(1).Preload("Written").
 		Find(&users).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	if len(users) == 0 || len(users[0].Written) == 0 {

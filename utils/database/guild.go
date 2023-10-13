@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"log"
 	"runtime/debug"
 )
@@ -15,7 +14,7 @@ func LoadGuildByID(id string) GuildModel {
 		}).Limit(1).
 		Find(&guilds).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	if len(guilds) == 0 {
@@ -24,7 +23,7 @@ func LoadGuildByID(id string) GuildModel {
 		}
 		err = db.Create(&guild).Error
 		if err != nil {
-			log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}
 
 		return guild
@@ -41,7 +40,7 @@ func UpdateGuildRoleOption(id string, value bool) *GuildModel {
 		}).
 		Take(&guild).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	return &guild

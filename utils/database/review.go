@@ -1,7 +1,6 @@
 package database
 
 import (
-	"fmt"
 	"log"
 	"runtime/debug"
 	"time"
@@ -14,7 +13,7 @@ func LoadReivewByID(id int) *ReviewModel {
 		Limit(1).
 		Find(&reviews).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	if len(reviews) == 0 {
@@ -33,7 +32,7 @@ func LoadReivewByInfo(fromID string, toID string) *ReviewModel {
 		}).Limit(1).
 		Find(&reviews).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	if len(reviews) == 0 {
@@ -59,21 +58,21 @@ func ModifyReviewByInfo(fromID string, toID string, score int, title string, con
 		}
 		err = db.Create(review).Error
 		if err != nil {
-			log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}
 	} else {
 		err = db.Model(&ReviewModel{ID: review.ID}).
 			Association("Like").
 			Clear()
 		if err != nil {
-			log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}
 
 		err = db.Model(&ReviewModel{ID: review.ID}).
 			Association("Hate").
 			Clear()
 		if err != nil {
-			log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}
 
 		err = db.Model(&ReviewModel{ID: review.ID}).
@@ -86,7 +85,7 @@ func ModifyReviewByInfo(fromID string, toID string, score int, title string, con
 			}).
 			Take(review).Error
 		if err != nil {
-			log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}
 	}
 
@@ -104,7 +103,7 @@ func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID s
 		}).
 		Take(&review).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	return &review
@@ -119,7 +118,7 @@ func GetReviewBest(id string) *ReviewModel {
 		}).Order("Score desc").Limit(1).
 		Find(&reviews).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	return &reviews[0]
@@ -134,7 +133,7 @@ var (
 					ID: userID,
 				})
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
 
 			err = db.Model(&ReviewModel{ID: reviewID}).
@@ -143,7 +142,7 @@ var (
 					ID: userID,
 				})
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
 
 			return reviewButtonHandlerFianl(reviewID)
@@ -155,7 +154,7 @@ var (
 					ID: userID,
 				})
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
 
 			err = db.Model(&ReviewModel{ID: reviewID}).
@@ -164,7 +163,7 @@ var (
 					ID: userID,
 				})
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
 
 			return reviewButtonHandlerFianl(reviewID)
@@ -184,7 +183,7 @@ func reviewButtonHandlerFianl(reviewID int) *ReviewModel {
 		}).
 		Take(&review).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	return &review
@@ -199,7 +198,7 @@ func GetReviewsByUserID(id string) *[]ReviewModel {
 		}).Order("Score desc").
 		Find(&reviews).Error
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 
 	if len(reviews) == 0 {

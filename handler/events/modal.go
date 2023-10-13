@@ -61,7 +61,7 @@ func init() {
 func ResendReview(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.ReviewModel, comment string) bool {
 	to, err := s.GuildMember(i.GuildID, review.ToID)
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		return false
 	}
 
@@ -98,14 +98,14 @@ func ResendReview(s *discordgo.Session, i *discordgo.InteractionCreate, review *
 		AllowedMentions: &discordgo.MessageAllowedMentions{},
 	}))
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		return false
 	}
 
 	// add msg data on db
 	msg, err := s.InteractionResponse(i.Interaction)
 	if err != nil {
-		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		return false
 	}
 	db.UpdateMessageInfoByID(review.ID, i.GuildID, msg.ChannelID, msg.ID)
@@ -113,7 +113,7 @@ func ResendReview(s *discordgo.Session, i *discordgo.InteractionCreate, review *
 	// send dm to subject
 	channel, err := s.UserChannelCreate(review.ToID)
 	if err != nil {
-		//log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+		//log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		// if bot, blocked, etc...
 	} else if channel != nil {
 		s.ChannelMessageSendEmbeds(channel.ID, []*discordgo.MessageEmbed{

@@ -38,7 +38,7 @@ func init() {
 
 			to, err := s.GuildMember(i.GuildID, review.ToID)
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
 			}
 
@@ -60,7 +60,7 @@ func init() {
 				embed.MessageEmbed,
 			})
 			if err != nil {
-				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
 		}
 	})

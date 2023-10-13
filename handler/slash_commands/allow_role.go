@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 	"github.com/y2hO0ol23/weiver/utils/role"
 )
@@ -50,6 +51,17 @@ func init() {
 			if guildDB.AllowRole != value {
 				db.UpdateGuildRoleOption(i.GuildID, value)
 
+				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
+					Embeds: []*discordgo.MessageEmbed{
+						builder.Embed().
+							SetDescription("**Update Option** `AllowRole` - in progress").
+							MessageEmbed,
+					},
+				}))
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				}
+
 				var (
 					after string
 					wait  sync.WaitGroup
@@ -57,7 +69,7 @@ func init() {
 				for {
 					res, err := s.GuildMembers(i.GuildID, after, 1000)
 					if err != nil {
-						log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
+						log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 						continue
 					}
 					if len(res) == 0 {
@@ -79,6 +91,25 @@ func init() {
 					after = res[len(res)-1].User.ID
 				}
 				wait.Wait()
+
+				_, err = s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
+					Embeds: &[]*discordgo.MessageEmbed{
+						builder.Embed().
+							SetDescription("**Update Option** `AllowRole` - in progress").
+							MessageEmbed,
+					},
+				})
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				}
+			} else {
+				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
+					Content: fmt.Sprintf("`Noting changes. AllowRole: %v", value),
+					Flags:   discordgo.MessageFlagsEphemeral,
+				}))
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				}
 			}
 		},
 	})
