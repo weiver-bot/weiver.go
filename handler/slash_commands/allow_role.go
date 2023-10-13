@@ -95,7 +95,7 @@ func init() {
 				_, err = s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
 					Embeds: &[]*discordgo.MessageEmbed{
 						builder.Embed().
-							SetDescription("**Update Option** `AllowRole` - in progress").
+							SetDescription("**Update Option** `AllowRole` - done").
 							MessageEmbed,
 					},
 				})

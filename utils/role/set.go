@@ -1,7 +1,8 @@
 package role
 
 import (
-	"fmt"
+	"log"
+	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/utils/database"
@@ -12,7 +13,7 @@ func Set(s *discordgo.Session, guildID string, memberID string, display string) 
 	if roleDB == nil {
 		role, err := s.GuildRoleCreate(guildID, &discordgo.RoleParams{Name: display})
 		if err != nil {
-			fmt.Println(err)
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			return
 		}
 
@@ -21,8 +22,7 @@ func Set(s *discordgo.Session, guildID string, memberID string, display string) 
 
 	err := s.GuildMemberRoleAdd(guildID, memberID, roleDB.RoleID)
 	if err != nil {
-		fmt.Println(err)
-		return
+		//log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
 	db.AddRoleOnUser(roleDB.ID, memberID)
 }
