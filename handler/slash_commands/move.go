@@ -54,6 +54,12 @@ func init() {
 				return
 			}
 
+			message, _ := s.ChannelMessage(review.ChannelID, review.MessageID)
+			if message == nil {
+				reviewutil.Resend(s, i, review, "moved")
+				return
+			}
+
 			err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 				Embeds: []*discordgo.MessageEmbed{
 					builder.Embed().
