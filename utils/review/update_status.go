@@ -18,7 +18,7 @@ func UpdateStatus(s *discordgo.Session) {
 			{
 				Name:  "Reviews total count",
 				Type:  discordgo.ActivityTypeCustom,
-				State: fmt.Sprintf("📄 %d", db.GetReviewsCount()),
+				State: fmt.Sprintf("🧾 %d", db.GetReviewsCount()),
 			},
 		},
 	})
