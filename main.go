@@ -39,6 +39,7 @@ func main() {
 		defer slash_commands.RemoveCommands(s)
 	}
 
+	log.Println("[*] End of settings")
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-stop

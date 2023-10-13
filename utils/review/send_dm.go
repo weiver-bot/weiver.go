@@ -31,7 +31,7 @@ func SendDM(s *discordgo.Session, review *db.ReviewModel) {
 }
 
 func ModifyDM(s *discordgo.Session, review *db.ReviewModel) {
-	_, err := s.ChannelMessageEditEmbed(review.DMChannelID, review.DMChannelID, embedDM(review))
+	_, err := s.ChannelMessageEditEmbed(review.DMChannelID, review.DMMessageID, embedDM(review))
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		return

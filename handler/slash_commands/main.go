@@ -39,7 +39,6 @@ func Setup(s *discordgo.Session) {
 		}
 		registeredCommands[i] = cmd
 	}
-	log.Println("[*] End of setting slash command")
 }
 
 func RemoveCommands(s *discordgo.Session) {
