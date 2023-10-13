@@ -122,7 +122,7 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 var pageRow int
 
 func init() {
-	pageRow, err := strconv.Atoi(os.Getenv("PAGE_ROW"))
+	pageRow, err = strconv.Atoi(os.Getenv("PAGE_ROW"))
 	if err != nil || pageRow < 1 || 25 < pageRow {
 		pageRow = 10
 	}
