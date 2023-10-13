@@ -32,16 +32,40 @@ func LoadGuildByID(id string) GuildModel {
 	}
 }
 
-func UpdateGuildRoleOption(id string, value bool) *GuildModel {
+func UpdateGuildRoleOption(id string, value bool) {
 	var guild GuildModel
 	err := db.Model(&GuildModel{ID: id}).
 		Updates(map[string]interface{}{
-			"AllowRole": value,
+			"AllowRole":  value,
+			"InProgress": true,
 		}).
 		Take(&guild).Error
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 	}
+}
 
-	return &guild
+func EndOFGuildProgress(id string) {
+	var guild GuildModel
+	err := db.Model(&GuildModel{ID: id}).
+		Updates(map[string]interface{}{
+			"InProgress": false,
+		}).
+		Take(&guild).Error
+	if err != nil {
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+	}
+}
+
+func GetGuildInProgress() *[]GuildModel {
+	var guilds []GuildModel
+	err := db.Model(&GuildModel{}).
+		Where(map[string]interface{}{
+			"InProgress": true,
+		}).Find(&guilds).Error
+	if err != nil {
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+	}
+
+	return &guilds
 }

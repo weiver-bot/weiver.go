@@ -48,6 +48,16 @@ func init() {
 			value := options[0].Value.(bool)
 
 			guildDB := db.LoadGuildByID(i.GuildID)
+			if guildDB.InProgress == true {
+				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
+					Content: "`Process is in progress`",
+					Flags:   discordgo.MessageFlagsEphemeral,
+				}))
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				}
+				return
+			}
 			if guildDB.AllowRole != value {
 				db.UpdateGuildRoleOption(i.GuildID, value)
 
@@ -102,6 +112,8 @@ func init() {
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				}
+
+				db.EndOFGuildProgress(i.GuildID)
 			} else {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 					Content: fmt.Sprintf("`Noting changes. AllowRole: %v", value),

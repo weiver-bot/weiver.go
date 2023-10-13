@@ -54,6 +54,8 @@ type GuildModel struct {
 	ID        string `gorm:"primaryKey;size:64;"`
 	AllowRole bool   `gorm:"default:false"`
 
+	InProgress bool
+
 	Role []RoleModel `gorm:"foreignKey:GuildID;"`
 }
 
