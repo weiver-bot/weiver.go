@@ -5,6 +5,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/utils/database"
+	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
 )
 
 func init() {
@@ -15,7 +16,7 @@ func init() {
 				db.EndOFGuildProgress(guildDB.ID)
 			}
 		}
-
+		reviewutil.UpdateStatus(s)
 		log.Printf("Logged in as %v#%v", s.State.User.Username, s.State.User.Discriminator)
 	})
 }

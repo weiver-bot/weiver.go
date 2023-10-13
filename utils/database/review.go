@@ -208,3 +208,14 @@ func GetReviewsByUserID(id string) *[]ReviewModel {
 	}
 	return &reviews
 }
+
+func GetReviewsCount() int64 {
+	var count int64
+	err := db.Model(&ReviewModel{}).
+		Count(&count).Error
+	if err != nil {
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+	}
+
+	return count
+}

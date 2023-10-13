@@ -38,6 +38,7 @@ func init() {
 		// set db
 		review := db.ModifyReviewByInfo(fromID, toID, score, title, content)
 		reviewutil.Resend(s, i, review, "written")
+		reviewutil.UpdateStatus(s)
 
 		// set role
 		displayNow := role.GetDisplay(toID)
@@ -48,5 +49,6 @@ func init() {
 			// will add new role by GuildMemberUpdate
 			// so just remove
 		}
+
 	})
 }
