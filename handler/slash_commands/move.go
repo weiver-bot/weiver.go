@@ -56,21 +56,16 @@ func init() {
 
 			_, err = s.ChannelMessage(review.ChannelID, review.MessageID)
 			if err != nil {
-				reviewutil.Resend(s, i, review, "moved")
+				if review = reviewutil.Resend(s, i, review); review != nil {
+					reviewutil.AlertByDM(s, review)
+				}
 				return
 			}
 
 			err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 				Embeds: []*discordgo.MessageEmbed{
-					builder.Embed().
+					reviewutil.EmbedBody(review, subject.AvatarURL("")).
 						SetDescription(fmt.Sprintf("https://discord.com/channels/%s/%s/%s", review.GuildID, review.ChannelID, review.MessageID)).
-						SetFields(&discordgo.MessageEmbedField{
-							Name:  fmt.Sprintf("📝 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-							Value: fmt.Sprintf("```%s```", review.Content),
-						}).
-						SetThumbnail(&discordgo.MessageEmbedThumbnail{
-							URL: subject.User.AvatarURL(""),
-						}).
 						MessageEmbed,
 				},
 				Components: []discordgo.MessageComponent{
@@ -124,7 +119,9 @@ func init() {
 					return
 				}
 				reviewutil.DeleteMessage(s, fromID, toID)
-				reviewutil.Resend(s, iter, reviewNow, "moved")
+				if review = reviewutil.Resend(s, iter, review); review != nil {
+					reviewutil.AlertByDM(s, review)
+				}
 			}
 			s.AddHandlerOnce(handler)
 		},

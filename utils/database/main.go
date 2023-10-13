@@ -34,6 +34,9 @@ type ReviewModel struct {
 	ChannelID string `gorm:"size:64;"`
 	GuildID   string `gorm:"size:64;"`
 
+	DMChannelID string `gorm:"size:64"`
+	DMMessageID string `gorm:"size:64"`
+
 	Score   int    `gorm:"not null;"`
 	Title   string `gorm:"not null;size:20;"`
 	Content string `gorm:"not null;size:300;"`
@@ -44,7 +47,7 @@ type ReviewModel struct {
 	Like []*UserModel `gorm:"many2many:like;"`
 	Hate []*UserModel `gorm:"many2many:hate;"`
 
-	LikeTotal int64 `gorm:"default:0;"`
+	LikeTotal int64 `gorm:"default:0;not null;"`
 
 	TimeStamp time.Time
 }

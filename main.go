@@ -35,7 +35,9 @@ func main() {
 
 	// need appID, so execute after session is open
 	slash_commands.Setup(s)
-	defer slash_commands.RemoveCommands(s)
+	if os.Getenv("REMOVE_CMD") == "true" {
+		defer slash_commands.RemoveCommands(s)
+	}
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)

@@ -111,6 +111,22 @@ func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID s
 	return &review
 }
 
+func UpdateDMMessageInfoByID(id int, channelID string, messageID string) *ReviewModel {
+	var review ReviewModel
+
+	err = db.Model(&ReviewModel{ID: id}).
+		Updates(ReviewModel{
+			DMChannelID: channelID,
+			DMMessageID: messageID,
+		}).
+		Take(&review).Error
+	if err != nil {
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+	}
+
+	return &review
+}
+
 func GetReviewBest(id string) *ReviewModel {
 	var reviews []ReviewModel
 

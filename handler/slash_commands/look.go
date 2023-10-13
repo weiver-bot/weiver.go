@@ -234,10 +234,12 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				} else {
 					_, err := s.GuildMember(review.GuildID, review.FromID)
 					if err == nil {
-						if reviewutil.Resend(s, iter, review, "moved") {
-							if s.InteractionResponseDelete(i.Interaction) != nil {
+						if review = reviewutil.Resend(s, iter, review); review != nil {
+							err := s.InteractionResponseDelete(i.Interaction)
+							if err != nil {
 								log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 							}
+							reviewutil.AlertByDM(s, review)
 						}
 						return
 					} else {

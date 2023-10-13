@@ -20,16 +20,6 @@ func Setup(s *discordgo.Session) {
 	registeredCommands = make([]*discordgo.ApplicationCommand, len(commands))
 	commandHandlers := map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){}
 
-	for i, v := range commands {
-		commandHandlers[v.data.Name] = v.execute
-		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", v.data)
-		if err != nil {
-			RemoveCommands(s)
-			log.Fatalf("Cannot create %q\n%v", v.data.Name, err)
-		}
-		registeredCommands[i] = cmd
-	}
-
 	s.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if i.Type != discordgo.InteractionApplicationCommand {
 			return
@@ -39,6 +29,17 @@ func Setup(s *discordgo.Session) {
 			exec(s, i)
 		}
 	})
+
+	for i, v := range commands {
+		commandHandlers[v.data.Name] = v.execute
+		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", v.data)
+		if err != nil {
+			RemoveCommands(s)
+			log.Fatalf("Cannot create %q\n%v", v.data.Name, err)
+		}
+		registeredCommands[i] = cmd
+	}
+	log.Println("[*] End of setting slash command")
 }
 
 func RemoveCommands(s *discordgo.Session) {

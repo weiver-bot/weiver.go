@@ -7,8 +7,8 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	parse "github.com/y2hO0ol23/weiver/handler/events/button"
-	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
+	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
 )
 
 func init() {
@@ -42,19 +42,8 @@ func init() {
 				return
 			}
 
-			embed := builder.Embed().
-				SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
-				SetFields(&discordgo.MessageEmbedField{
-					Name:  fmt.Sprintf("📝 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-					Value: fmt.Sprintf("```%s```", review.Content),
-				}).
-				SetFooter(&discordgo.MessageEmbedFooter{
-					Text: fmt.Sprintf("👍 %d", review.LikeTotal),
-				}).
-				SetThumbnail(&discordgo.MessageEmbedThumbnail{
-					URL: to.User.AvatarURL(""),
-				}).
-				SetTimeStamp(review.TimeStamp)
+			embed := reviewutil.EmbedMost(review, to.AvatarURL("")).
+				SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID))
 
 			_, err = s.ChannelMessageEditEmbeds(review.ChannelID, review.MessageID, []*discordgo.MessageEmbed{
 				embed.MessageEmbed,

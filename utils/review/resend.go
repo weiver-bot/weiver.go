@@ -10,11 +10,11 @@ import (
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
-func Resend(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.ReviewModel, comment string) bool {
+func Resend(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.ReviewModel) *db.ReviewModel {
 	to, err := s.GuildMember(i.GuildID, review.ToID)
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-		return false
+		return nil
 	}
 
 	button_good := builder.Button().
@@ -29,19 +29,8 @@ func Resend(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.Rev
 
 	err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 		Embeds: []*discordgo.MessageEmbed{
-			builder.Embed().
+			EmbedMost(review, to.AvatarURL("")).
 				SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
-				SetFields(&discordgo.MessageEmbedField{
-					Name:  fmt.Sprintf("📝 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-					Value: fmt.Sprintf("```%s```", review.Content),
-				}).
-				SetFooter(&discordgo.MessageEmbedFooter{
-					Text: fmt.Sprintf("👍 %d", review.LikeTotal),
-				}).
-				SetThumbnail(&discordgo.MessageEmbedThumbnail{
-					URL: to.User.AvatarURL(""),
-				}).
-				SetTimeStamp(review.TimeStamp).
 				MessageEmbed,
 		},
 		Components: []discordgo.MessageComponent{
@@ -51,29 +40,14 @@ func Resend(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.Rev
 	}))
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-		return false
+		return nil
 	}
 
 	// add msg data on db
 	msg, err := s.InteractionResponse(i.Interaction)
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-		return false
+		return nil
 	}
-	db.UpdateMessageInfoByID(review.ID, i.GuildID, msg.ChannelID, msg.ID)
-
-	// send dm to subject
-	channel, err := s.UserChannelCreate(review.ToID)
-	if channel != nil {
-		s.ChannelMessageSendEmbeds(channel.ID, []*discordgo.MessageEmbed{
-			builder.Embed().
-				SetFields(&discordgo.MessageEmbedField{
-					Name:  fmt.Sprintf("🔔 Your review has %s", comment),
-					Value: fmt.Sprintf("➥ https://discord.com/channels/%s/%s/%s", i.GuildID, msg.ChannelID, msg.ID),
-				}).
-				MessageEmbed,
-		})
-	}
-
-	return true
+	return db.UpdateMessageInfoByID(review.ID, i.GuildID, msg.ChannelID, msg.ID)
 }
