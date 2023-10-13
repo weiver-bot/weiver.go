@@ -54,8 +54,8 @@ func init() {
 				return
 			}
 
-			message, _ := s.ChannelMessage(review.ChannelID, review.MessageID)
-			if message == nil {
+			_, err = s.ChannelMessage(review.ChannelID, review.MessageID)
+			if err != nil {
 				reviewutil.Resend(s, i, review, "moved")
 				return
 			}
