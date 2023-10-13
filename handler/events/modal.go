@@ -53,9 +53,8 @@ func init() {
 			for _, roleDB := range roleList {
 				role.Remove(s, roleDB.GuildID, toID, displayWas)
 			}
-			for _, roleDB := range roleList {
-				role.Set(s, roleDB.GuildID, toID, displayNow)
-			}
+			// will add new role by GuildMemberUpdate
+			// so just remove
 		}
 	})
 }
