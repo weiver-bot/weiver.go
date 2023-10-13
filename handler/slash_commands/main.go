@@ -25,7 +25,7 @@ func Setup(s *discordgo.Session) {
 		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", v.data)
 		if err != nil {
 			RemoveCommands(s)
-			log.Fatalf("Cannot create '%v' command: %v", v.data.Name, err)
+			log.Fatalf("Cannot create %q\n%v", v.data.Name, err)
 		}
 		registeredCommands[i] = cmd
 	}

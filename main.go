@@ -17,7 +17,7 @@ import (
 func main() {
 	s, err := discordgo.New("Bot " + os.Getenv("Token"))
 	if err != nil {
-		log.Fatal("Error creating Discord session, ", err)
+		log.Fatalf("Error creating Discord session\n%v", err)
 	}
 
 	s.Identify.Intents = 0 |
