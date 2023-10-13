@@ -123,10 +123,9 @@ func init() {
 					}
 					return
 				}
-
+				reviewutil.DeleteMessage(s, fromID, toID)
 				reviewutil.Resend(s, iter, reviewNow, "moved")
 			}
-			reviewutil.DeleteMessage(s, fromID, toID)
 			s.AddHandlerOnce(handler)
 		},
 	})

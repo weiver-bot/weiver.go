@@ -15,7 +15,7 @@ func init() {
 
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
-			Name:         "reivew",
+			Name:         "review",
 			Description:  "review user",
 			DMPermission: &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
