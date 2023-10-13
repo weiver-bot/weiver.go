@@ -1,7 +1,9 @@
 package slash_commands
 
 import (
+	"fmt"
 	"log"
+	"runtime/debug"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -38,14 +40,14 @@ func init() {
 				})
 				err = s.InteractionRespond(i.Interaction, message)
 				if err != nil {
-					log.Println(err)
+					log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 				}
 				return
 			}
 
 			to, err := s.GuildMember(i.GuildID, toID)
 			if err != nil {
-				log.Println(err)
+				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 				return // can not find subject
 			}
 
@@ -99,7 +101,7 @@ func init() {
 
 			err = s.InteractionRespond(i.Interaction, modal.InteractionResponse)
 			if err != nil {
-				log.Println(err)
+				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 			}
 		},
 	})

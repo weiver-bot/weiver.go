@@ -3,6 +3,7 @@ package events
 import (
 	"fmt"
 	"log"
+	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
 	parse "github.com/y2hO0ol23/weiver/handler/events/button"
@@ -37,7 +38,7 @@ func init() {
 
 			to, err := s.GuildMember(i.GuildID, review.ToID)
 			if err != nil {
-				log.Println(err)
+				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 				return
 			}
 
@@ -59,7 +60,7 @@ func init() {
 				embed.MessageEmbed,
 			})
 			if err != nil {
-				log.Println(err)
+				log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 			}
 		}
 	})

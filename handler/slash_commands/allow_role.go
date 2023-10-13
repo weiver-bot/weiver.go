@@ -1,7 +1,9 @@
 package slash_commands
 
 import (
+	"fmt"
 	"log"
+	"runtime/debug"
 	"sync"
 
 	"github.com/bwmarrin/discordgo"
@@ -55,7 +57,7 @@ func init() {
 				for {
 					res, err := s.GuildMembers(i.GuildID, after, 1000)
 					if err != nil {
-						log.Println(err)
+						log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 						continue
 					}
 					if len(res) == 0 {

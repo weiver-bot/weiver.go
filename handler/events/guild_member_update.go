@@ -3,6 +3,7 @@ package events
 import (
 	"fmt"
 	"log"
+	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/utils/database"
@@ -29,7 +30,7 @@ func init() {
 				} else {
 					err := s.GuildMemberRoleRemove(g.GuildID, g.User.ID, roleID)
 					if err != nil {
-						log.Println(err)
+						log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 					}
 				}
 			}

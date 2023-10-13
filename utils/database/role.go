@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
+	"runtime/debug"
 )
 
 func GetRoleByInfo(guildID string, display string) *RoleModel {
@@ -15,7 +16,7 @@ func GetRoleByInfo(guildID string, display string) *RoleModel {
 		}).Limit(1).
 		Find(&roles).Error
 	if err != nil {
-		log.Println(err)
+		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 	}
 
 	if len(roles) == 0 {
@@ -33,7 +34,7 @@ func GetRoleByID(id string) *RoleModel {
 		}).Limit(1).
 		Find(&roles).Error
 	if err != nil {
-		log.Println(err)
+		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 	}
 
 	if len(roles) == 0 {
@@ -51,7 +52,7 @@ func CreateRole(roleID string, guildID string, display string) *RoleModel {
 	}
 	err = db.Create(role).Error
 	if err != nil {
-		log.Println(err)
+		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 	}
 
 	return role
@@ -64,7 +65,7 @@ func AddRoleOnUser(id string, userID string) {
 			ID: userID,
 		})
 	if err != nil {
-		log.Println(err)
+		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 	}
 }
 
@@ -75,7 +76,7 @@ func RemoveRoleOnUser(id string, userID string) bool {
 			ID: userID,
 		})
 	if err != nil {
-		log.Println(err)
+		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 	}
 
 	count := db.Model(&RoleModel{ID: id}).Association("User").Count()
@@ -93,7 +94,7 @@ func GetRoleOnUser(userID string) []*RoleModel {
 		Association("Role").
 		Find(&roles)
 	if err != nil {
-		log.Println(err)
+		log.Println(fmt.Sprintf("Error: %v\n%v", err, string(debug.Stack())))
 	}
 
 	return roles
