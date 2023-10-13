@@ -60,8 +60,8 @@ func EndOFGuildProgress(id string) {
 func GetGuildInProgress() *[]GuildModel {
 	var guilds []GuildModel
 	err := db.Model(&GuildModel{}).
-		Where(map[string]interface{}{
-			"InProgress": true,
+		Where(GuildModel{
+			InProgress: true,
 		}).Find(&guilds).Error
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
