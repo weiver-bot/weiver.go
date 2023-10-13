@@ -10,7 +10,7 @@ import (
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
-func AlertByDM(s *discordgo.Session, review *db.ReviewModel) {
+func SendDM(s *discordgo.Session, review *db.ReviewModel) {
 	msg, _ := s.ChannelMessage(review.DMChannelID, review.DMMessageID)
 
 	embed := builder.Embed().

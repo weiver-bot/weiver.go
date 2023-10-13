@@ -38,7 +38,7 @@ func init() {
 		// set db
 		review := db.ModifyReviewByInfo(fromID, toID, score, title, content)
 		if review = reviewutil.Resend(s, i, review); review != nil {
-			reviewutil.AlertByDM(s, review)
+			reviewutil.SendDM(s, review)
 		}
 		reviewutil.UpdateStatus(s)
 

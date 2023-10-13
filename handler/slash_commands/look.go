@@ -239,7 +239,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 							if err != nil {
 								log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 							}
-							reviewutil.AlertByDM(s, review)
+							reviewutil.SendDM(s, review)
 						}
 						return
 					} else {
