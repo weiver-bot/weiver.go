@@ -4,7 +4,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-var events = make([]interface{}, 0)
+var (
+	events = make([]interface{}, 0)
+	err    error
+)
 
 func Setup(s *discordgo.Session) {
 	for _, v := range events {

@@ -1,11 +1,6 @@
 package database
 
-import (
-	"log"
-	"runtime/debug"
-)
-
-func LoadUserByID(id string) *UserModel {
+func LoadUserByID(id string) (*UserModel, error) {
 	var users []UserModel
 
 	err = db.Model(&UserModel{}).
@@ -14,7 +9,7 @@ func LoadUserByID(id string) *UserModel {
 		}).Limit(1).
 		Find(&users).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
 	if len(users) == 0 {
@@ -23,36 +18,38 @@ func LoadUserByID(id string) *UserModel {
 		}
 		err = db.Create(user).Error
 		if err != nil {
-			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return nil, err
 		}
 
-		return user
+		return user, nil
 	} else {
-		return &users[0]
+		return &users[0], nil
 	}
 }
 
-func GetUserScoreAverage(id string) (float64, int) {
-	var users []UserModel
-
-	err = db.Model(&UserModel{}).
-		Where(UserModel{
-			ID: id,
-		}).Limit(1).Preload("Written").
-		Find(&users).Error
+func GetUserReviewCount(id string) (int64, error) {
+	var count int64
+	err = db.Model(&ReviewModel{}).
+		Where(ReviewModel{
+			ToID: id,
+		}).Count(&count).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return 0, err
 	}
 
-	if len(users) == 0 || len(users[0].Written) == 0 {
-		return 0.0, 0
+	return count, nil
+}
+
+func GetUserScore(id string) (float64, error) {
+	var res float64
+	err = db.Model(&ReviewModel{}).
+		Where(ReviewModel{
+			ToID: id,
+		}).Select("avg(score)").Row().
+		Scan(&res)
+	if err != nil {
+		return 0, err
 	}
 
-	user := users[0]
-	sum := 0
-	count := len(user.Written)
-	for _, review := range user.Written {
-		sum += review.Score
-	}
-	return float64(sum) / float64(count), count
+	return res, nil
 }

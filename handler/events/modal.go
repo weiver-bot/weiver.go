@@ -2,6 +2,7 @@ package events
 
 import (
 	"log"
+	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
 	parse "github.com/y2hO0ol23/weiver/handler/events/modal"
@@ -29,21 +30,53 @@ func init() {
 		}
 
 		// remove old reivew
-		reviewutil.DeleteMessage(s, fromID, toID)
+		err = reviewutil.DeleteMessage(s, fromID, toID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		}
 
 		// ready to change roles
-		displayWas := role.GetDisplay(toID)
-		roleList := db.GetRoleOnUser(toID)
+		displayWas, err := role.GetDisplay(toID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
+		roleList, err := db.GetRoleOnUser(toID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
 
 		// set db
-		review := db.ModifyReviewByInfo(fromID, toID, score, title, content)
-		if review = reviewutil.Resend(s, i, review); review != nil {
-			reviewutil.SendDM(s, review)
+		review, err := db.ModifyReviewByInfo(fromID, toID, score, title, content)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
 		}
-		reviewutil.UpdateStatus(s)
+		review, err = reviewutil.Resend(s, i, review)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
+		if review != nil {
+			err = reviewutil.SendDM(s, review)
+			if err != nil {
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return
+			}
+		}
+		err = reviewutil.UpdateStatus(s)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
 
 		// set role
-		displayNow := role.GetDisplay(toID)
+		displayNow, err := role.GetDisplay(toID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
 		if displayWas != displayNow {
 			for _, roleDB := range roleList {
 				role.Remove(s, roleDB.GuildID, toID, displayWas)

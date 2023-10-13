@@ -12,18 +12,31 @@ import (
 
 func init() {
 	events = append(events, func(s *discordgo.Session, g *discordgo.GuildMemberUpdate) {
-		guildDB := db.LoadGuildByID(g.GuildID)
+		guildDB, err := db.LoadGuildByID(g.GuildID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
 		if guildDB.AllowRole != true {
 			return
 		}
 
 		var (
-			needCurrentRole bool   = true
-			display         string = role.GetDisplay(g.User.ID)
+			needCurrentRole bool = true
+			display         string
 		)
+		display, err = role.GetDisplay(g.User.ID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
 
 		for _, roleID := range g.Member.Roles {
-			roleDB := db.GetRoleByID(fmt.Sprintf("%s#%s", g.GuildID, roleID))
+			roleDB, err := db.GetRoleByID(fmt.Sprintf("%s#%s", g.GuildID, roleID))
+			if err != nil {
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return
+			}
 			if roleDB != nil {
 				if roleDB.Display == display {
 					needCurrentRole = true
@@ -36,7 +49,11 @@ func init() {
 			}
 		}
 		if needCurrentRole {
-			role.Set(s, g.GuildID, g.User.ID, display)
+			err = role.Set(s, g.GuildID, g.User.ID, display)
+			if err != nil {
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return
+			}
 		}
 	})
 }

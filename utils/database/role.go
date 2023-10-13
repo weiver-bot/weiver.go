@@ -2,11 +2,9 @@ package database
 
 import (
 	"fmt"
-	"log"
-	"runtime/debug"
 )
 
-func GetRoleByInfo(guildID string, display string) *RoleModel {
+func GetRoleByInfo(guildID string, display string) (*RoleModel, error) {
 	var roles []RoleModel
 
 	err = db.Model(&RoleModel{}).
@@ -16,16 +14,16 @@ func GetRoleByInfo(guildID string, display string) *RoleModel {
 		}).Limit(1).
 		Find(&roles).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
 	if len(roles) == 0 {
-		return nil
+		return nil, nil
 	}
-	return &roles[0]
+	return &roles[0], nil
 }
 
-func GetRoleByID(id string) *RoleModel {
+func GetRoleByID(id string) (*RoleModel, error) {
 	var roles []RoleModel
 
 	err = db.Model(&RoleModel{}).
@@ -34,16 +32,16 @@ func GetRoleByID(id string) *RoleModel {
 		}).Limit(1).
 		Find(&roles).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
 	if len(roles) == 0 {
-		return nil
+		return nil, nil
 	}
-	return &roles[0]
+	return &roles[0], nil
 }
 
-func CreateRole(roleID string, guildID string, display string) *RoleModel {
+func CreateRole(roleID string, guildID string, display string) (*RoleModel, error) {
 	role := &RoleModel{
 		GuildID: guildID,
 		RoleID:  roleID,
@@ -52,50 +50,47 @@ func CreateRole(roleID string, guildID string, display string) *RoleModel {
 	}
 	err = db.Create(role).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
-	return role
+	return role, nil
 }
 
-func AddRoleOnUser(id string, userID string) {
-	err = db.Model(&RoleModel{ID: id}).
+func AddRoleOnUser(id string, userID string) error {
+	return db.Model(&RoleModel{ID: id}).
 		Association("User").
 		Append(&UserModel{
 			ID: userID,
 		})
-	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-	}
 }
 
-func RemoveRoleOnUser(id string, userID string) bool {
+func RemoveRoleOnUser(id string, userID string) (bool, error) {
 	err = db.Model(&RoleModel{ID: id}).
 		Association("User").
 		Delete(&UserModel{
 			ID: userID,
 		})
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return false, err
 	}
 
 	count := db.Model(&RoleModel{ID: id}).Association("User").Count()
 	if count == 0 {
 		db.Delete(&RoleModel{ID: id})
-		return false
+		return false, nil
 	}
-	return true
+	return true, nil
 }
 
-func GetRoleOnUser(userID string) []*RoleModel {
+func GetRoleOnUser(userID string) ([]*RoleModel, error) {
 	var roles []*RoleModel
 
 	err = db.Model(&UserModel{ID: userID}).
 		Association("Role").
 		Find(&roles)
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
-	return roles
+	return roles, nil
 }

@@ -1,12 +1,10 @@
 package database
 
 import (
-	"log"
-	"runtime/debug"
 	"time"
 )
 
-func LoadReivewByID(id int) *ReviewModel {
+func LoadReivewByID(id int) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
 	err = db.Model(&ReviewModel{}).
@@ -15,16 +13,16 @@ func LoadReivewByID(id int) *ReviewModel {
 		}).Limit(1).
 		Find(&reviews).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
 	if len(reviews) == 0 {
-		return nil
+		return nil, nil
 	}
-	return &reviews[0]
+	return &reviews[0], nil
 }
 
-func LoadReivewByInfo(fromID string, toID string) *ReviewModel {
+func LoadReivewByInfo(fromID string, toID string) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
 	err = db.Model(&ReviewModel{}).
@@ -34,17 +32,20 @@ func LoadReivewByInfo(fromID string, toID string) *ReviewModel {
 		}).Limit(1).
 		Find(&reviews).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
 	if len(reviews) == 0 {
-		return nil
+		return nil, nil
 	}
-	return &reviews[0]
+	return &reviews[0], nil
 }
 
-func ModifyReviewByInfo(fromID string, toID string, score int, title string, content string) *ReviewModel {
-	review := LoadReivewByInfo(fromID, toID)
+func ModifyReviewByInfo(fromID string, toID string, score int, title string, content string) (*ReviewModel, error) {
+	review, err := LoadReivewByInfo(fromID, toID)
+	if err != nil {
+		return nil, err
+	}
 
 	LoadUserByID(fromID)
 	LoadUserByID(toID)
@@ -60,21 +61,21 @@ func ModifyReviewByInfo(fromID string, toID string, score int, title string, con
 		}
 		err = db.Create(review).Error
 		if err != nil {
-			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return nil, err
 		}
 	} else {
 		err = db.Model(&ReviewModel{ID: review.ID}).
 			Association("Like").
 			Clear()
 		if err != nil {
-			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return nil, err
 		}
 
 		err = db.Model(&ReviewModel{ID: review.ID}).
 			Association("Hate").
 			Clear()
 		if err != nil {
-			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return nil, err
 		}
 
 		err = db.Model(&ReviewModel{ID: review.ID}).
@@ -87,14 +88,14 @@ func ModifyReviewByInfo(fromID string, toID string, score int, title string, con
 			}).
 			Take(review).Error
 		if err != nil {
-			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return nil, err
 		}
 	}
 
-	return review
+	return review, nil
 }
 
-func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID string) *ReviewModel {
+func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID string) (*ReviewModel, error) {
 	var review ReviewModel
 
 	err = db.Model(&ReviewModel{ID: id}).
@@ -105,13 +106,13 @@ func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID s
 		}).
 		Take(&review).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
-	return &review
+	return &review, nil
 }
 
-func UpdateDMMessageInfoByID(id int, channelID string, messageID string) *ReviewModel {
+func UpdateDMMessageInfoByID(id int, channelID string, messageID string) (*ReviewModel, error) {
 	var review ReviewModel
 
 	err = db.Model(&ReviewModel{ID: id}).
@@ -121,13 +122,13 @@ func UpdateDMMessageInfoByID(id int, channelID string, messageID string) *Review
 		}).
 		Take(&review).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
-	return &review
+	return &review, nil
 }
 
-func GetReviewBest(id string) *ReviewModel {
+func GetReviewBest(id string) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
 	err = db.Model(&ReviewModel{}).
@@ -136,22 +137,22 @@ func GetReviewBest(id string) *ReviewModel {
 		}).Order("Score desc").Limit(1).
 		Find(&reviews).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
-	return &reviews[0]
+	return &reviews[0], nil
 }
 
 var (
-	ReviewButtonHandler = map[string]func(reviewID int, userID string) *ReviewModel{
-		"like": func(reviewID int, userID string) *ReviewModel {
+	ReviewButtonHandler = map[string]func(reviewID int, userID string) (*ReviewModel, error){
+		"like": func(reviewID int, userID string) (*ReviewModel, error) {
 			err = db.Model(&ReviewModel{ID: reviewID}).
 				Association("Like").
 				Append(&UserModel{
 					ID: userID,
 				})
 			if err != nil {
-				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return nil, err
 			}
 
 			err = db.Model(&ReviewModel{ID: reviewID}).
@@ -160,19 +161,19 @@ var (
 					ID: userID,
 				})
 			if err != nil {
-				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return nil, err
 			}
 
 			return reviewButtonHandlerFianl(reviewID)
 		},
-		"hate": func(reviewID int, userID string) *ReviewModel {
+		"hate": func(reviewID int, userID string) (*ReviewModel, error) {
 			err = db.Model(&ReviewModel{ID: reviewID}).
 				Association("Hate").
 				Append(&UserModel{
 					ID: userID,
 				})
 			if err != nil {
-				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return nil, err
 			}
 
 			err = db.Model(&ReviewModel{ID: reviewID}).
@@ -181,7 +182,7 @@ var (
 					ID: userID,
 				})
 			if err != nil {
-				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return nil, err
 			}
 
 			return reviewButtonHandlerFianl(reviewID)
@@ -189,7 +190,7 @@ var (
 	}
 )
 
-func reviewButtonHandlerFianl(reviewID int) *ReviewModel {
+func reviewButtonHandlerFianl(reviewID int) (*ReviewModel, error) {
 	var review ReviewModel
 
 	likeCount := db.Model(&ReviewModel{ID: reviewID}).Association("Like").Count()
@@ -201,13 +202,13 @@ func reviewButtonHandlerFianl(reviewID int) *ReviewModel {
 		}).
 		Take(&review).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
-	return &review
+	return &review, nil
 }
 
-func GetReviewsByUserID(id string) *[]ReviewModel {
+func GetReviewsByUserID(id string) (*[]ReviewModel, error) {
 	var reviews []ReviewModel
 
 	err = db.Model(&ReviewModel{}).
@@ -216,22 +217,34 @@ func GetReviewsByUserID(id string) *[]ReviewModel {
 		}).Order("Score desc").
 		Find(&reviews).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return nil, err
 	}
 
 	if len(reviews) == 0 {
-		return nil
+		return nil, nil
 	}
-	return &reviews
+	return &reviews, nil
 }
 
-func GetReviewsCount() int64 {
+func GetReviewsScoreAvg() (float64, error) {
+	var avg float64
+	err := db.Model(&ReviewModel{}).
+		Select("avg(score)").Row().
+		Scan(&avg)
+	if err != nil {
+		return 0, err
+	}
+
+	return avg, nil
+}
+
+func GetReviewsCount() (int64, error) {
 	var count int64
 	err := db.Model(&ReviewModel{}).
 		Count(&count).Error
 	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return 0, err
 	}
 
-	return count
+	return count, nil
 }

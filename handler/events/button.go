@@ -31,7 +31,11 @@ func init() {
 				})
 
 				db.LoadUserByID(i.Interaction.Member.User.ID)
-				review = handler(reviewID, i.Interaction.Member.User.ID)
+				review, err = handler(reviewID, i.Interaction.Member.User.ID)
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+					return
+				}
 			} else {
 				continue
 			}

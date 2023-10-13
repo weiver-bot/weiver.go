@@ -50,7 +50,11 @@ func init() {
 				return // can not find subject
 			}
 
-			review := db.LoadReivewByInfo(fromID, toID)
+			review, err := db.LoadReivewByInfo(fromID, toID)
+			if err != nil {
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return
+			}
 
 			modal := builder.Modal().
 				SetCustomID("review#" + fromID + "#" + toID).

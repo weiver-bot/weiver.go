@@ -5,10 +5,15 @@ import (
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
-func DeleteMessage(s *discordgo.Session, fromID string, toID string) {
+func DeleteMessage(s *discordgo.Session, fromID string, toID string) error {
 	// remove old reivew
-	review := db.LoadReivewByInfo(fromID, toID)
+	review, err := db.LoadReivewByInfo(fromID, toID)
+	if err != nil {
+		return err
+	}
+
 	if review != nil {
 		s.ChannelMessageDelete(review.ChannelID, review.MessageID)
 	}
+	return nil
 }

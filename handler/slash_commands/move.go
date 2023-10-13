@@ -35,7 +35,10 @@ func init() {
 			fromID := i.Interaction.Member.User.ID
 			toID := options[0].Value.(string)
 
-			review := db.LoadReivewByInfo(fromID, toID)
+			review, err := db.LoadReivewByInfo(fromID, toID)
+			if err != nil {
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			}
 			if review == nil {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 					Content:         "`No review on this subject`",
@@ -56,7 +59,12 @@ func init() {
 
 			_, err = s.ChannelMessage(review.ChannelID, review.MessageID)
 			if err != nil {
-				if review = reviewutil.Resend(s, i, review); review != nil {
+				review, err := reviewutil.Resend(s, i, review)
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+					return
+				}
+				if review != nil {
 					reviewutil.ModifyDM(s, review)
 				}
 				return
@@ -81,11 +89,13 @@ func init() {
 			}))
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return
 			}
 
 			msg, err := s.InteractionResponse(i.Interaction)
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return
 			}
 
 			var handler func(*discordgo.Session, *discordgo.InteractionCreate)
@@ -104,7 +114,11 @@ func init() {
 				}
 
 				s.InteractionResponseDelete(i.Interaction)
-				reviewNow := db.LoadReivewByInfo(fromID, toID)
+				reviewNow, err := db.LoadReivewByInfo(fromID, toID)
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+					return
+				}
 				if review.TimeStamp != reviewNow.TimeStamp {
 					err := s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 						Embeds: []*discordgo.MessageEmbed{
@@ -118,8 +132,15 @@ func init() {
 					}
 					return
 				}
-				reviewutil.DeleteMessage(s, fromID, toID)
-				if review = reviewutil.Resend(s, iter, review); review != nil {
+				err = reviewutil.DeleteMessage(s, fromID, toID)
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				}
+				review, err = reviewutil.Resend(s, iter, review)
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				}
+				if review != nil {
 					reviewutil.ModifyDM(s, review)
 				}
 			}

@@ -1,6 +1,9 @@
 package events
 
 import (
+	"log"
+	"runtime/debug"
+
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 	"github.com/y2hO0ol23/weiver/utils/role"
@@ -8,11 +11,24 @@ import (
 
 func init() {
 	events = append(events, func(s *discordgo.Session, g *discordgo.GuildMemberAdd) {
-		guildDB := db.LoadGuildByID(g.GuildID)
+		guildDB, err := db.LoadGuildByID(g.GuildID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
 		if guildDB.AllowRole != true {
 			return
 		}
 
-		role.Set(s, g.GuildID, g.Member.User.ID, role.GetDisplay(g.Member.User.ID))
+		display, err := role.GetDisplay(g.Member.User.ID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
+		err = role.Set(s, g.GuildID, g.Member.User.ID, display)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
 	})
 }

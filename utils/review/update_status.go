@@ -2,27 +2,35 @@ package reviewutil
 
 import (
 	"fmt"
-	"log"
-	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
-func UpdateStatus(s *discordgo.Session) {
-	var IdleSince = 0
+func UpdateStatus(s *discordgo.Session) error {
+	var (
+		IdleSince int = 0
+		avg       float64
+		count     int64
+	)
 
-	err := s.UpdateStatusComplex(discordgo.UpdateStatusData{
+	avg, err := db.GetReviewsScoreAvg()
+	if err != nil {
+		return err
+	}
+	count, err = db.GetReviewsCount()
+	if err != nil {
+		return err
+	}
+
+	return s.UpdateStatusComplex(discordgo.UpdateStatusData{
 		IdleSince: &IdleSince,
 		Activities: []*discordgo.Activity{
 			{
 				Name:  "Reviews total count",
 				Type:  discordgo.ActivityTypeCustom,
-				State: fmt.Sprintf("🧾 %d", db.GetReviewsCount()),
+				State: fmt.Sprintf("🧾%d → ⭐%.1f", count, avg),
 			},
 		},
 	})
-	if err != nil {
-		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-	}
 }

@@ -47,7 +47,11 @@ func init() {
 			options := i.ApplicationCommandData().Options
 			value := options[0].Value.(bool)
 
-			guildDB := db.LoadGuildByID(i.GuildID)
+			guildDB, err := db.LoadGuildByID(i.GuildID)
+			if err != nil {
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return
+			}
 			if guildDB.InProgress == true {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 					Content:         "`Process is in progress`",
@@ -92,10 +96,15 @@ func init() {
 					go func(members []*discordgo.Member) {
 						defer wait.Done()
 						for _, member := range members {
+							display, err := role.GetDisplay(member.User.ID)
+							if err != nil {
+								log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+								continue
+							}
 							if value == true {
-								role.Set(s, i.GuildID, member.User.ID, role.GetDisplay(member.User.ID))
+								role.Set(s, i.GuildID, member.User.ID, display)
 							} else {
-								role.Remove(s, i.GuildID, member.User.ID, role.GetDisplay(member.User.ID))
+								role.Remove(s, i.GuildID, member.User.ID, display)
 							}
 						}
 					}(res)

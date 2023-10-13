@@ -75,7 +75,19 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 		return
 	}
 
-	average, count := db.GetUserScoreAverage(subjectID)
+	var avg float64 = 0.0
+	count, err := db.GetUserReviewCount(subjectID)
+	if err != nil {
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return
+	}
+	if count > 0 {
+		avg, err = db.GetUserScore(subjectID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
+	}
 	countOutput := func() string {
 		if count >= 100 {
 			return "100+"
@@ -86,7 +98,7 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 	}()
 
 	embed := builder.Embed().
-		SetDescription(fmt.Sprintf("<@%s> **⭐%.1f (%s)**", subjectID, average, countOutput)).
+		SetDescription(fmt.Sprintf("<@%s> **⭐%.1f (%s)**", subjectID, avg, countOutput)).
 		SetThumbnail(&discordgo.MessageEmbedThumbnail{
 			URL: subject.User.AvatarURL(""),
 		})
@@ -97,11 +109,16 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 			Value: "``` ```",
 		})
 	} else {
-		review := db.GetReviewBest(subjectID)
-		embed.SetFields(&discordgo.MessageEmbedField{
-			Name:  fmt.Sprintf("📑 %s 〔%s%s〕", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-			Value: fmt.Sprintf("```%s```", review.Content),
-		}).
+		review, err := db.GetReviewBest(subjectID)
+		if err != nil {
+			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+			return
+		}
+		embed.
+			SetFields(&discordgo.MessageEmbedField{
+				Name:  fmt.Sprintf("📑 %s 〔%s%s〕", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
+				Value: fmt.Sprintf("```%s```", review.Content),
+			}).
 			SetFooter(&discordgo.MessageEmbedFooter{
 				Text: fmt.Sprintf("👍 %d", review.LikeTotal),
 			})
@@ -116,6 +133,7 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 	}))
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return
 	}
 }
 
@@ -135,7 +153,11 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 		return
 	}
 
-	reviews := db.GetReviewsByUserID(subjectID)
+	reviews, err := db.GetReviewsByUserID(subjectID)
+	if err != nil {
+		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+		return
+	}
 	if reviews == nil {
 		message := builder.Message(&discordgo.InteractionResponseData{
 			Content:         "`No review exists`",
@@ -217,7 +239,11 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 			}
 
 			embed := builder.Embed()
-			review := db.LoadReivewByID(id)
+			review, err := db.LoadReivewByID(id)
+			if err != nil {
+				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				return
+			}
 			if review == nil || data[1] != fmt.Sprintf("%d", review.TimeStamp.Unix()) {
 				embed.SetDescription("❌ This review has been edited")
 			} else {
@@ -234,7 +260,12 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				} else {
 					_, err := s.GuildMember(review.GuildID, review.FromID)
 					if err == nil {
-						if review = reviewutil.Resend(s, iter, review); review != nil {
+						review, err = reviewutil.Resend(s, iter, review)
+						if err != nil {
+							log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+							return
+						}
+						if review != nil {
 							err := s.InteractionResponseDelete(i.Interaction)
 							if err != nil {
 								log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
