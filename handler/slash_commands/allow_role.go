@@ -116,7 +116,7 @@ func init() {
 				db.EndOFGuildProgress(i.GuildID)
 			} else {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content: fmt.Sprintf("`Noting changes. AllowRole: %v", value),
+					Content: fmt.Sprintf("`Noting changes. AllowRole: %v`", value),
 					Flags:   discordgo.MessageFlagsEphemeral,
 				}))
 				if err != nil {
