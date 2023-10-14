@@ -9,7 +9,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 
 	"github.com/y2hO0ol23/weiver/handler/events"
-	"github.com/y2hO0ol23/weiver/handler/slash_commands"
+	slashcmds "github.com/y2hO0ol23/weiver/handler/slash-commands"
 	_ "github.com/y2hO0ol23/weiver/localization"
 	_ "github.com/y2hO0ol23/weiver/utils/database"
 	_ "github.com/y2hO0ol23/weiver/utils/env"
@@ -35,9 +35,9 @@ func main() {
 	defer s.Close()
 
 	// need appID, so execute after session is open
-	slash_commands.Setup(s)
+	slashcmds.Setup(s)
 	if os.Getenv("REMOVE_CMD") == "true" {
-		defer slash_commands.RemoveCommands(s)
+		defer slashcmds.RemoveCommands(s)
 	}
 
 	log.Println("[*] End of settings")
