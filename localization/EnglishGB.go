@@ -11,8 +11,8 @@ func init() {
 		"#look":             "Look",
 		"#look.Description": "Look something",
 
-		"#move-review":             "move-review",
-		"#move-review.Description": "Move review to this channel",
+		"#move":             "move",
+		"#move.Description": "Move review to this channel",
 
 		"#review":             "review",
 		"#review.Description": "Review user",
@@ -42,8 +42,8 @@ func init() {
 		"#look.review-list.menu.Title": "Reviews of %s",
 		"#look.review-list.menu.Page":  "page %d",
 
-		"#move-review.IsNone": "No review on this subject",
-		"#move-review.Move":   "Move on",
+		"#move.IsNone": "No review on this subject",
+		"#move.Move":   "Move on",
 
 		"#review.SelfReview":    "Can not review yourself",
 		"#review.modal.Title":   "Review %s",

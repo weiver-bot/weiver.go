@@ -1,4 +1,4 @@
-package slash_commands
+package slashcommands
 
 import (
 	"log"

@@ -11,8 +11,8 @@ func init() {
 		"#look":             "보기",
 		"#look.Description": "무언가 보기",
 
-		"#move-review":             "리뷰이동",
-		"#move-review.Description": "이 채널로 리뷰 이동하기",
+		"#move":             "리뷰이동",
+		"#move.Description": "이 채널로 리뷰 이동하기",
 
 		"#review":             "리뷰",
 		"#review.Description": "유저 리뷰하기",
@@ -42,8 +42,8 @@ func init() {
 		"#look.review-list.menu.Title": "%s의 리뷰",
 		"#look.review-list.menu.Page":  "%d 페이지",
 
-		"#move-review.IsNone": "대상에게 작성한 리뷰가 없습니다",
-		"#move-review.Move":   "이곳으로 옮기기",
+		"#move.IsNone": "대상에게 작성한 리뷰가 없습니다",
+		"#move.Move":   "이곳으로 옮기기",
 
 		"#review.SelfReview":    "자신을 리뷰할 수 없습니다",
 		"#review.modal.Title":   "%s 리뷰하기",

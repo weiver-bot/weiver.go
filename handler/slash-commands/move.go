@@ -1,4 +1,4 @@
-package slash_commands
+package slashcommands
 
 import (
 	"fmt"
@@ -19,10 +19,10 @@ func init() {
 
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
-			Name:                     "move-review",
-			Description:              "move-review_Description",
-			NameLocalizations:        localization.LoadList("#move-review"),
-			DescriptionLocalizations: localization.LoadList("#move-review.Description"),
+			Name:                     "move",
+			Description:              "move_Description",
+			NameLocalizations:        localization.LoadList("#move"),
+			DescriptionLocalizations: localization.LoadList("#move.Description"),
 			DMPermission:             &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
@@ -48,7 +48,7 @@ func init() {
 			}
 			if review == nil {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#move-review.IsNone")),
+					Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#move.IsNone")),
 					Flags:           discordgo.MessageFlagsEphemeral,
 					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
@@ -87,7 +87,7 @@ func init() {
 					builder.ActionRow().AddComponents(
 						builder.Button().
 							SetCustomID("move-review").
-							SetLable(localization.Load(locale, "#move-review.Move")).
+							SetLable(localization.Load(locale, "#move.Move")).
 							SetStyle(discordgo.SuccessButton),
 					).ActionsRow,
 				},
