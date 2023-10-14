@@ -4,7 +4,7 @@ import "github.com/bwmarrin/discordgo"
 
 func init() {
 	data[discordgo.Korean] = map[string]string{
-		// slashcommand outputs
+		// 슬래시 명령어
 		"#allow-role":             "역할허용",
 		"#allow-role.Description": "관리자 전용 - 기본:거짓",
 
@@ -17,7 +17,7 @@ func init() {
 		"#review":             "리뷰",
 		"#review.Description": "유저 리뷰하기",
 
-		// subcommand outputs
+		// 서브 명령어
 		"#allow-role.value":             "값",
 		"#allow-role.value.Description": "값 설정",
 
@@ -29,7 +29,7 @@ func init() {
 		"#look.review-list":             "리뷰목록",
 		"#look.review-list.Description": "유저가 받은 리뷰목록 보기",
 
-		// test outputs
+		// 텍스트
 		"#allow-role.InProgress":       "작업 진행 중",
 		"#allow-role.proc.Title":       "옵션 수정",
 		"#allow-role.proc.Description": "역할허용",

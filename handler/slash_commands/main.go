@@ -48,7 +48,4 @@ func RemoveCommands(s *discordgo.Session) {
 			log.Println("Cannot delete slash command:", v.Name, v.ID)
 		}
 	}
-	for _, id := range []string{"1162427420767436861"} {
-		s.ApplicationCommandDelete(s.State.User.ID, "", id)
-	}
 }
