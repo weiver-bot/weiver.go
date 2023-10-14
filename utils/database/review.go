@@ -123,7 +123,7 @@ func GetReviewBest(id string) (*ReviewModel, error) {
 	err = db.Model(&ReviewModel{}).
 		Where(&ReviewModel{
 			ToID: id,
-		}).Order("Like_Total desc").Limit(1).
+		}).Order("Like_Total desc, Time_Stamp asc").Limit(1).
 		Find(&reviews).Error
 	if err != nil {
 		return nil, err
@@ -203,7 +203,7 @@ func GetReviewsByUserID(id string) (*[]ReviewModel, error) {
 	err = db.Model(&ReviewModel{}).
 		Where(&ReviewModel{
 			ToID: id,
-		}).Order("Like_Total desc").
+		}).Order("Like_Total desc, Time_Stamp asc").
 		Find(&reviews).Error
 	if err != nil {
 		return nil, err
@@ -219,7 +219,7 @@ func GetReviewsScoreAvg() (float64, error) {
 	var avg float64 = 0
 
 	err := db.Model(&ReviewModel{}).
-		Select("avg(score)").Row().
+		Select("avg(Score)").Row().
 		Scan(&avg)
 
 	return avg, err
