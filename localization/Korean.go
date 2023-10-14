@@ -11,8 +11,8 @@ func init() {
 		"#look":             "보기",
 		"#look.Description": "무언가 보기",
 
-		"#move":             "리뷰이동",
-		"#move.Description": "이 채널로 리뷰 이동하기",
+		"#move":             "옮기기",
+		"#move.Description": "이 채널로 리뷰 옮기기",
 
 		"#review":             "리뷰",
 		"#review.Description": "유저 리뷰하기",
