@@ -28,19 +28,19 @@ func init() {
 			DMPermission:             &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
-					Name:                     "allow-role_value",
-					Description:              "allow-role_value_Description",
+					Name:                     "value",
+					Description:              "value_Description",
 					NameLocalizations:        *localization.LoadList("#allow-role.value"),
 					DescriptionLocalizations: *localization.LoadList("#allow-role.value.Description"),
 					Type:                     discordgo.ApplicationCommandOptionBoolean,
 					Choices: []*discordgo.ApplicationCommandOptionChoice{
 						{
-							Name:              "allow-role_value_true",
+							Name:              "true",
 							NameLocalizations: *localization.LoadList("#allow-role.value.true"),
 							Value:             true,
 						},
 						{
-							Name:              "allow-role_value_false",
+							Name:              "false",
 							NameLocalizations: *localization.LoadList("#allow-role.value.false"),
 							Value:             false,
 						},

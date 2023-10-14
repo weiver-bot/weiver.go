@@ -27,15 +27,15 @@ func init() {
 			DMPermission:             &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
-					Name:                     "look_info",
-					Description:              "look_info_Description",
+					Name:                     "info",
+					Description:              "info_Description",
 					NameLocalizations:        *localization.LoadList("#look.info"),
 					DescriptionLocalizations: *localization.LoadList("#look.info.Description"),
 					Type:                     discordgo.ApplicationCommandOptionSubCommand,
 					Options: []*discordgo.ApplicationCommandOption{
 						{
-							Name:                     "_subject",
-							Description:              "_subject_Description",
+							Name:                     "subject",
+							Description:              "subject_Description",
 							NameLocalizations:        *localization.LoadList("#.subject"),
 							DescriptionLocalizations: *localization.LoadList("#.subject.Description"),
 							Type:                     discordgo.ApplicationCommandOptionUser,
@@ -44,8 +44,8 @@ func init() {
 					},
 				},
 				{
-					Name:                     "look_review-list",
-					Description:              "look_review-list_Description",
+					Name:                     "review-list",
+					Description:              "review-list_Description",
 					NameLocalizations:        *localization.LoadList("#look.review-list"),
 					DescriptionLocalizations: *localization.LoadList("#look.review-list.Description"),
 					Type:                     discordgo.ApplicationCommandOptionSubCommand,
