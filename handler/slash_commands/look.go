@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
@@ -19,33 +20,43 @@ func init() {
 
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
-			Name:         "look",
-			Description:  "Look about things",
-			DMPermission: &DMPermission,
+			Name:                     "look",
+			Description:              "look_Description",
+			NameLocalizations:        localization.LoadList("#look"),
+			DescriptionLocalizations: localization.LoadList("#look.Description"),
+			DMPermission:             &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
-					Name:        "info",
-					Description: "Look about user info",
-					Type:        discordgo.ApplicationCommandOptionSubCommand,
+					Name:                     "look_info",
+					Description:              "look_info_Description",
+					NameLocalizations:        *localization.LoadList("#look.info"),
+					DescriptionLocalizations: *localization.LoadList("#look.info.Description"),
+					Type:                     discordgo.ApplicationCommandOptionSubCommand,
 					Options: []*discordgo.ApplicationCommandOption{
 						{
-							Name:        "subject",
-							Description: "Select subject",
-							Type:        discordgo.ApplicationCommandOptionUser,
-							Required:    true,
+							Name:                     "_subject",
+							Description:              "_subject_Description",
+							NameLocalizations:        *localization.LoadList("#.subject"),
+							DescriptionLocalizations: *localization.LoadList("#.subject.Description"),
+							Type:                     discordgo.ApplicationCommandOptionUser,
+							Required:                 true,
 						},
 					},
 				},
 				{
-					Name:        "review-list",
-					Description: "Look about reviews on user",
-					Type:        discordgo.ApplicationCommandOptionSubCommand,
+					Name:                     "look_review-list",
+					Description:              "look_review-list_Description",
+					NameLocalizations:        *localization.LoadList("#look.review-list"),
+					DescriptionLocalizations: *localization.LoadList("#look.review-list.Description"),
+					Type:                     discordgo.ApplicationCommandOptionSubCommand,
 					Options: []*discordgo.ApplicationCommandOption{
 						{
-							Name:        "subject",
-							Description: "Select subject",
-							Type:        discordgo.ApplicationCommandOptionUser,
-							Required:    true,
+							Name:                     "subject",
+							Description:              "subject_Description",
+							NameLocalizations:        *localization.LoadList("#.subject"),
+							DescriptionLocalizations: *localization.LoadList("#.subject.Description"),
+							Type:                     discordgo.ApplicationCommandOptionUser,
+							Required:                 true,
 						},
 					},
 				},
@@ -69,6 +80,8 @@ func init() {
 }
 
 func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID string) {
+	locale := i.Locale
+
 	subject, err := s.GuildMember(i.GuildID, subjectID)
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -105,7 +118,7 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 
 	if count == 0 {
 		embed.SetFields(&discordgo.MessageEmbedField{
-			Name:  "📑 No reviews",
+			Name:  fmt.Sprintf("📑 %s", localization.Load(locale, "#look.info.IsNone")),
 			Value: "``` ```",
 		})
 	} else {
@@ -147,6 +160,8 @@ func init() {
 }
 
 func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID string) {
+	locale := i.Locale
+
 	subject, err := s.GuildMember(i.GuildID, subjectID)
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -160,7 +175,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 	}
 	if reviews == nil {
 		message := builder.Message(&discordgo.InteractionResponseData{
-			Content:         "`No review exists`",
+			Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#look.review-list.IsNone")),
 			Flags:           discordgo.MessageFlagsEphemeral,
 			AllowedMentions: &discordgo.MessageAllowedMentions{},
 		})
@@ -173,7 +188,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 
 	pageNow := 1
 	pageCount := (len(*reviews)-1)/pageRow + 1
-	selectMenu := BuildSelectMenu(*reviews, subject.User.Username, pageNow, pageCount)
+	selectMenu := BuildSelectMenu(*reviews, locale, subject.User.Username, pageNow, pageCount)
 
 	err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 		Components: []discordgo.MessageComponent{
@@ -207,6 +222,8 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 			return
 		}
 
+		locale = iter.Locale
+
 		value := data.Values[0]
 		if strings.HasPrefix(value, "page/") { // move page
 			s.AddHandlerOnce(handler)
@@ -217,7 +234,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				return
 			}
 
-			selectMenu = BuildSelectMenu(*reviews, subject.User.Username, pageNow, pageCount)
+			selectMenu = BuildSelectMenu(*reviews, locale, subject.User.Username, pageNow, pageCount)
 
 			s.InteractionRespond(iter.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseDeferredMessageUpdate,
@@ -245,7 +262,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				return
 			}
 			if review == nil || data[1] != fmt.Sprintf("%d", review.TimeStamp.Unix()) {
-				embed.SetDescription("❌ This review has been edited")
+				embed.SetDescription(fmt.Sprintf("❌ %s", localization.Load(locale, "$review.IsEdited")))
 			} else {
 				_, err := s.ChannelMessage(review.ChannelID, review.MessageID)
 				if err == nil {
@@ -270,14 +287,14 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 							if err != nil {
 								log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 							}
-							reviewutil.ModifyDM(s, review)
+							reviewutil.ModifyDM(s, review, locale)
 						}
 						return
 					} else {
 						embed.SetDescription(fmt.Sprintf("https://discord.com/channels/%s/%s/%s", review.GuildID, review.ChannelID, review.MessageID)).
 							SetFields(&discordgo.MessageEmbedField{
 								Name:  fmt.Sprintf("🔒 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-								Value: "`Review has removed but author not in this server`",
+								Value: fmt.Sprintf("`%s`", localization.Load(locale, "$review.NoAuthor")),
 							})
 					}
 				}
@@ -297,20 +314,20 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 	s.AddHandlerOnce(handler)
 }
 
-func BuildSelectMenu(reviews []db.ReviewModel, subjectName string, pageNow int, pageCount int) *builder.SelectMenuStructure {
+func BuildSelectMenu(reviews []db.ReviewModel, locale discordgo.Locale, subjectName string, pageNow int, pageCount int) *builder.SelectMenuStructure {
 	pageBack := (pageNow+pageCount-2)%pageCount + 1
 	pageNext := pageNow%pageCount + 1
 
 	selectMenu := builder.SelectMenu().
 		SetCustomID("review-list").
-		SetPlaceholder(fmt.Sprintf("Reviews on %s (%d/%d)", subjectName, pageNow, pageCount))
+		SetPlaceholder(fmt.Sprintf(localization.Load(locale, "#look.review-list.menu.Title")+" (%d/%d)", subjectName, pageNow, pageCount))
 
 	if pageCount > 1 {
 		selectMenu.AddOptions(
 			builder.SelectMenuOption().
 				SetLabel("▲").
 				SetValue(fmt.Sprintf("page/back:%d", pageBack)).
-				SetDescription(fmt.Sprintf("page %d", pageBack)),
+				SetDescription(fmt.Sprintf(localization.Load(locale, "#look.review-list.menu.Page"), pageBack)),
 		)
 	}
 
@@ -333,7 +350,7 @@ func BuildSelectMenu(reviews []db.ReviewModel, subjectName string, pageNow int, 
 			builder.SelectMenuOption().
 				SetLabel("▼").
 				SetValue(fmt.Sprintf("page/next:%d", pageNext)).
-				SetDescription(fmt.Sprintf("page %d", pageNext)),
+				SetDescription(fmt.Sprintf(localization.Load(locale, "#look.review-list.menu.Page"), pageNext)),
 		)
 	}
 

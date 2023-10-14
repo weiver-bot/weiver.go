@@ -6,6 +6,7 @@ import (
 	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
@@ -18,19 +19,25 @@ func init() {
 
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
-			Name:         "move-review",
-			Description:  "move review on this channel",
-			DMPermission: &DMPermission,
+			Name:                     "move-review",
+			Description:              "move-review_Description",
+			NameLocalizations:        localization.LoadList("#move-review"),
+			DescriptionLocalizations: localization.LoadList("#move-review.Description"),
+			DMPermission:             &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
-					Name:        "subject",
-					Description: "Select subject",
-					Type:        discordgo.ApplicationCommandOptionUser,
-					Required:    true,
+					Name:                     "subject",
+					Description:              "subject_Description",
+					NameLocalizations:        *localization.LoadList("#.subject"),
+					DescriptionLocalizations: *localization.LoadList("#.subject.Description"),
+					Type:                     discordgo.ApplicationCommandOptionUser,
+					Required:                 true,
 				},
 			},
 		},
 		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+			locale := i.Locale
+
 			options := i.ApplicationCommandData().Options
 			fromID := i.Interaction.Member.User.ID
 			toID := options[0].Value.(string)
@@ -41,7 +48,7 @@ func init() {
 			}
 			if review == nil {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content:         "`No review on this subject`",
+					Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#move-review.IsNone")),
 					Flags:           discordgo.MessageFlagsEphemeral,
 					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
@@ -65,7 +72,7 @@ func init() {
 					return
 				}
 				if review != nil {
-					reviewutil.ModifyDM(s, review)
+					reviewutil.ModifyDM(s, review, locale)
 				}
 				return
 			}
@@ -80,7 +87,7 @@ func init() {
 					builder.ActionRow().AddComponents(
 						builder.Button().
 							SetCustomID("move-review").
-							SetLable("Move on this channel").
+							SetLable(localization.Load(locale, "#move-review.Move")).
 							SetStyle(discordgo.SuccessButton),
 					).ActionsRow,
 				},
@@ -123,7 +130,7 @@ func init() {
 					err := s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 						Embeds: []*discordgo.MessageEmbed{
 							builder.Embed().
-								SetDescription("❌ This review has been edited").
+								SetDescription(fmt.Sprintf("❌ %s", localization.Load(locale, "$review.IsEdited"))).
 								MessageEmbed,
 						},
 					}))
@@ -141,7 +148,7 @@ func init() {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				}
 				if review != nil {
-					reviewutil.ModifyDM(s, review)
+					reviewutil.ModifyDM(s, review, locale)
 				}
 			}
 			s.AddHandlerOnce(handler)

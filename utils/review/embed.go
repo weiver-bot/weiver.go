@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
@@ -27,10 +28,10 @@ func EmbedMost(review *db.ReviewModel, thubnail string) *builder.EmbedStructure 
 		SetTimeStamp(review.TimeStamp)
 }
 
-func embedDM(review *db.ReviewModel) *discordgo.MessageEmbed {
+func embedDM(review *db.ReviewModel, locale discordgo.Locale) *discordgo.MessageEmbed {
 	return builder.Embed().
 		SetDescription(fmt.Sprintf("https://discord.com/channels/%s/%s/%s → <@%s>", review.GuildID, review.ChannelID, review.MessageID, review.FromID)).
 		AddFields(&discordgo.MessageEmbedField{
-			Name: "🔔 Your review has written",
+			Name: fmt.Sprintf("🔔 %s", localization.Load(locale, "$review.DM")),
 		}).MessageEmbed
 }

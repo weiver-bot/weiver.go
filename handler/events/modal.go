@@ -59,7 +59,7 @@ func init() {
 			return
 		}
 		if review != nil {
-			err = reviewutil.SendDM(s, review)
+			err = reviewutil.SendDM(s, review, i.Locale)
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return

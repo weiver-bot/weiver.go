@@ -10,6 +10,7 @@ import (
 
 	"github.com/y2hO0ol23/weiver/handler/events"
 	"github.com/y2hO0ol23/weiver/handler/slash_commands"
+	_ "github.com/y2hO0ol23/weiver/localization"
 	_ "github.com/y2hO0ol23/weiver/utils/database"
 	_ "github.com/y2hO0ol23/weiver/utils/env"
 )

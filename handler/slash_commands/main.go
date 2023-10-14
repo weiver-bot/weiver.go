@@ -34,8 +34,8 @@ func Setup(s *discordgo.Session) {
 		commandHandlers[v.data.Name] = v.execute
 		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", v.data)
 		if err != nil {
-			RemoveCommands(s)
 			log.Fatalf("Cannot create %q\n%v", v.data.Name, err)
+			RemoveCommands(s)
 		}
 		registeredCommands[i] = cmd
 	}
@@ -47,5 +47,8 @@ func RemoveCommands(s *discordgo.Session) {
 		if err != nil {
 			log.Println("Cannot delete slash command:", v.Name, v.ID)
 		}
+	}
+	for _, id := range []string{"1162427420767436861"} {
+		s.ApplicationCommandDelete(s.State.User.ID, "", id)
 	}
 }

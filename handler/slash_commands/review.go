@@ -1,11 +1,13 @@
 package slash_commands
 
 import (
+	"fmt"
 	"log"
 	"runtime/debug"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
@@ -15,26 +17,32 @@ func init() {
 
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
-			Name:         "review",
-			Description:  "review user",
-			DMPermission: &DMPermission,
+			Name:                     "review",
+			Description:              "review_Description",
+			NameLocalizations:        localization.LoadList("#review"),
+			DescriptionLocalizations: localization.LoadList("#review.Description"),
+			DMPermission:             &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
-					Name:        "subject",
-					Description: "Select subject",
-					Type:        discordgo.ApplicationCommandOptionUser,
-					Required:    true,
+					Name:                     "subject",
+					Description:              "subject_Description",
+					NameLocalizations:        *localization.LoadList("#.subject"),
+					DescriptionLocalizations: *localization.LoadList("#.subject.Description"),
+					Type:                     discordgo.ApplicationCommandOptionUser,
+					Required:                 true,
 				},
 			},
 		},
 		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+			locale := i.Locale
+
 			options := i.ApplicationCommandData().Options
 			fromID := i.Interaction.Member.User.ID
 			toID := options[0].Value.(string)
 
 			if fromID == toID {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content:         "`Can't review yourself`",
+					Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#review.SelfReview")),
 					Flags:           discordgo.MessageFlagsEphemeral,
 					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
@@ -58,11 +66,11 @@ func init() {
 
 			modal := builder.Modal().
 				SetCustomID("review#" + fromID + "#" + toID).
-				SetTitle("Review " + to.User.Username)
+				SetTitle(fmt.Sprintf(localization.Load(locale, "#review.modal.Title"), to.User.Username))
 
 			score := builder.TextInput().
 				SetCustomID("score").
-				SetLable("score").
+				SetLable(localization.Load(locale, "#review.lable.Score")).
 				SetValue(func() string {
 					if review == nil {
 						return "★★★★★"
@@ -74,7 +82,7 @@ func init() {
 
 			title := builder.TextInput().
 				SetCustomID("title").
-				SetLable("title").
+				SetLable(localization.Load(locale, "#review.lable.Title")).
 				SetValue(func() string {
 					if review == nil {
 						return ""
@@ -86,7 +94,7 @@ func init() {
 
 			content := builder.TextInput().
 				SetCustomID("content").
-				SetLable("content").
+				SetLable(localization.Load(locale, "#review.lable.Content")).
 				SetValue(func() string {
 					if review == nil {
 						return ""

@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 	"github.com/y2hO0ol23/weiver/utils/role"
@@ -20,22 +21,28 @@ func init() {
 
 	commands = append(commands, form{
 		data: &discordgo.ApplicationCommand{
-			Name:         "allow_role",
-			Description:  "FOR ADMIN - DEFAULT:False",
-			DMPermission: &DMPermission,
+			Name:                     "allow-role",
+			Description:              "allow-role_Description",
+			NameLocalizations:        localization.LoadList("#allow-role"),
+			DescriptionLocalizations: localization.LoadList("#allow-role.Description"),
+			DMPermission:             &DMPermission,
 			Options: []*discordgo.ApplicationCommandOption{
 				{
-					Name:        "value",
-					Description: "Of role update",
-					Type:        discordgo.ApplicationCommandOptionBoolean,
+					Name:                     "allow-role_value",
+					Description:              "allow-role_value_Description",
+					NameLocalizations:        *localization.LoadList("#allow-role.value"),
+					DescriptionLocalizations: *localization.LoadList("#allow-role.value.Description"),
+					Type:                     discordgo.ApplicationCommandOptionBoolean,
 					Choices: []*discordgo.ApplicationCommandOptionChoice{
 						{
-							Name:  "true",
-							Value: true,
+							Name:              "allow-role_value_true",
+							NameLocalizations: *localization.LoadList("#allow-role.value.true"),
+							Value:             true,
 						},
 						{
-							Name:  "false",
-							Value: false,
+							Name:              "allow-role_value_false",
+							NameLocalizations: *localization.LoadList("#allow-role.value.false"),
+							Value:             false,
 						},
 					},
 					Required: true,
@@ -44,6 +51,8 @@ func init() {
 			DefaultMemberPermissions: &DefaultMemberPermissions,
 		},
 		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+			locale := i.Locale
+
 			options := i.ApplicationCommandData().Options
 			value := options[0].Value.(bool)
 
@@ -54,7 +63,7 @@ func init() {
 			}
 			if guildDB.InProgress == true {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content:         "`Process is in progress`",
+					Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#allow-role.InProgress")),
 					Flags:           discordgo.MessageFlagsEphemeral,
 					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
@@ -69,7 +78,11 @@ func init() {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 					Embeds: []*discordgo.MessageEmbed{
 						builder.Embed().
-							SetDescription("**Update Option** `AllowRole` - in progress").
+							SetDescription(fmt.Sprintf("**%s** `%s` - %s",
+								localization.Load(locale, "#allow-role.proc.Title"),
+								localization.Load(locale, "#allow-role.proc.Description"),
+								localization.Load(locale, "#allow-role.proc.InProgress"),
+							)).
 							MessageEmbed,
 					},
 					AllowedMentions: &discordgo.MessageAllowedMentions{},
@@ -120,7 +133,11 @@ func init() {
 				_, err = s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
 					Embeds: &[]*discordgo.MessageEmbed{
 						builder.Embed().
-							SetDescription("**Update Option** `AllowRole` - done").
+							SetDescription(fmt.Sprintf("**%s** `%s` - %s",
+								localization.Load(locale, "#allow-role.proc.Title"),
+								localization.Load(locale, "#allow-role.proc.Description"),
+								localization.Load(locale, "#allow-role.proc.Done"),
+							)).
 							MessageEmbed,
 					},
 				})
@@ -131,7 +148,7 @@ func init() {
 				db.EndOFGuildProgress(i.GuildID)
 			} else {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content:         fmt.Sprintf("`Noting changes. AllowRole: %v`", value),
+					Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#allow-role.Keep")),
 					Flags:           discordgo.MessageFlagsEphemeral,
 					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
