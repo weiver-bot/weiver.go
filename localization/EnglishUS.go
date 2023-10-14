@@ -3,12 +3,12 @@ package localization
 import "github.com/bwmarrin/discordgo"
 
 func init() {
-	data[discordgo.Korean] = map[string]string{
+	data[discordgo.EnglishUS] = map[string]string{
 		// slashcommand outputs
-		"#allow-role":             "AllowRole",
+		"#allow-role":             "allow-role",
 		"#allow-role.Description": "For Admin - defulat:false",
 
-		"#look":             "Look",
+		"#look":             "look",
 		"#look.Description": "Look something",
 
 		"#move":             "move",
@@ -30,6 +30,7 @@ func init() {
 		"#look.review-list.Description": "Look about review-list of user",
 
 		// test outputs
+		"#allow-role.NeedPermissions":  "Need Permission on bot - Manage Roles",
 		"#allow-role.InProgress":       "Process is in progress",
 		"#allow-role.proc.Title":       "Update option",
 		"#allow-role.proc.Description": "AllowRole",

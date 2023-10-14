@@ -72,6 +72,23 @@ func init() {
 				}
 				return
 			}
+			if value == true {
+				p, err := s.UserChannelPermissions(s.State.User.ID, i.ChannelID)
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+				}
+				if p&discordgo.PermissionManageRoles == 0 {
+					err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
+						Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#allow-role.NeedPermissions")),
+						Flags:           discordgo.MessageFlagsEphemeral,
+						AllowedMentions: &discordgo.MessageAllowedMentions{},
+					}))
+					if err != nil {
+						log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+					}
+					return
+				}
+			}
 			if guildDB.AllowRole != value {
 				db.UpdateGuildRoleOption(i.GuildID, value)
 

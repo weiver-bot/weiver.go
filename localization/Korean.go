@@ -30,6 +30,7 @@ func init() {
 		"#look.review-list.Description": "유저가 받은 리뷰목록 보기",
 
 		// 텍스트
+		"#allow-role.NeedPermissions":  "봇의 권한이 부족합니다 - 역할 관리",
 		"#allow-role.InProgress":       "작업 진행 중",
 		"#allow-role.proc.Title":       "옵션 수정",
 		"#allow-role.proc.Description": "역할허용",
