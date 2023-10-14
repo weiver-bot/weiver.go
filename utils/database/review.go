@@ -120,10 +120,10 @@ func UpdateDMMessageInfoByID(id int, channelID string, messageID string) (*Revie
 func GetReviewBest(id string) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
-	err = db.Debug().Model(&ReviewModel{}).
+	err = db.Model(&ReviewModel{}).
 		Where(&ReviewModel{
 			ToID: id,
-		}).Order("Score desc").Limit(1).
+		}).Order("Like_Total desc").Limit(1).
 		Find(&reviews).Error
 	if err != nil {
 		return nil, err
@@ -203,7 +203,7 @@ func GetReviewsByUserID(id string) (*[]ReviewModel, error) {
 	err = db.Model(&ReviewModel{}).
 		Where(&ReviewModel{
 			ToID: id,
-		}).Order("Score desc").
+		}).Order("Like_Total desc").
 		Find(&reviews).Error
 	if err != nil {
 		return nil, err

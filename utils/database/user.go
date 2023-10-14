@@ -39,7 +39,7 @@ func GetUserScore(id string) (float64, error) {
 	err = db.Model(&ReviewModel{}).
 		Where(ReviewModel{
 			ToID: id,
-		}).Select("avg(score)").Row().
+		}).Select("AVG(Score)").Row().
 		Scan(&res)
 
 	return res, err
