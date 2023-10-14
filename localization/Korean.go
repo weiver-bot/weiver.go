@@ -39,7 +39,7 @@ func init() {
 		"#allow-role.Keep":             "바뀐 설정이 없습니다",
 
 		"#look.info.IsNone":            "리뷰 없음",
-		"#look.review-list.IsNone":     "리뷰 없음",
+		"#look.review-list.IsNone":     "리뷰가 존재하지 않습니다",
 		"#look.review-list.menu.Title": "%s의 리뷰",
 		"#look.review-list.menu.Page":  "%d 페이지",
 
