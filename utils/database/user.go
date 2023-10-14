@@ -16,12 +16,7 @@ func LoadUserByID(id string) (*UserModel, error) {
 		var user = &UserModel{
 			ID: id,
 		}
-		err = db.Create(user).Error
-		if err != nil {
-			return nil, err
-		}
-
-		return user, nil
+		return user, db.Create(user).Error
 	} else {
 		return &users[0], nil
 	}
@@ -29,27 +24,23 @@ func LoadUserByID(id string) (*UserModel, error) {
 
 func GetUserReviewCount(id string) (int64, error) {
 	var count int64
+
 	err = db.Model(&ReviewModel{}).
 		Where(ReviewModel{
 			ToID: id,
 		}).Count(&count).Error
-	if err != nil {
-		return 0, err
-	}
 
-	return count, nil
+	return count, err
 }
 
 func GetUserScore(id string) (float64, error) {
 	var res float64
+
 	err = db.Model(&ReviewModel{}).
 		Where(ReviewModel{
 			ToID: id,
 		}).Select("avg(score)").Row().
 		Scan(&res)
-	if err != nil {
-		return 0, err
-	}
 
-	return res, nil
+	return res, err
 }

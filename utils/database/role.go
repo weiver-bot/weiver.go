@@ -48,12 +48,7 @@ func CreateRole(roleID string, guildID string, display string) (*RoleModel, erro
 		Display: display,
 		ID:      fmt.Sprintf("%s#%s", guildID, roleID),
 	}
-	err = db.Create(role).Error
-	if err != nil {
-		return nil, err
-	}
-
-	return role, nil
+	return role, db.Create(role).Error
 }
 
 func AddRoleOnUser(id string, userID string) error {
@@ -88,9 +83,6 @@ func GetRoleOnUser(userID string) ([]*RoleModel, error) {
 	err = db.Model(&UserModel{ID: userID}).
 		Association("Role").
 		Find(&roles)
-	if err != nil {
-		return nil, err
-	}
 
-	return roles, nil
+	return roles, err
 }

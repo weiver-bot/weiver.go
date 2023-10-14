@@ -16,12 +16,7 @@ func LoadGuildByID(id string) (*GuildModel, error) {
 		guild := GuildModel{
 			ID: id,
 		}
-		err = db.Create(&guild).Error
-		if err != nil {
-			return nil, err
-		}
-
-		return &guild, nil
+		return &guild, db.Create(&guild).Error
 	}
 	return &guilds[0], nil
 }
@@ -51,9 +46,6 @@ func GetGuildInProgress() (*[]GuildModel, error) {
 		Where(GuildModel{
 			InProgress: true,
 		}).Find(&guilds).Error
-	if err != nil {
-		return nil, err
-	}
 
-	return &guilds, nil
+	return &guilds, err
 }

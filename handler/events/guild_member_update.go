@@ -41,10 +41,7 @@ func init() {
 				if roleDB.Display == display {
 					needCurrentRole = true
 				} else {
-					err := s.GuildMemberRoleRemove(g.GuildID, g.User.ID, roleID)
-					if err != nil {
-						log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-					}
+					s.GuildMemberRoleRemove(g.GuildID, g.User.ID, roleID)
 				}
 			}
 		}

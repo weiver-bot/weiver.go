@@ -9,18 +9,20 @@ import (
 
 func UpdateStatus(s *discordgo.Session) error {
 	var (
-		IdleSince int = 0
-		avg       float64
+		IdleSince int     = 0
+		avg       float64 = 0
 		count     int64
 	)
 
-	avg, err := db.GetReviewsScoreAvg()
+	count, err := db.GetReviewsCount()
 	if err != nil {
 		return err
 	}
-	count, err = db.GetReviewsCount()
-	if err != nil {
-		return err
+	if count > 0 {
+		avg, err = db.GetReviewsScoreAvg()
+		if err != nil {
+			return err
+		}
 	}
 
 	return s.UpdateStatusComplex(discordgo.UpdateStatusData{

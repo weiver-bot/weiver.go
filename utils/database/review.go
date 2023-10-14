@@ -59,40 +59,35 @@ func ModifyReviewByInfo(fromID string, toID string, score int, title string, con
 			FromID:    fromID,
 			TimeStamp: time.Now(),
 		}
-		err = db.Create(review).Error
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		err = db.Model(&ReviewModel{ID: review.ID}).
-			Association("Like").
-			Clear()
-		if err != nil {
-			return nil, err
-		}
-
-		err = db.Model(&ReviewModel{ID: review.ID}).
-			Association("Hate").
-			Clear()
-		if err != nil {
-			return nil, err
-		}
-
-		err = db.Model(&ReviewModel{ID: review.ID}).
-			Updates(map[string]interface{}{
-				"Score":     score,
-				"Title":     title,
-				"Content":   content,
-				"LikeTotal": 0,
-				"TimeStamp": time.Now(),
-			}).
-			Take(review).Error
-		if err != nil {
-			return nil, err
-		}
+		return review, db.Create(review).Error
 	}
 
-	return review, nil
+	// remove old data
+	err = db.Model(&ReviewModel{ID: review.ID}).
+		Association("Like").
+		Clear()
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.Model(&ReviewModel{ID: review.ID}).
+		Association("Hate").
+		Clear()
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.Model(&ReviewModel{ID: review.ID}).
+		Updates(map[string]interface{}{
+			"Score":     score,
+			"Title":     title,
+			"Content":   content,
+			"LikeTotal": 0,
+			"TimeStamp": time.Now(),
+		}).
+		Take(review).Error
+
+	return review, err
 }
 
 func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID string) (*ReviewModel, error) {
@@ -105,11 +100,8 @@ func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID s
 			GuildID:   guildID,
 		}).
 		Take(&review).Error
-	if err != nil {
-		return nil, err
-	}
 
-	return &review, nil
+	return &review, err
 }
 
 func UpdateDMMessageInfoByID(id int, channelID string, messageID string) (*ReviewModel, error) {
@@ -121,17 +113,14 @@ func UpdateDMMessageInfoByID(id int, channelID string, messageID string) (*Revie
 			DMMessageID: messageID,
 		}).
 		Take(&review).Error
-	if err != nil {
-		return nil, err
-	}
 
-	return &review, nil
+	return &review, err
 }
 
 func GetReviewBest(id string) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
-	err = db.Model(&ReviewModel{}).
+	err = db.Debug().Model(&ReviewModel{}).
 		Where(&ReviewModel{
 			ToID: id,
 		}).Order("Score desc").Limit(1).
@@ -140,6 +129,9 @@ func GetReviewBest(id string) (*ReviewModel, error) {
 		return nil, err
 	}
 
+	if len(reviews) == 0 {
+		return nil, nil
+	}
 	return &reviews[0], nil
 }
 
@@ -201,11 +193,8 @@ func reviewButtonHandlerFianl(reviewID int) (*ReviewModel, error) {
 			LikeTotal: likeCount - hateCount,
 		}).
 		Take(&review).Error
-	if err != nil {
-		return nil, err
-	}
 
-	return &review, nil
+	return &review, err
 }
 
 func GetReviewsByUserID(id string) (*[]ReviewModel, error) {
@@ -227,24 +216,20 @@ func GetReviewsByUserID(id string) (*[]ReviewModel, error) {
 }
 
 func GetReviewsScoreAvg() (float64, error) {
-	var avg float64
+	var avg float64 = 0
+
 	err := db.Model(&ReviewModel{}).
 		Select("avg(score)").Row().
 		Scan(&avg)
-	if err != nil {
-		return 0, err
-	}
 
-	return avg, nil
+	return avg, err
 }
 
 func GetReviewsCount() (int64, error) {
 	var count int64
+
 	err := db.Model(&ReviewModel{}).
 		Count(&count).Error
-	if err != nil {
-		return 0, err
-	}
 
-	return count, nil
+	return count, err
 }

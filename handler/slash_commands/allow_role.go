@@ -102,9 +102,13 @@ func init() {
 								continue
 							}
 							if value == true {
-								role.Set(s, i.GuildID, member.User.ID, display)
+								err = role.Set(s, i.GuildID, member.User.ID, display)
 							} else {
-								role.Remove(s, i.GuildID, member.User.ID, display)
+								err = role.Remove(s, i.GuildID, member.User.ID, display)
+							}
+							if err != nil {
+								log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+								continue
 							}
 						}
 					}(res)
