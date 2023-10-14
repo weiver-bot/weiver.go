@@ -100,7 +100,7 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 	embed := builder.Embed().
 		SetDescription(fmt.Sprintf("<@%s> **⭐%.1f (%s)**", subjectID, avg, countOutput)).
 		SetThumbnail(&discordgo.MessageEmbedThumbnail{
-			URL: subject.User.AvatarURL(""),
+			URL: subject.AvatarURL(""),
 		})
 
 	if count == 0 {
@@ -255,7 +255,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 							Value: fmt.Sprintf("```%s```", review.Content),
 						}).
 						SetThumbnail(&discordgo.MessageEmbedThumbnail{
-							URL: subject.User.AvatarURL(""),
+							URL: subject.AvatarURL(""),
 						})
 				} else {
 					_, err := s.GuildMember(review.GuildID, review.FromID)
