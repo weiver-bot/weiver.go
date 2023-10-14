@@ -189,8 +189,8 @@ func reviewButtonHandlerFianl(reviewID int) (*ReviewModel, error) {
 	hateCount := db.Model(&ReviewModel{ID: reviewID}).Association("Hate").Count()
 
 	err = db.Model(&ReviewModel{ID: reviewID}).
-		Updates(ReviewModel{
-			LikeTotal: likeCount - hateCount,
+		Updates(map[string]interface{}{
+			"LikeTotal": likeCount - hateCount,
 		}).
 		Take(&review).Error
 
