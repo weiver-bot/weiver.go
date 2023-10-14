@@ -6,7 +6,7 @@ func init() {
 	data[discordgo.Korean] = map[string]string{
 		// 슬래시 명령어
 		"#allow-role":             "역할허용",
-		"#allow-role.Description": "관리자 전용 - 기본:거짓",
+		"#allow-role.Description": "관리자 전용 - 기본:False",
 
 		"#look":             "보기",
 		"#look.Description": "무언가 보기",
