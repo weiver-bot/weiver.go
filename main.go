@@ -36,7 +36,7 @@ func main() {
 
 	// need appID, so execute after session is open
 	slashcmds.Setup(s)
-	if os.Getenv("REMOVE_CMD") == "true" {
+	if os.Getenv("REMOVE_CMD") != "" {
 		defer slashcmds.RemoveCommands(s)
 	}
 
