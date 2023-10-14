@@ -31,7 +31,7 @@ func UpdateStatus(s *discordgo.Session) error {
 			{
 				Name:  "Reviews total count",
 				Type:  discordgo.ActivityTypeCustom,
-				State: fmt.Sprintf("⭐%.1f (%d)", avg, count),
+				State: fmt.Sprintf("Total ⭐%.1f (%d)", avg, count),
 			},
 		},
 	})
