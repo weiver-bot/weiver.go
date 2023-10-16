@@ -6,7 +6,7 @@ func init() {
 	data[discordgo.EnglishUS] = map[string]string{
 		// slashcommand outputs
 		"#allow-role":             "allow-role",
-		"#allow-role.Description": "Admin only - Default: False",
+		"#allow-role.Description": "Administrator only - Default: False",
 
 		"#look":             "look",
 		"#look.Description": "Look something",
