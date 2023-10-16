@@ -103,7 +103,7 @@ for key in locale.keys():
     print(f"Try {key}...")
     result = {}
     for v in commands.keys():
-        t: str = get_translation(commands[v], dest=locale[key]).lower().replace(' ', '-')
+        t: str = get_translation(commands[v], dest=locale[key]).replace(' ', '-').lower()
         result[v] = t
 
     for v in text.keys():
