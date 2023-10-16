@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.SpanishES] = map[string]string{
+		"#allow-role":                   "rol-permitido",
+		"#look":                         "mirar",
+		"#move":                         "mover",
+		"#review":                       "revisar",
+		"#allow-role.value":             "valor",
+		"#.subject":                     "objetivo",
+		"#look.info":                    "información",
+		"#look.review-list":             "lista-de-revisión",
+		"#allow-role.Description":       "Solo administrador: predeterminado: falso",
+		"#look.Description":             "ves algo",
+		"#move.Description":             "Mover reseña a este canal",
+		"#review.Description":           "Revisión del usuario",
+		"#allow-role.value.Description": "valor ajustado",
+		"#.subject.Description":         "Seleccione un objetivo",
+		"#look.info.Description":        "Ver información del usuario",
+		"#look.review-list.Description": "Ver la lista de reseñas recibidas por los usuarios.",
+		"#allow-role.NeedPermissions":   "El bot carece de permisos - Administrar roles",
+		"#allow-role.InProgress":        "trabajo en progreso",
+		"#allow-role.proc.Title":        "Modificar opciones",
+		"#allow-role.proc.Description":  "Permiso de rol",
+		"#allow-role.proc.InProgress":   "Proceder",
+		"#allow-role.proc.Done":         "completo",
+		"#allow-role.Keep":              "No se ha cambiado ninguna configuración",
+		"#look.info.IsNone":             "Sin reseñas",
+		"#look.review-list.IsNone":      "No hay reseñas",
+		"#look.review-list.menu.Title":  "Reseñas de %s",
+		"#look.review-list.menu.Page":   "%d página",
+		"#move.IsNone":                  "No hay reseñas escritas para el objetivo.",
+		"#move.Move":                    "Muevete aquí",
+		"#review.SelfReview":            "No puedes revisarte a ti mismo",
+		"#review.modal.Title":           "Revisar %s",
+		"#review.lable.Score":           "puntaje",
+		"#review.lable.Title":           "título",
+		"#review.lable.Content":         "detalle",
+		"$review.IsEdited":              "Esta reseña ha sido editada.",
+		"$review.NoAuthor":              "Las reseñas eliminadas no se pueden restaurar porque el autor no existe aquí",
+		"$review.DM":                    "Se ha escrito una nueva reseña.",
+	}
+}

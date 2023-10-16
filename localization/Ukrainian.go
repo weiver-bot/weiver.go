@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.Ukrainian] = map[string]string{
+		"#allow-role":                   "рольово-дозволено",
+		"#look":                         "подивіться",
+		"#move":                         "рухатися",
+		"#review":                       "огляд",
+		"#allow-role.value":             "значення",
+		"#.subject":                     "цільова",
+		"#look.info":                    "інформації",
+		"#look.review-list":             "перегляд-списку",
+		"#allow-role.Description":       "Лише адміністратор - за замовчуванням: False",
+		"#look.Description":             "побачити щось",
+		"#move.Description":             "Перемістити огляд на цей канал",
+		"#review.Description":           "Огляд користувача",
+		"#allow-role.value.Description": "встановлене значення",
+		"#.subject.Description":         "Виберіть ціль",
+		"#look.info.Description":        "Переглянути інформацію про користувача",
+		"#look.review-list.Description": "Переглянути список відгуків, отриманих користувачами",
+		"#allow-role.NeedPermissions":   "Боту бракує дозволів - Керувати ролями",
+		"#allow-role.InProgress":        "в роботі",
+		"#allow-role.proc.Title":        "Змінити параметри",
+		"#allow-role.proc.Description":  "Дозволити роль",
+		"#allow-role.proc.InProgress":   "Продовження",
+		"#allow-role.proc.Done":         "повний",
+		"#allow-role.Keep":              "Налаштування не змінено",
+		"#look.info.IsNone":             "Немає відгуків",
+		"#look.review-list.IsNone":      "Відгуків немає",
+		"#look.review-list.menu.Title":  "Відгуки для %s",
+		"#look.review-list.menu.Page":   "%d сторінка",
+		"#move.IsNone":                  "Немає відгуків, написаних для мішені",
+		"#move.Move":                    "рухатися сюди",
+		"#review.SelfReview":            "Ви не можете перевірити себе",
+		"#review.modal.Title":           "Перегляньте %s",
+		"#review.lable.Score":           "рахунок",
+		"#review.lable.Title":           "назва",
+		"#review.lable.Content":         "деталь",
+		"$review.IsEdited":              "Цей огляд було відредаговано",
+		"$review.NoAuthor":              "Видалені відгуки не можна відновити, оскільки автора тут немає",
+		"$review.DM":                    "Написано новий відгук",
+	}
+}

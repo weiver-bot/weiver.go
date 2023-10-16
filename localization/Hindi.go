@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.Hindi] = map[string]string{
+		"#allow-role":                   "भूमिका-अनुमति",
+		"#look":                         "देखना",
+		"#move":                         "कदम",
+		"#review":                       "समीक्षा",
+		"#allow-role.value":             "कीमत",
+		"#.subject":                     "लक्ष्य",
+		"#look.info":                    "जानकारी",
+		"#look.review-list":             "समीक्षा-सूची",
+		"#allow-role.Description":       "केवल व्यवस्थापक - डिफ़ॉल्ट: गलत",
+		"#look.Description":             "कुछ देखें",
+		"#move.Description":             "समीक्षा को इस चैनल पर ले जाएं",
+		"#review.Description":           "उपयोगकर्ता समीक्षा",
+		"#allow-role.value.Description": "मूल्य ते करना",
+		"#.subject.Description":         "लक्ष्य चुनें",
+		"#look.info.Description":        "उपयोगकर्ता जानकारी देखें",
+		"#look.review-list.Description": "उपयोगकर्ताओं द्वारा प्राप्त समीक्षाओं की सूची देखें",
+		"#allow-role.NeedPermissions":   "बॉट में अनुमतियों का अभाव है - भूमिकाएँ प्रबंधित करें",
+		"#allow-role.InProgress":        "कार्य प्रगति पर है",
+		"#allow-role.proc.Title":        "विकल्प संशोधित करें",
+		"#allow-role.proc.Description":  "भूमिका की अनुमति",
+		"#allow-role.proc.InProgress":   "कार्यवाही",
+		"#allow-role.proc.Done":         "पूरा",
+		"#allow-role.Keep":              "कोई सेटिंग नहीं बदली",
+		"#look.info.IsNone":             "कोई समीक्षा नहीं",
+		"#look.review-list.IsNone":      "कोई समीक्षा नहीं है",
+		"#look.review-list.menu.Title":  "%s के लिए समीक्षाएँ",
+		"#look.review-list.menu.Page":   "%d पेज",
+		"#move.IsNone":                  "लक्ष्य के लिए कोई समीक्षा नहीं लिखी गई है",
+		"#move.Move":                    "यहां स्थानांतर करो",
+		"#review.SelfReview":            "आप स्वयं की समीक्षा नहीं कर सकते",
+		"#review.modal.Title":           "%s की समीक्षा करें",
+		"#review.lable.Score":           "अंक",
+		"#review.lable.Title":           "शीर्षक",
+		"#review.lable.Content":         "विवरण",
+		"$review.IsEdited":              "यह समीक्षा संपादित की गई है",
+		"$review.NoAuthor":              "हटाई गई समीक्षाओं को पुनर्स्थापित नहीं किया जा सकता क्योंकि लेखक यहां मौजूद नहीं है",
+		"$review.DM":                    "एक नई समीक्षा लिखी गई है",
+	}
+}

@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.Danish] = map[string]string{
+		"#allow-role":                   "rolle-tilladt",
+		"#look":                         "se",
+		"#move":                         "bevæge-sig",
+		"#review":                       "anmeldelse",
+		"#allow-role.value":             "værdi",
+		"#.subject":                     "mål",
+		"#look.info":                    "information",
+		"#look.review-list":             "gennemgå-liste",
+		"#allow-role.Description":       "Kun administrator - Standard: Falsk",
+		"#look.Description":             "se noget",
+		"#move.Description":             "Flyt anmeldelse til denne kanal",
+		"#review.Description":           "Brugeranmeldelse",
+		"#allow-role.value.Description": "indstillet værdi",
+		"#.subject.Description":         "Vælg mål",
+		"#look.info.Description":        "Se brugeroplysninger",
+		"#look.review-list.Description": "Se listen over anmeldelser modtaget af brugere",
+		"#allow-role.NeedPermissions":   "Bot mangler tilladelser - Administrer roller",
+		"#allow-role.InProgress":        "arbejde der er i gang",
+		"#allow-role.proc.Title":        "Rediger indstillinger",
+		"#allow-role.proc.Description":  "Tillad rolle",
+		"#allow-role.proc.InProgress":   "Fortsætter",
+		"#allow-role.proc.Done":         "komplet",
+		"#allow-role.Keep":              "Ingen indstillinger ændret",
+		"#look.info.IsNone":             "Ingen anmeldelser",
+		"#look.review-list.IsNone":      "Der er ingen anmeldelser",
+		"#look.review-list.menu.Title":  "Anmeldelser for %s",
+		"#look.review-list.menu.Page":   "%d side",
+		"#move.IsNone":                  "Der er ingen anmeldelser skrevet til målet",
+		"#move.Move":                    "flytte hertil",
+		"#review.SelfReview":            "Du kan ikke anmelde dig selv",
+		"#review.modal.Title":           "Anmeldelser",
+		"#review.lable.Score":           "score",
+		"#review.lable.Title":           "titel",
+		"#review.lable.Content":         "detalje",
+		"$review.IsEdited":              "Denne anmeldelse er blevet redigeret",
+		"$review.NoAuthor":              "Slettede anmeldelser kan ikke gendannes, fordi forfatteren ikke findes her",
+		"$review.DM":                    "Der er skrevet en ny anmeldelse",
+	}
+}

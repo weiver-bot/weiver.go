@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.Romanian] = map[string]string{
+		"#allow-role":                   "rol-permis",
+		"#look":                         "uite",
+		"#move":                         "mișcare",
+		"#review":                       "revizuire",
+		"#allow-role.value":             "valoare",
+		"#.subject":                     "ţintă",
+		"#look.info":                    "informație",
+		"#look.review-list":             "lista-de-recenzii",
+		"#allow-role.Description":       "Numai administrator - Implicit: False",
+		"#look.Description":             "vezi ceva",
+		"#move.Description":             "Mută recenzia pe acest canal",
+		"#review.Description":           "Recenzie de utilizator",
+		"#allow-role.value.Description": "valoarea stabilită",
+		"#.subject.Description":         "Selectați ținta",
+		"#look.info.Description":        "Vizualizați informații despre utilizator",
+		"#look.review-list.Description": "Vezi lista de recenzii primite de utilizatori",
+		"#allow-role.NeedPermissions":   "Bot nu are permisiuni - Gestionați roluri",
+		"#allow-role.InProgress":        "lucru în curs",
+		"#allow-role.proc.Title":        "Modificați opțiuni",
+		"#allow-role.proc.Description":  "Permisiune de rol",
+		"#allow-role.proc.InProgress":   "Procedură",
+		"#allow-role.proc.Done":         "complet",
+		"#allow-role.Keep":              "Nu s-au schimbat setări",
+		"#look.info.IsNone":             "Nicio recenzie",
+		"#look.review-list.IsNone":      "Nu există recenzii",
+		"#look.review-list.menu.Title":  "Recenzii pentru %s",
+		"#look.review-list.menu.Page":   "%d pagină",
+		"#move.IsNone":                  "Nu există recenzii scrise pentru țintă",
+		"#move.Move":                    "muta-te aici",
+		"#review.SelfReview":            "Nu te poți revizui",
+		"#review.modal.Title":           "Examinați %s",
+		"#review.lable.Score":           "Scor",
+		"#review.lable.Title":           "titlu",
+		"#review.lable.Content":         "detaliu",
+		"$review.IsEdited":              "Această recenzie a fost editată",
+		"$review.NoAuthor":              "Recenziile șterse nu pot fi restaurate deoarece autorul nu există aici",
+		"$review.DM":                    "A fost scrisă o nouă recenzie",
+	}
+}

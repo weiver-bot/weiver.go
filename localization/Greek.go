@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.Greek] = map[string]string{
+		"#allow-role":                   "επιτρεπόμενος-ρόλος",
+		"#look":                         "κοίτα",
+		"#move":                         "κίνηση",
+		"#review":                       "ανασκόπηση",
+		"#allow-role.value":             "αξία",
+		"#.subject":                     "στόχος",
+		"#look.info":                    "πληροφορίες",
+		"#look.review-list":             "λίστα-αναθεώρησης",
+		"#allow-role.Description":       "Μόνο διαχειριστής - Προεπιλογή: Λάθος",
+		"#look.Description":             "δείτε κάτι",
+		"#move.Description":             "Μετακίνηση κριτικής σε αυτό το κανάλι",
+		"#review.Description":           "Κριτική χρήστη",
+		"#allow-role.value.Description": "καθορισμένη τιμή",
+		"#.subject.Description":         "Επιλέξτε στόχο",
+		"#look.info.Description":        "Προβολή πληροφοριών χρήστη",
+		"#look.review-list.Description": "Δείτε τη λίστα με τις κριτικές που έλαβαν οι χρήστες",
+		"#allow-role.NeedPermissions":   "Το ρομπότ δεν διαθέτει δικαιώματα - Διαχείριση ρόλων",
+		"#allow-role.InProgress":        "εργασία σε εξέλιξη",
+		"#allow-role.proc.Title":        "Τροποποίηση Επιλογών",
+		"#allow-role.proc.Description":  "Άδεια ρόλου",
+		"#allow-role.proc.InProgress":   "Ενέργεια",
+		"#allow-role.proc.Done":         "πλήρης",
+		"#allow-role.Keep":              "Δεν άλλαξαν ρυθμίσεις",
+		"#look.info.IsNone":             "Δεν υπάρχουν κριτικές",
+		"#look.review-list.IsNone":      "Δεν υπάρχουν κριτικές",
+		"#look.review-list.menu.Title":  "Κριτικές για %s",
+		"#look.review-list.menu.Page":   "%d σελίδα",
+		"#move.IsNone":                  "Δεν υπάρχουν κριτικές για τον στόχο",
+		"#move.Move":                    "ελα εδω",
+		"#review.SelfReview":            "Δεν μπορείς να αναθεωρήσεις τον εαυτό σου",
+		"#review.modal.Title":           "Έλεγχος %s",
+		"#review.lable.Score":           "σκορ",
+		"#review.lable.Title":           "τίτλος",
+		"#review.lable.Content":         "λεπτομέρεια",
+		"$review.IsEdited":              "Αυτή η κριτική έχει τροποποιηθεί",
+		"$review.NoAuthor":              "Δεν είναι δυνατή η επαναφορά των διαγραμμένων κριτικών επειδή ο συγγραφέας δεν υπάρχει εδώ",
+		"$review.DM":                    "Μια νέα κριτική έχει γραφτεί",
+	}
+}

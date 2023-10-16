@@ -3,7 +3,7 @@ package localization
 import "github.com/bwmarrin/discordgo"
 
 func init() {
-	data[discordgo.EnglishUS] = map[string]string{
+	data[discordgo.EnglishGB] = map[string]string{
 		// slashcommand outputs
 		"#allow-role":             "allow-role",
 		"#allow-role.Description": "Admin only - Default: False",

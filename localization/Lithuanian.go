@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.Lithuanian] = map[string]string{
+		"#allow-role":                   "leidžiamas-vaidmuo",
+		"#look":                         "žiūrėk",
+		"#move":                         "judėti",
+		"#review":                       "apžvalga",
+		"#allow-role.value":             "vertė",
+		"#.subject":                     "tikslas",
+		"#look.info":                    "informacija",
+		"#look.review-list":             "peržiūrėkite-sąrašą",
+		"#allow-role.Description":       "Tik administratorius – numatytoji: klaidinga",
+		"#look.Description":             "ką nors pamatyti",
+		"#move.Description":             "Perkelti apžvalgą į šį kanalą",
+		"#review.Description":           "Vartotojo apžvalga",
+		"#allow-role.value.Description": "nustatyta vertė",
+		"#.subject.Description":         "Pasirinkite tikslą",
+		"#look.info.Description":        "Peržiūrėkite vartotojo informaciją",
+		"#look.review-list.Description": "Peržiūrėkite vartotojų gautų atsiliepimų sąrašą",
+		"#allow-role.NeedPermissions":   "Botui trūksta leidimų – Tvarkyti vaidmenis",
+		"#allow-role.InProgress":        "darbas vyksta",
+		"#allow-role.proc.Title":        "Modifikuoti parinktis",
+		"#allow-role.proc.Description":  "Leisti vaidmenį",
+		"#allow-role.proc.InProgress":   "Vykdoma",
+		"#allow-role.proc.Done":         "užbaigti",
+		"#allow-role.Keep":              "Jokie nustatymai nepasikeitė",
+		"#look.info.IsNone":             "Nėra atsiliepimų",
+		"#look.review-list.IsNone":      "Apžvalgų nėra",
+		"#look.review-list.menu.Title":  "Atsiliepimai apie %s",
+		"#look.review-list.menu.Page":   "%d puslapis",
+		"#move.IsNone":                  "Nėra parašytų atsiliepimų apie taikinį",
+		"#move.Move":                    "persikelti čia",
+		"#review.SelfReview":            "Jūs negalite peržiūrėti savęs",
+		"#review.modal.Title":           "Peržiūrėkite %s",
+		"#review.lable.Score":           "balas",
+		"#review.lable.Title":           "titulą",
+		"#review.lable.Content":         "detalė",
+		"$review.IsEdited":              "Ši apžvalga buvo redaguota",
+		"$review.NoAuthor":              "Ištrintų atsiliepimų atkurti negalima, nes autoriaus čia nėra",
+		"$review.DM":                    "Parašyta nauja apžvalga",
+	}
+}

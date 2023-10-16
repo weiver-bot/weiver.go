@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.French] = map[string]string{
+		"#allow-role":                   "rôle-autorisé",
+		"#look":                         "regarder",
+		"#move":                         "se-déplacer",
+		"#review":                       "revoir",
+		"#allow-role.value":             "valeur",
+		"#.subject":                     "cible",
+		"#look.info":                    "information",
+		"#look.review-list":             "liste-de-révision",
+		"#allow-role.Description":       "Administrateur uniquement - Par défaut : False",
+		"#look.Description":             "voir quelque chose",
+		"#move.Description":             "Déplacer l'avis vers cette chaîne",
+		"#review.Description":           "Avis d'utilisateur",
+		"#allow-role.value.Description": "Définir la valeur",
+		"#.subject.Description":         "Sélectionnez la cible",
+		"#look.info.Description":        "Afficher les informations sur l'utilisateur",
+		"#look.review-list.Description": "Afficher la liste des avis reçus par les utilisateurs",
+		"#allow-role.NeedPermissions":   "Le bot ne dispose pas d'autorisations - Gérer les rôles",
+		"#allow-role.InProgress":        "travail en cours",
+		"#allow-role.proc.Title":        "Modifier les options",
+		"#allow-role.proc.Description":  "Autorisation de rôle",
+		"#allow-role.proc.InProgress":   "Procédure en cours",
+		"#allow-role.proc.Done":         "complet",
+		"#allow-role.Keep":              "Aucun paramètre modifié",
+		"#look.info.IsNone":             "Aucun avis",
+		"#look.review-list.IsNone":      "Il n'y a pas de commentaires",
+		"#look.review-list.menu.Title":  "Commentaires pour %s",
+		"#look.review-list.menu.Page":   "%d pages",
+		"#move.IsNone":                  "Il n'y a aucun avis écrit pour la cible",
+		"#move.Move":                    "bouge ici",
+		"#review.SelfReview":            "Vous ne pouvez pas vous réviser",
+		"#review.modal.Title":           "Commentaires",
+		"#review.lable.Score":           "score",
+		"#review.lable.Title":           "titre",
+		"#review.lable.Content":         "détail",
+		"$review.IsEdited":              "Cet avis a été modifié",
+		"$review.NoAuthor":              "Les avis supprimés ne peuvent pas être restaurés car l'auteur n'existe pas ici",
+		"$review.DM":                    "Une nouvelle critique a été rédigée",
+	}
+}

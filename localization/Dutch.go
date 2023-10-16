@@ -1,0 +1,45 @@
+package localization
+
+import "github.com/bwmarrin/discordgo"
+
+func init() {
+	data[discordgo.Dutch] = map[string]string{
+		"#allow-role":                   "rol-toegestaan",
+		"#look":                         "look",
+		"#move":                         "beweging",
+		"#review":                       "beoordeling",
+		"#allow-role.value":             "waarde",
+		"#.subject":                     "doel",
+		"#look.info":                    "informatie",
+		"#look.review-list":             "reviewlijst",
+		"#allow-role.Description":       "Alleen beheerder - Standaard: False",
+		"#look.Description":             "Iets zien",
+		"#move.Description":             "Verplaats de recensie naar dit kanaal",
+		"#review.Description":           "Gebruikersrecensie",
+		"#allow-role.value.Description": "ingestelde waarde",
+		"#.subject.Description":         "Selecteer doel",
+		"#look.info.Description":        "Bekijk gebruikersinformatie",
+		"#look.review-list.Description": "Bekijk de lijst met beoordelingen die gebruikers hebben ontvangen",
+		"#allow-role.NeedPermissions":   "Bot heeft geen rechten - Beheer rollen",
+		"#allow-role.InProgress":        "lopende werkzaamheden",
+		"#allow-role.proc.Title":        "Opties wijzigen",
+		"#allow-role.proc.Description":  "Rol toestaan",
+		"#allow-role.proc.InProgress":   "Doorgaan",
+		"#allow-role.proc.Done":         "compleet",
+		"#allow-role.Keep":              "Er zijn geen instellingen gewijzigd",
+		"#look.info.IsNone":             "Geen beoordelingen",
+		"#look.review-list.IsNone":      "Er zijn geen beoordelingen",
+		"#look.review-list.menu.Title":  "Beoordelingen voor %s",
+		"#look.review-list.menu.Page":   "%d pagina",
+		"#move.IsNone":                  "Er zijn geen beoordelingen geschreven voor het doel",
+		"#move.Move":                    "verhuis naar hier",
+		"#review.SelfReview":            "Je kunt jezelf niet beoordelen",
+		"#review.modal.Title":           "Beoordeel %s",
+		"#review.lable.Score":           "scoren",
+		"#review.lable.Title":           "titel",
+		"#review.lable.Content":         "detail",
+		"$review.IsEdited":              "Deze recensie is aangepast",
+		"$review.NoAuthor":              "Verwijderde recensies kunnen niet worden hersteld omdat de auteur hier niet bestaat",
+		"$review.DM":                    "Er is een nieuwe recensie geschreven",
+	}
+}
