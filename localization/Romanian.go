@@ -24,7 +24,7 @@ func init() {
 		"#allow-role.NeedPermissions":         "Bot nu are permisiuni - Gestionați roluri",
 		"#allow-role.InProgress":              "lucru în curs",
 		"#allow-role.proc.Title":              "Modificați opțiuni",
-		"#allow-role.proc.Description":        "Permisiune de rol",
+		"#allow-role.proc.Description":        "Permite roluri",
 		"#allow-role.proc.InProgress":         "Procedură",
 		"#allow-role.proc.Done":               "complet",
 		"#allow-role.Keep":                    "Nu s-au schimbat setări",

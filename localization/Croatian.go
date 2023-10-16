@@ -24,7 +24,7 @@ func init() {
 		"#allow-role.NeedPermissions":         "Botu nedostaju dopuštenja - Upravljanje ulogama",
 		"#allow-role.InProgress":              "radovi u tijeku",
 		"#allow-role.proc.Title":              "Modificiraj opcije",
-		"#allow-role.proc.Description":        "Dopusti ulogu",
+		"#allow-role.proc.Description":        "Dopusti uloge",
 		"#allow-role.proc.InProgress":         "Postupak",
 		"#allow-role.proc.Done":               "potpuna",
 		"#allow-role.Keep":                    "Nema promjena postavki",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Ova recenzija je uređena",
 		"$review.NoAuthor":                    "Izbrisane recenzije nije moguće vratiti jer autor ne postoji ovdje",
 		"$review.DM":                          "Napisana je nova recenzija",
-	}
+    }
 }

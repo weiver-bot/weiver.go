@@ -35,7 +35,7 @@ func init() {
 		"#allow-role.NeedPermissions":  "Bot lacks permissions - Manage Roles",
 		"#allow-role.InProgress":       "Process is in progress",
 		"#allow-role.proc.Title":       "Update option",
-		"#allow-role.proc.Description": "AllowRole",
+		"#allow-role.proc.Description": "Allow role",
 		"#allow-role.proc.InProgress":  "in progress",
 		"#allow-role.proc.Done":        "done",
 		"#allow-role.Keep":             "Nothing changed",

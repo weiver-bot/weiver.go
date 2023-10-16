@@ -24,7 +24,7 @@ func init() {
 		"#allow-role.NeedPermissions":         "Bot mangler tilladelser - Administrer roller",
 		"#allow-role.InProgress":              "arbejde der er i gang",
 		"#allow-role.proc.Title":              "Rediger indstillinger",
-		"#allow-role.proc.Description":        "Tillad rolle",
+		"#allow-role.proc.Description":        "Tillad roller",
 		"#allow-role.proc.InProgress":         "Fortsætter",
 		"#allow-role.proc.Done":               "komplet",
 		"#allow-role.Keep":                    "Ingen indstillinger ændret",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Denne anmeldelse er blevet redigeret",
 		"$review.NoAuthor":                    "Slettede anmeldelser kan ikke gendannes, fordi forfatteren ikke findes her",
 		"$review.DM":                          "Der er skrevet en ny anmeldelse",
-	}
+    }
 }

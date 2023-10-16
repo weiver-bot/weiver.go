@@ -35,7 +35,7 @@ func init() {
 		"#allow-role.NeedPermissions":  "봇의 권한이 부족합니다 - 역할 관리",
 		"#allow-role.InProgress":       "작업 진행 중",
 		"#allow-role.proc.Title":       "옵션 수정",
-		"#allow-role.proc.Description": "역할허용",
+		"#allow-role.proc.Description": "역할 허용",
 		"#allow-role.proc.InProgress":  "진행 중",
 		"#allow-role.proc.Done":        "완료",
 		"#allow-role.Keep":             "바뀐 설정이 없습니다",

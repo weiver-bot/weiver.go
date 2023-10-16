@@ -60,7 +60,7 @@ text = {
     "#allow-role.NeedPermissions":  "봇의 권한이 부족합니다 - 역할 관리",
     "#allow-role.InProgress":       "작업 진행 중",
     "#allow-role.proc.Title":       "옵션 수정",
-    "#allow-role.proc.Description": "역할허용",
+    "#allow-role.proc.Description": "역할 허용",
     "#allow-role.proc.InProgress":  "진행 중",
     "#allow-role.proc.Done":        "완료",
     "#allow-role.Keep":             "바뀐 설정이 없습니다",
@@ -110,7 +110,7 @@ for key in locale.keys():
         t = get_translation(text[v], dest=locale[key])
         result[v] = t
     
-    with open(f'./{key}.go', 'w') as f:
+    with open(f'./localization/{key}.go', 'w') as f:
         t = """package localization
 
 import "github.com/bwmarrin/discordgo"
@@ -119,7 +119,7 @@ func init() {
 	data[discordgo.%s] = map[string]string{"""%key
 
         for v in result.keys():
-            t += '\n\t\t"%s": "%s",'%(v, result[v])
+            t += ('\n\t\t"%s":'%v).ljust(42, ' ') + '"%s",'%result[v]
 
         t += """
     }

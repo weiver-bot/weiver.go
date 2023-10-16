@@ -24,7 +24,7 @@ func init() {
 		"#allow-role.NeedPermissions":         "Bot heeft geen rechten - Beheer rollen",
 		"#allow-role.InProgress":              "lopende werkzaamheden",
 		"#allow-role.proc.Title":              "Opties wijzigen",
-		"#allow-role.proc.Description":        "Rol toestaan",
+		"#allow-role.proc.Description":        "Rollen toestaan",
 		"#allow-role.proc.InProgress":         "Doorgaan",
 		"#allow-role.proc.Done":               "compleet",
 		"#allow-role.Keep":                    "Er zijn geen instellingen gewijzigd",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Deze recensie is aangepast",
 		"$review.NoAuthor":                    "Verwijderde recensies kunnen niet worden hersteld omdat de auteur hier niet bestaat",
 		"$review.DM":                          "Er is een nieuwe recensie geschreven",
-	}
+    }
 }
