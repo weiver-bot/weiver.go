@@ -15,7 +15,7 @@ func init() {
 		"#look.review-list":                   "lista-de-recenzii",
 		"#admin.allow-role.Description":       "Afișați scorurile ca roluri. Implicit: fals",
 		"#look.Description":                   "vezi ceva",
-		"#move.Description":                   "Mută ​​recenzia pe acest canal",
+		"#move.Description":                   "Mută recenzia pe acest canal",
 		"#review.Description":                 "Recenzie de utilizator",
 		"#admin.allow-role.value.Description": "valoarea stabilită",
 		"#.subject.Description":               "Selectați ținta",
