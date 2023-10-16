@@ -27,9 +27,9 @@ func init() {
 		"#.subject.Description": "Select subject",
 
 		"#look.info":                "info",
-		"#look.info.Description":    "Look about info",
+		"#look.info.Description":    "Look about information",
 		"#look.reviews":             "reviews",
-		"#look.reviews.Description": "Look about reviews to subject",
+		"#look.reviews.Description": "Look reviews the subject has received",
 
 		// test outputs
 		"#allow-role.NeedPermissions":  "Bot lacks permissions - Manage Roles",
