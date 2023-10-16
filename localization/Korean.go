@@ -5,8 +5,8 @@ import "github.com/bwmarrin/discordgo"
 func init() {
 	data[discordgo.Korean] = map[string]string{
 		// 슬래시 명령어
-		"#allow-role":             "역할-허용",
-		"#allow-role.Description": "관리자 전용 - 기본값: False",
+		"#admin":             "관리자",
+		"#admin.Description": "관리자 전용",
 
 		"#look":             "보기",
 		"#look.Description": "무언가 보기",
@@ -18,16 +18,18 @@ func init() {
 		"#review.Description": "유저 리뷰하기",
 
 		// 서브 명령어
-		"#allow-role.value":             "값",
-		"#allow-role.value.Description": "값 설정",
+		"#admin.allow-role":                   "역할-허용",
+		"#admin.allow-role.Description":       "점수를 역할로 표시합니다. 기본값: False",
+		"#admin.allow-role.value":             "값",
+		"#admin.allow-role.value.Description": "값 설정",
 
 		"#.subject":             "대상",
 		"#.subject.Description": "대상 선택",
 
 		"#look.info":                    "정보",
 		"#look.info.Description":        "유저 정보 보기",
-		"#look.review-list":             "리뷰목록",
-		"#look.review-list.Description": "유저가 받은 리뷰목록 보기",
+		"#look.review-list":             "리뷰-목록",
+		"#look.review-list.Description": "유저가 받은 리뷰 목록 보기",
 
 		// 텍스트
 		"#allow-role.NeedPermissions":  "봇의 권한이 부족합니다 - 역할 관리",

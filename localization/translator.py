@@ -29,18 +29,19 @@ locale = {
 }
 
 commands = {
-    "#allow-role":             "역할-허용",
+    "#admin":                   "admin",
+    "#admin.allow-role":                   "allow role",
     "#look":             "보기",
     "#move":             "옮기기",
     "#review":             "리뷰",
-    "#allow-role.value":             "값",
+    "#admin.allow-role.value":             "값",
     "#.subject":             "대상",
     "#look.info":                    "정보",
-    "#look.review-list":             "리뷰목록",
+    "#look.review-list":             "리뷰 목록",
 }
 
 text = {
-    "#allow-role.Description": "관리자 전용 - 기본값:False",
+    "#admin.allow-role.Description": "관리자 전용 - 기본값:False",
 
     "#look.Description": "무언가 보기",
 
@@ -48,12 +49,13 @@ text = {
 
     "#review.Description": "유저 리뷰하기",
 
-    "#allow-role.value.Description": "값 설정",
+    "#admin.allow-role.Description":       "점수를 역할로 표시합니다. 기본값: False",
+    "#admin.allow-role.value.Description": "값 설정",
 
     "#.subject.Description": "대상 선택",
 
     "#look.info.Description":        "유저 정보 보기",
-    "#look.review-list.Description": "유저가 받은 리뷰목록 보기",
+    "#look.review-list.Description": "유저가 받은 리뷰 목록 보기",
 
     "#allow-role.NeedPermissions":  "봇의 권한이 부족합니다 - 역할 관리",
     "#allow-role.InProgress":       "작업 진행 중",
@@ -92,7 +94,6 @@ def get_translation(text, dest) -> str:
             "parent": parent,
             "contents": [text],
             "mime_type": "text/plain",
-            "source_language_code": "ko",
             "target_language_code": dest
         }
     )

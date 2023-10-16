@@ -5,8 +5,8 @@ import "github.com/bwmarrin/discordgo"
 func init() {
 	data[discordgo.EnglishGB] = map[string]string{
 		// slashcommand outputs
-		"#allow-role":             "allow-role",
-		"#allow-role.Description": "Administrator only - Default: False",
+		"#admin":             "admin",
+		"#admin.Description": "Administrator only",
 
 		"#look":             "look",
 		"#look.Description": "Look something",
@@ -18,8 +18,10 @@ func init() {
 		"#review.Description": "Review user",
 
 		// subcommand outputs
-		"#allow-role.value":             "value",
-		"#allow-role.value.Description": "Set value",
+		"#admin.allow-role":                   "allow-role",
+		"#admin.allow-role.Description":       "Display scores as roles. Default: False",
+		"#admin.allow-role.value":             "value",
+		"#admin.allow-role.value.Description": "Set value",
 
 		"#.subject":             "subject",
 		"#.subject.Description": "Select subject",
