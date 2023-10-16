@@ -1,3 +1,6 @@
+print('Already done for translate')
+exit()
+
 locale = {
     "Danish": 'da',
     "German": 'de',

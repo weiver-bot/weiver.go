@@ -39,7 +39,7 @@ func init() {
 		"#review.lable.Score":                 "スコア",
 		"#review.lable.Title":                 "タイトル",
 		"#review.lable.Content":               "内容",
-		"$review.IsEdited":                    "そのレビューは修正されました",
+		"$review.IsEdited":                    "このレビューは修正されました",
 		"$review.NoAuthor":                    "ここに作成者が存在しないため、削除されたレビューを復元できません",
 		"$review.DM":                          "新しいレビューが作成されました",
 	}
