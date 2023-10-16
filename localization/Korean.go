@@ -26,10 +26,10 @@ func init() {
 		"#.subject":             "대상",
 		"#.subject.Description": "대상 선택",
 
-		"#look.info":                    "정보",
-		"#look.info.Description":        "유저 정보 보기",
-		"#look.review-list":             "리뷰-목록",
-		"#look.review-list.Description": "유저가 받은 리뷰 목록 보기",
+		"#look.info":                "정보",
+		"#look.info.Description":    "유저 정보 보기",
+		"#look.reviews":             "리뷰",
+		"#look.reviews.Description": "대상이 받은 리뷰 보기",
 
 		// 텍스트
 		"#allow-role.NeedPermissions":  "봇의 권한이 부족합니다 - 역할 관리",
@@ -40,10 +40,10 @@ func init() {
 		"#allow-role.proc.Done":        "완료",
 		"#allow-role.Keep":             "바뀐 설정이 없습니다",
 
-		"#look.info.IsNone":            "리뷰 없음",
-		"#look.review-list.IsNone":     "리뷰가 존재하지 않습니다",
-		"#look.review-list.menu.Title": "%s에 대한 리뷰",
-		"#look.review-list.menu.Page":  "%d페이지",
+		"#look.info.IsNone":        "리뷰 없음",
+		"#look.reviews.IsNone":     "리뷰가 존재하지 않습니다",
+		"#look.reviews.menu.Title": "%s에 대한 리뷰",
+		"#look.reviews.menu.Page":  "%d페이지",
 
 		"#move.IsNone": "대상에게 작성한 리뷰가 없습니다",
 		"#move.Move":   "이곳으로 옮기기",

@@ -26,10 +26,10 @@ func init() {
 		"#.subject":             "subject",
 		"#.subject.Description": "Select subject",
 
-		"#look.info":                    "info",
-		"#look.info.Description":        "Look about info",
-		"#look.review-list":             "review-list",
-		"#look.review-list.Description": "Look about review-list of user",
+		"#look.info":                "info",
+		"#look.info.Description":    "Look about info",
+		"#look.reviews":             "reviews",
+		"#look.reviews.Description": "Look about reviews to subject",
 
 		// test outputs
 		"#allow-role.NeedPermissions":  "Bot lacks permissions - Manage Roles",
@@ -40,10 +40,10 @@ func init() {
 		"#allow-role.proc.Done":        "done",
 		"#allow-role.Keep":             "Nothing changed",
 
-		"#look.info.IsNone":            "No reviews",
-		"#look.review-list.IsNone":     "Review not exist",
-		"#look.review-list.menu.Title": "Reviews to %s",
-		"#look.review-list.menu.Page":  "page %d",
+		"#look.info.IsNone":        "No reviews",
+		"#look.reviews.IsNone":     "Review not exist",
+		"#look.reviews.menu.Title": "Reviews to %s",
+		"#look.reviews.menu.Page":  "page %d",
 
 		"#move.IsNone": "No review on this subject",
 		"#move.Move":   "Move here",

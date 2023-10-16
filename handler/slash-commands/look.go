@@ -44,10 +44,10 @@ func init() {
 					},
 				},
 				{
-					Name:                     "review-list",
-					Description:              "review-list_Description",
-					NameLocalizations:        *localization.LoadList("#look.review-list"),
-					DescriptionLocalizations: *localization.LoadList("#look.review-list.Description"),
+					Name:                     "reviews",
+					Description:              "reviews_Description",
+					NameLocalizations:        *localization.LoadList("#look.reviews"),
+					DescriptionLocalizations: *localization.LoadList("#look.reviews.Description"),
 					Type:                     discordgo.ApplicationCommandOptionSubCommand,
 					Options: []*discordgo.ApplicationCommandOption{
 						{
@@ -72,7 +72,7 @@ func init() {
 			switch cmdName {
 			case "info":
 				look_info(s, i, options[0].Options[0].Value.(string))
-			case "review-list":
+			case "reviews":
 				look_reviewList(s, i, options[0].Options[0].Value.(string))
 			}
 		},
@@ -175,7 +175,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 	}
 	if reviews == nil {
 		message := builder.Message(&discordgo.InteractionResponseData{
-			Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#look.review-list.IsNone")),
+			Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#look.reviews.IsNone")),
 			Flags:           discordgo.MessageFlagsEphemeral,
 			AllowedMentions: &discordgo.MessageAllowedMentions{},
 		})
@@ -218,7 +218,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 		}
 
 		data := iter.MessageComponentData()
-		if data.CustomID != "review-list" {
+		if data.CustomID != "reviews" {
 			return
 		}
 
@@ -319,15 +319,15 @@ func BuildSelectMenu(reviews []db.ReviewModel, locale discordgo.Locale, subjectN
 	pageNext := pageNow%pageCount + 1
 
 	selectMenu := builder.SelectMenu().
-		SetCustomID("review-list").
-		SetPlaceholder(fmt.Sprintf(localization.Load(locale, "#look.review-list.menu.Title")+" (%d/%d)", subjectName, pageNow, pageCount))
+		SetCustomID("reviews").
+		SetPlaceholder(fmt.Sprintf(localization.Load(locale, "#look.reviews.menu.Title")+" (%d/%d)", subjectName, pageNow, pageCount))
 
 	if pageCount > 1 {
 		selectMenu.AddOptions(
 			builder.SelectMenuOption().
 				SetLabel("▲").
 				SetValue(fmt.Sprintf("page/back:%d", pageBack)).
-				SetDescription(fmt.Sprintf(localization.Load(locale, "#look.review-list.menu.Page"), pageBack)),
+				SetDescription(fmt.Sprintf(localization.Load(locale, "#look.reviews.menu.Page"), pageBack)),
 		)
 	}
 
@@ -350,7 +350,7 @@ func BuildSelectMenu(reviews []db.ReviewModel, locale discordgo.Locale, subjectN
 			builder.SelectMenuOption().
 				SetLabel("▼").
 				SetValue(fmt.Sprintf("page/next:%d", pageNext)).
-				SetDescription(fmt.Sprintf(localization.Load(locale, "#look.review-list.menu.Page"), pageNext)),
+				SetDescription(fmt.Sprintf(localization.Load(locale, "#look.reviews.menu.Page"), pageNext)),
 		)
 	}
 
