@@ -67,7 +67,7 @@ func init() {
 			cmdName := options[0].Name
 
 			switch cmdName {
-			case "admin":
+			case "allow-role":
 				admin_AllowRole(s, i, options[0].Options)
 			}
 		},
