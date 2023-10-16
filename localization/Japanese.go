@@ -30,17 +30,17 @@ func init() {
 		"#allow-role.Keep":                    "変更設定がありません",
 		"#look.info.IsNone":                   "レビューなし",
 		"#look.review-list.IsNone":            "レビューは存在しません",
-		"#look.review-list.menu.Title":        "％sのレビュー",
-		"#look.review-list.menu.Page":         "％dページ",
+		"#look.review-list.menu.Title":        "%sのレビュー",
+		"#look.review-list.menu.Page":         "%dページ",
 		"#move.IsNone":                        "ターゲットに投稿したレビューはありません",
 		"#move.Move":                          "ここに移動",
 		"#review.SelfReview":                  "自分をレビューできません",
-		"#review.modal.Title":                 "％sレビュー",
+		"#review.modal.Title":                 "%sレビュー",
 		"#review.lable.Score":                 "スコア",
 		"#review.lable.Title":                 "タイトル",
 		"#review.lable.Content":               "内容",
 		"$review.IsEdited":                    "そのレビューは修正されました",
 		"$review.NoAuthor":                    "ここに作成者が存在しないため、削除されたレビューを復元できません",
 		"$review.DM":                          "新しいレビューが作成されました",
-    }
+	}
 }
