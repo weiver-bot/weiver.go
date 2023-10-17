@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Odaberite cilj",
 		"#look.info.Description":              "Pregledajte podatke o korisniku",
 		"#look.reviews.Description":           "Pogledajte recenzije koje je predmet dobio",
-		"#allow-role.NeedPermissions":         "Botu nedostaju dopuštenja - Upravljanje ulogama",
-		"#allow-role.InProgress":              "radovi u tijeku",
-		"#allow-role.proc.Title":              "Modificiraj opcije",
-		"#allow-role.proc.Description":        "Dopusti uloge",
-		"#allow-role.proc.InProgress":         "Postupak",
-		"#allow-role.proc.Done":               "potpuna",
-		"#allow-role.Keep":                    "Nema promjena postavki",
+		"#admin.allow-role.NeedPermissions":   "Botu nedostaju dopuštenja - Upravljanje ulogama",
+		"#admin.allow-role.InProgress":        "radovi u tijeku",
+		"#admin.allow-role.proc.Title":        "Modificiraj opcije",
+		"#admin.allow-role.proc.Description":  "Dopusti uloge",
+		"#admin.allow-role.proc.InProgress":   "Postupak",
+		"#admin.allow-role.proc.Done":         "potpuna",
+		"#admin.allow-role.Keep":              "Nema promjena postavki",
 		"#look.info.IsNone":                   "Nema recenzija",
 		"#look.reviews.IsNone":                "Nema recenzija",
 		"#look.reviews.menu.Title":            "Recenzije za %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Ova recenzija je uređena",
 		"$review.NoAuthor":                    "Izbrisane recenzije nije moguće vratiti jer autor ne postoji ovdje",
 		"$review.DM":                          "Napisana je nova recenzija",
-    }
+	}
 }

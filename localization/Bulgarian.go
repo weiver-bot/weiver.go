@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Изберете цел",
 		"#look.info.Description":              "Вижте потребителска информация",
 		"#look.reviews.Description":           "Вижте отзивите, които обектът е получил",
-		"#allow-role.NeedPermissions":         "На бота липсват разрешения - Управление на роли",
-		"#allow-role.InProgress":              "работа в прогрес",
-		"#allow-role.proc.Title":              "Опции за промяна",
-		"#allow-role.proc.Description":        "Разрешаване на роли",
-		"#allow-role.proc.InProgress":         "Процедура",
-		"#allow-role.proc.Done":               "пълен",
-		"#allow-role.Keep":                    "Няма променени настройки",
+		"#admin.allow-role.NeedPermissions":   "На бота липсват разрешения - Управление на роли",
+		"#admin.allow-role.InProgress":        "работа в прогрес",
+		"#admin.allow-role.proc.Title":        "Опции за промяна",
+		"#admin.allow-role.proc.Description":  "Разрешаване на роли",
+		"#admin.allow-role.proc.InProgress":   "Процедура",
+		"#admin.allow-role.proc.Done":         "пълен",
+		"#admin.allow-role.Keep":              "Няма променени настройки",
 		"#look.info.IsNone":                   "Няма отзиви",
 		"#look.reviews.IsNone":                "Няма отзиви",
 		"#look.reviews.menu.Title":            "Отзиви за %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Тази рецензия е редактирана",
 		"$review.NoAuthor":                    "Изтритите рецензии не могат да бъдат възстановени, защото авторът не съществува тук",
 		"$review.DM":                          "Написана е нова рецензия",
-    }
+	}
 }

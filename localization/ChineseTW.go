@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "選擇目標",
 		"#look.info.Description":              "查看使用者資訊",
 		"#look.reviews.Description":           "查看該主題收到的評論",
-		"#allow-role.NeedPermissions":         "機器人缺乏權限 - 管理角色",
-		"#allow-role.InProgress":              "工作正在進行中",
-		"#allow-role.proc.Title":              "修改選項",
-		"#allow-role.proc.Description":        "允許角色",
-		"#allow-role.proc.InProgress":         "論文集",
-		"#allow-role.proc.Done":               "完全的",
-		"#allow-role.Keep":                    "沒有更改設定",
+		"#admin.allow-role.NeedPermissions":   "機器人缺乏權限 - 管理角色",
+		"#admin.allow-role.InProgress":        "工作正在進行中",
+		"#admin.allow-role.proc.Title":        "修改選項",
+		"#admin.allow-role.proc.Description":  "允許角色",
+		"#admin.allow-role.proc.InProgress":   "論文集",
+		"#admin.allow-role.proc.Done":         "完全的",
+		"#admin.allow-role.Keep":              "沒有更改設定",
 		"#look.info.IsNone":                   "沒有評論",
 		"#look.reviews.IsNone":                "沒有評論",
 		"#look.reviews.menu.Title":            "對 %s 的評論",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "此評論已編輯",
 		"$review.NoAuthor":                    "已刪除的評論無法恢復，因為這裡不存在作者",
 		"$review.DM":                          "已撰寫新評論",
-    }
+	}
 }

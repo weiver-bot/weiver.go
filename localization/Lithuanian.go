@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Pasirinkite tikslą",
 		"#look.info.Description":              "Peržiūrėkite vartotojo informaciją",
 		"#look.reviews.Description":           "Peržiūrėkite atsiliepimus, kurių subjektas gavo",
-		"#allow-role.NeedPermissions":         "Botui trūksta leidimų – Tvarkyti vaidmenis",
-		"#allow-role.InProgress":              "darbas vyksta",
-		"#allow-role.proc.Title":              "Modifikuoti parinktis",
-		"#allow-role.proc.Description":        "Leisti vaidmenis",
-		"#allow-role.proc.InProgress":         "Vykdoma",
-		"#allow-role.proc.Done":               "užbaigti",
-		"#allow-role.Keep":                    "Jokie nustatymai nepasikeitė",
+		"#admin.allow-role.NeedPermissions":   "Botui trūksta leidimų – Tvarkyti vaidmenis",
+		"#admin.allow-role.InProgress":        "darbas vyksta",
+		"#admin.allow-role.proc.Title":        "Modifikuoti parinktis",
+		"#admin.allow-role.proc.Description":  "Leisti vaidmenis",
+		"#admin.allow-role.proc.InProgress":   "Vykdoma",
+		"#admin.allow-role.proc.Done":         "užbaigti",
+		"#admin.allow-role.Keep":              "Jokie nustatymai nepasikeitė",
 		"#look.info.IsNone":                   "Nėra atsiliepimų",
 		"#look.reviews.IsNone":                "Apžvalgų nėra",
 		"#look.reviews.menu.Title":            "Atsiliepimai apie %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Ši apžvalga buvo redaguota",
 		"$review.NoAuthor":                    "Ištrintų atsiliepimų atkurti negalima, nes autoriaus čia nėra",
 		"$review.DM":                          "Parašyta nauja apžvalga",
-    }
+	}
 }

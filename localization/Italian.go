@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Seleziona destinazione",
 		"#look.info.Description":              "Visualizza le informazioni dell'utente",
 		"#look.reviews.Description":           "Visualizza le recensioni ricevute dall'argomento",
-		"#allow-role.NeedPermissions":         "Il bot non dispone delle autorizzazioni: Gestisci ruoli",
-		"#allow-role.InProgress":              "lavori in corso",
-		"#allow-role.proc.Title":              "Modifica opzioni",
-		"#allow-role.proc.Description":        "Consenti ruoli",
-		"#allow-role.proc.InProgress":         "Procedere",
-		"#allow-role.proc.Done":               "completare",
-		"#allow-role.Keep":                    "Nessuna impostazione modificata",
+		"#admin.allow-role.NeedPermissions":   "Il bot non dispone delle autorizzazioni: Gestisci ruoli",
+		"#admin.allow-role.InProgress":        "lavori in corso",
+		"#admin.allow-role.proc.Title":        "Modifica opzioni",
+		"#admin.allow-role.proc.Description":  "Consenti ruoli",
+		"#admin.allow-role.proc.InProgress":   "Procedere",
+		"#admin.allow-role.proc.Done":         "completare",
+		"#admin.allow-role.Keep":              "Nessuna impostazione modificata",
 		"#look.info.IsNone":                   "Nessuna recensione",
 		"#look.reviews.IsNone":                "Non ci sono recensioni",
 		"#look.reviews.menu.Title":            "Recensioni per %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Questa recensione è stata modificata",
 		"$review.NoAuthor":                    "Le recensioni cancellate non possono essere ripristinate perché l'autore non esiste qui",
 		"$review.DM":                          "È stata scritta una nuova recensione",
-    }
+	}
 }

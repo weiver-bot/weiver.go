@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Επιλέξτε στόχο",
 		"#look.info.Description":              "Προβολή πληροφοριών χρήστη",
 		"#look.reviews.Description":           "Δείτε τις κριτικές που έχει λάβει το θέμα",
-		"#allow-role.NeedPermissions":         "Το ρομπότ δεν διαθέτει δικαιώματα - Διαχείριση ρόλων",
-		"#allow-role.InProgress":              "εργασία σε εξέλιξη",
-		"#allow-role.proc.Title":              "Τροποποίηση Επιλογών",
-		"#allow-role.proc.Description":        "Επιτρέψτε ρόλους",
-		"#allow-role.proc.InProgress":         "Ενέργεια",
-		"#allow-role.proc.Done":               "πλήρης",
-		"#allow-role.Keep":                    "Δεν άλλαξαν ρυθμίσεις",
+		"#admin.allow-role.NeedPermissions":   "Το ρομπότ δεν διαθέτει δικαιώματα - Διαχείριση ρόλων",
+		"#admin.allow-role.InProgress":        "εργασία σε εξέλιξη",
+		"#admin.allow-role.proc.Title":        "Τροποποίηση Επιλογών",
+		"#admin.allow-role.proc.Description":  "Επιτρέψτε ρόλους",
+		"#admin.allow-role.proc.InProgress":   "Ενέργεια",
+		"#admin.allow-role.proc.Done":         "πλήρης",
+		"#admin.allow-role.Keep":              "Δεν άλλαξαν ρυθμίσεις",
 		"#look.info.IsNone":                   "Δεν υπάρχουν κριτικές",
 		"#look.reviews.IsNone":                "Δεν υπάρχουν κριτικές",
 		"#look.reviews.menu.Title":            "Κριτικές για %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Αυτή η κριτική έχει τροποποιηθεί",
 		"$review.NoAuthor":                    "Δεν είναι δυνατή η επαναφορά των διαγραμμένων κριτικών επειδή ο συγγραφέας δεν υπάρχει εδώ",
 		"$review.DM":                          "Μια νέα κριτική έχει γραφτεί",
-    }
+	}
 }

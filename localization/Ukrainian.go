@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Виберіть ціль",
 		"#look.info.Description":              "Переглянути інформацію про користувача",
 		"#look.reviews.Description":           "Подивіться відгуки, які отримав суб’єкт",
-		"#allow-role.NeedPermissions":         "Боту бракує дозволів - Керувати ролями",
-		"#allow-role.InProgress":              "в роботі",
-		"#allow-role.proc.Title":              "Змінити параметри",
-		"#allow-role.proc.Description":        "Дозволити ролі",
-		"#allow-role.proc.InProgress":         "Продовження",
-		"#allow-role.proc.Done":               "повний",
-		"#allow-role.Keep":                    "Налаштування не змінено",
+		"#admin.allow-role.NeedPermissions":   "Боту бракує дозволів - Керувати ролями",
+		"#admin.allow-role.InProgress":        "в роботі",
+		"#admin.allow-role.proc.Title":        "Змінити параметри",
+		"#admin.allow-role.proc.Description":  "Дозволити ролі",
+		"#admin.allow-role.proc.InProgress":   "Продовження",
+		"#admin.allow-role.proc.Done":         "повний",
+		"#admin.allow-role.Keep":              "Налаштування не змінено",
 		"#look.info.IsNone":                   "Немає відгуків",
 		"#look.reviews.IsNone":                "Відгуків немає",
 		"#look.reviews.menu.Title":            "Відгуки для %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Цей огляд було відредаговано",
 		"$review.NoAuthor":                    "Видалені відгуки не можна відновити, оскільки автора тут немає",
 		"$review.DM":                          "Написано новий відгук",
-    }
+	}
 }

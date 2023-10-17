@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Vælg mål",
 		"#look.info.Description":              "Se brugeroplysninger",
 		"#look.reviews.Description":           "Se de anmeldelser, emnet har modtaget",
-		"#allow-role.NeedPermissions":         "Bot mangler tilladelser - Administrer roller",
-		"#allow-role.InProgress":              "arbejde der er i gang",
-		"#allow-role.proc.Title":              "Rediger indstillinger",
-		"#allow-role.proc.Description":        "Tillad roller",
-		"#allow-role.proc.InProgress":         "Fortsætter",
-		"#allow-role.proc.Done":               "komplet",
-		"#allow-role.Keep":                    "Ingen indstillinger ændret",
+		"#admin.allow-role.NeedPermissions":   "Bot mangler tilladelser - Administrer roller",
+		"#admin.allow-role.InProgress":        "arbejde der er i gang",
+		"#admin.allow-role.proc.Title":        "Rediger indstillinger",
+		"#admin.allow-role.proc.Description":  "Tillad roller",
+		"#admin.allow-role.proc.InProgress":   "Fortsætter",
+		"#admin.allow-role.proc.Done":         "komplet",
+		"#admin.allow-role.Keep":              "Ingen indstillinger ændret",
 		"#look.info.IsNone":                   "Ingen anmeldelser",
 		"#look.reviews.IsNone":                "Der er ingen anmeldelser",
 		"#look.reviews.menu.Title":            "Anmeldelser for %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Denne anmeldelse er blevet redigeret",
 		"$review.NoAuthor":                    "Slettede anmeldelser kan ikke gendannes, fordi forfatteren ikke findes her",
 		"$review.DM":                          "Der er skrevet en ny anmeldelse",
-    }
+	}
 }

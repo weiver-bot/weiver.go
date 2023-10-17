@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Chọn mục tiêu",
 		"#look.info.Description":              "Xem thông tin người dùng",
 		"#look.reviews.Description":           "Xem các đánh giá mà chủ đề đã nhận được",
-		"#allow-role.NeedPermissions":         "Bot thiếu quyền - Quản lý vai trò",
-		"#allow-role.InProgress":              "công việc đang tiến triển",
-		"#allow-role.proc.Title":              "Sửa đổi tùy chọn",
-		"#allow-role.proc.Description":        "Cho phép vai trò",
-		"#allow-role.proc.InProgress":         "Đang tiến hành",
-		"#allow-role.proc.Done":               "hoàn thành",
-		"#allow-role.Keep":                    "Không có cài đặt nào được thay đổi",
+		"#admin.allow-role.NeedPermissions":   "Bot thiếu quyền - Quản lý vai trò",
+		"#admin.allow-role.InProgress":        "công việc đang tiến triển",
+		"#admin.allow-role.proc.Title":        "Sửa đổi tùy chọn",
+		"#admin.allow-role.proc.Description":  "Cho phép vai trò",
+		"#admin.allow-role.proc.InProgress":   "Đang tiến hành",
+		"#admin.allow-role.proc.Done":         "hoàn thành",
+		"#admin.allow-role.Keep":              "Không có cài đặt nào được thay đổi",
 		"#look.info.IsNone":                   "Không có bài đánh giá nào",
 		"#look.reviews.IsNone":                "Không có đánh giá nào",
 		"#look.reviews.menu.Title":            "Đánh giá cho %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Đánh giá này đã được chỉnh sửa",
 		"$review.NoAuthor":                    "Không thể khôi phục đánh giá đã xóa vì tác giả không tồn tại ở đây",
 		"$review.DM":                          "Một đánh giá mới đã được viết",
-    }
+	}
 }

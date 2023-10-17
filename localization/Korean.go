@@ -32,13 +32,13 @@ func init() {
 		"#look.reviews.Description": "대상이 받은 리뷰 보기",
 
 		// 텍스트
-		"#allow-role.NeedPermissions":  "봇의 권한이 부족합니다 - 역할 관리",
-		"#allow-role.InProgress":       "작업 진행 중",
-		"#allow-role.proc.Title":       "옵션 수정",
-		"#allow-role.proc.Description": "역할 허용",
-		"#allow-role.proc.InProgress":  "진행 중",
-		"#allow-role.proc.Done":        "완료",
-		"#allow-role.Keep":             "바뀐 설정이 없습니다",
+		"#admin.allow-role.NeedPermissions":  "봇의 권한이 부족합니다 - 역할 관리",
+		"#admin.allow-role.InProgress":       "작업 진행 중",
+		"#admin.allow-role.proc.Title":       "옵션 수정",
+		"#admin.allow-role.proc.Description": "역할 허용",
+		"#admin.allow-role.proc.InProgress":  "진행 중",
+		"#admin.allow-role.proc.Done":        "완료",
+		"#admin.allow-role.Keep":             "바뀐 설정이 없습니다",
 
 		"#look.info.IsNone":        "리뷰 없음",
 		"#look.reviews.IsNone":     "리뷰가 존재하지 않습니다",

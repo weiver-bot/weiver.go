@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Wybierz cel",
 		"#look.info.Description":              "Wyświetl informacje o użytkowniku",
 		"#look.reviews.Description":           "Zobacz recenzje, jakie otrzymał temat",
-		"#allow-role.NeedPermissions":         "Bot nie ma uprawnień - Zarządzaj rolami",
-		"#allow-role.InProgress":              "Praca w toku",
-		"#allow-role.proc.Title":              "Zmień opcje",
-		"#allow-role.proc.Description":        "Zezwalaj na role",
-		"#allow-role.proc.InProgress":         "Postępowanie",
-		"#allow-role.proc.Done":               "kompletny",
-		"#allow-role.Keep":                    "Żadne ustawienia nie uległy zmianie",
+		"#admin.allow-role.NeedPermissions":   "Bot nie ma uprawnień - Zarządzaj rolami",
+		"#admin.allow-role.InProgress":        "Praca w toku",
+		"#admin.allow-role.proc.Title":        "Zmień opcje",
+		"#admin.allow-role.proc.Description":  "Zezwalaj na role",
+		"#admin.allow-role.proc.InProgress":   "Postępowanie",
+		"#admin.allow-role.proc.Done":         "kompletny",
+		"#admin.allow-role.Keep":              "Żadne ustawienia nie uległy zmianie",
 		"#look.info.IsNone":                   "Brak recenzji",
 		"#look.reviews.IsNone":                "Brak recenzji",
 		"#look.reviews.menu.Title":            "Recenzje %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Ta recenzja została poprawiona",
 		"$review.NoAuthor":                    "Usuniętych recenzji nie można przywrócić, ponieważ autor tutaj nie istnieje",
 		"$review.DM":                          "Napisano nową recenzję",
-    }
+	}
 }

@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "เลือกเป้าหมาย",
 		"#look.info.Description":              "ดูข้อมูลผู้ใช้",
 		"#look.reviews.Description":           "ดูบทวิจารณ์ที่หัวข้อได้รับ",
-		"#allow-role.NeedPermissions":         "บอทขาดสิทธิ์ - จัดการบทบาท",
-		"#allow-role.InProgress":              "อยู่ระหว่างดำเนินการ",
-		"#allow-role.proc.Title":              "แก้ไขตัวเลือก",
-		"#allow-role.proc.Description":        "อนุญาตบทบาท",
-		"#allow-role.proc.InProgress":         "กำลังดำเนินการ",
-		"#allow-role.proc.Done":               "สมบูรณ์",
-		"#allow-role.Keep":                    "ไม่มีการเปลี่ยนแปลงการตั้งค่า",
+		"#admin.allow-role.NeedPermissions":   "บอทขาดสิทธิ์ - จัดการบทบาท",
+		"#admin.allow-role.InProgress":        "อยู่ระหว่างดำเนินการ",
+		"#admin.allow-role.proc.Title":        "แก้ไขตัวเลือก",
+		"#admin.allow-role.proc.Description":  "อนุญาตบทบาท",
+		"#admin.allow-role.proc.InProgress":   "กำลังดำเนินการ",
+		"#admin.allow-role.proc.Done":         "สมบูรณ์",
+		"#admin.allow-role.Keep":              "ไม่มีการเปลี่ยนแปลงการตั้งค่า",
 		"#look.info.IsNone":                   "ไม่มีบทวิจารณ์",
 		"#look.reviews.IsNone":                "ไม่มีบทวิจารณ์",
 		"#look.reviews.menu.Title":            "บทวิจารณ์สำหรับ %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "รีวิวนี้ได้รับการแก้ไขแล้ว",
 		"$review.NoAuthor":                    "บทวิจารณ์ที่ถูกลบไม่สามารถกู้คืนได้เนื่องจากไม่มีผู้เขียนอยู่ที่นี่",
 		"$review.DM":                          "มีการเขียนบทวิจารณ์ใหม่แล้ว",
-    }
+	}
 }

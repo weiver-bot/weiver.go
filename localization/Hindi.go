@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "लक्ष्य चुनें",
 		"#look.info.Description":              "उपयोगकर्ता जानकारी देखें",
 		"#look.reviews.Description":           "विषय को प्राप्त समीक्षाएँ देखें",
-		"#allow-role.NeedPermissions":         "बॉट में अनुमतियों का अभाव है - भूमिकाएँ प्रबंधित करें",
-		"#allow-role.InProgress":              "कार्य प्रगति पर है",
-		"#allow-role.proc.Title":              "विकल्प संशोधित करें",
-		"#allow-role.proc.Description":        "भूमिकाओं की अनुमति दें",
-		"#allow-role.proc.InProgress":         "कार्यवाही",
-		"#allow-role.proc.Done":               "पूरा",
-		"#allow-role.Keep":                    "कोई सेटिंग नहीं बदली",
+		"#admin.allow-role.NeedPermissions":   "बॉट में अनुमतियों का अभाव है - भूमिकाएँ प्रबंधित करें",
+		"#admin.allow-role.InProgress":        "कार्य प्रगति पर है",
+		"#admin.allow-role.proc.Title":        "विकल्प संशोधित करें",
+		"#admin.allow-role.proc.Description":  "भूमिकाओं की अनुमति दें",
+		"#admin.allow-role.proc.InProgress":   "कार्यवाही",
+		"#admin.allow-role.proc.Done":         "पूरा",
+		"#admin.allow-role.Keep":              "कोई सेटिंग नहीं बदली",
 		"#look.info.IsNone":                   "कोई समीक्षा नहीं",
 		"#look.reviews.IsNone":                "कोई समीक्षा नहीं है",
 		"#look.reviews.menu.Title":            "%s के लिए समीक्षाएँ",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "यह समीक्षा संपादित की गई है",
 		"$review.NoAuthor":                    "हटाई गई समीक्षाओं को पुनर्स्थापित नहीं किया जा सकता क्योंकि लेखक यहां मौजूद नहीं है",
 		"$review.DM":                          "एक नई समीक्षा लिखी गई है",
-    }
+	}
 }

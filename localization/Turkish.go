@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Hedef seç",
 		"#look.info.Description":              "Kullanıcı bilgilerini görüntüle",
 		"#look.reviews.Description":           "Konunun aldığı değerlendirmeleri görün",
-		"#allow-role.NeedPermissions":         "Botun izinleri yok - Rolleri Yönet",
-		"#allow-role.InProgress":              "devam eden çalışma",
-		"#allow-role.proc.Title":              "Seçenekleri Değiştir",
-		"#allow-role.proc.Description":        "Rollere izin ver",
-		"#allow-role.proc.InProgress":         "devam ediyor",
-		"#allow-role.proc.Done":               "tamamlamak",
-		"#allow-role.Keep":                    "Hiçbir ayar değişmedi",
+		"#admin.allow-role.NeedPermissions":   "Botun izinleri yok - Rolleri Yönet",
+		"#admin.allow-role.InProgress":        "devam eden çalışma",
+		"#admin.allow-role.proc.Title":        "Seçenekleri Değiştir",
+		"#admin.allow-role.proc.Description":  "Rollere izin ver",
+		"#admin.allow-role.proc.InProgress":   "devam ediyor",
+		"#admin.allow-role.proc.Done":         "tamamlamak",
+		"#admin.allow-role.Keep":              "Hiçbir ayar değişmedi",
 		"#look.info.IsNone":                   "Yorum yok",
 		"#look.reviews.IsNone":                "Hiç yorum yok",
 		"#look.reviews.menu.Title":            "%s için incelemeler",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Bu inceleme düzenlendi",
 		"$review.NoAuthor":                    "Silinen yorumlar geri yüklenemez çünkü yazar burada mevcut değildir",
 		"$review.DM":                          "Yeni bir inceleme yazıldı",
-    }
+	}
 }

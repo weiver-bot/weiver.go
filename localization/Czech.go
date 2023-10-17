@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Vyberte cíl",
 		"#look.info.Description":              "Zobrazit informace o uživateli",
 		"#look.reviews.Description":           "Podívejte se na recenze, které subjekt obdržel",
-		"#allow-role.NeedPermissions":         "Bot postrádá oprávnění – Správa rolí",
-		"#allow-role.InProgress":              "probíhající práce",
-		"#allow-role.proc.Title":              "Upravit možnosti",
-		"#allow-role.proc.Description":        "Povolit role",
-		"#allow-role.proc.InProgress":         "Pokračování",
-		"#allow-role.proc.Done":               "kompletní",
-		"#allow-role.Keep":                    "Žádná změna nastavení",
+		"#admin.allow-role.NeedPermissions":   "Bot postrádá oprávnění – Správa rolí",
+		"#admin.allow-role.InProgress":        "probíhající práce",
+		"#admin.allow-role.proc.Title":        "Upravit možnosti",
+		"#admin.allow-role.proc.Description":  "Povolit role",
+		"#admin.allow-role.proc.InProgress":   "Pokračování",
+		"#admin.allow-role.proc.Done":         "kompletní",
+		"#admin.allow-role.Keep":              "Žádná změna nastavení",
 		"#look.info.IsNone":                   "Žádné recenze",
 		"#look.reviews.IsNone":                "Nejsou žádné recenze",
 		"#look.reviews.menu.Title":            "Recenze pro %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Tato recenze byla upravena",
 		"$review.NoAuthor":                    "Smazané recenze nelze obnovit, protože zde autor neexistuje",
 		"$review.DM":                          "Byla napsána nová recenze",
-    }
+	}
 }

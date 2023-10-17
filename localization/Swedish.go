@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Välj mål",
 		"#look.info.Description":              "Visa användarinformation",
 		"#look.reviews.Description":           "Se de recensioner ämnet har fått",
-		"#allow-role.NeedPermissions":         "Bot saknar behörigheter - Hantera roller",
-		"#allow-role.InProgress":              "pågående arbete",
-		"#allow-role.proc.Title":              "Ändra alternativ",
-		"#allow-role.proc.Description":        "Tillåt roller",
-		"#allow-role.proc.InProgress":         "Förfarande",
-		"#allow-role.proc.Done":               "komplett",
-		"#allow-role.Keep":                    "Inga inställningar har ändrats",
+		"#admin.allow-role.NeedPermissions":   "Bot saknar behörigheter - Hantera roller",
+		"#admin.allow-role.InProgress":        "pågående arbete",
+		"#admin.allow-role.proc.Title":        "Ändra alternativ",
+		"#admin.allow-role.proc.Description":  "Tillåt roller",
+		"#admin.allow-role.proc.InProgress":   "Förfarande",
+		"#admin.allow-role.proc.Done":         "komplett",
+		"#admin.allow-role.Keep":              "Inga inställningar har ändrats",
 		"#look.info.IsNone":                   "Inga recensioner",
 		"#look.reviews.IsNone":                "Det finns inga recensioner",
 		"#look.reviews.menu.Title":            "Recensioner för %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Denna recension har redigerats",
 		"$review.NoAuthor":                    "Raderade recensioner kan inte återställas eftersom författaren inte finns här",
 		"$review.DM":                          "En ny recension har skrivits",
-    }
+	}
 }

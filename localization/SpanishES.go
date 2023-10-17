@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Seleccione un objetivo",
 		"#look.info.Description":              "Ver información del usuario",
 		"#look.reviews.Description":           "Ver las reseñas que ha recibido el tema",
-		"#allow-role.NeedPermissions":         "El bot carece de permisos - Administrar roles",
-		"#allow-role.InProgress":              "trabajo en progreso",
-		"#allow-role.proc.Title":              "Modificar opciones",
-		"#allow-role.proc.Description":        "Permitir roles",
-		"#allow-role.proc.InProgress":         "Proceder",
-		"#allow-role.proc.Done":               "completo",
-		"#allow-role.Keep":                    "No se ha cambiado ninguna configuración",
+		"#admin.allow-role.NeedPermissions":   "El bot carece de permisos - Administrar roles",
+		"#admin.allow-role.InProgress":        "trabajo en progreso",
+		"#admin.allow-role.proc.Title":        "Modificar opciones",
+		"#admin.allow-role.proc.Description":  "Permitir roles",
+		"#admin.allow-role.proc.InProgress":   "Proceder",
+		"#admin.allow-role.proc.Done":         "completo",
+		"#admin.allow-role.Keep":              "No se ha cambiado ninguna configuración",
 		"#look.info.IsNone":                   "Sin reseñas",
 		"#look.reviews.IsNone":                "No hay reseñas",
 		"#look.reviews.menu.Title":            "Reseñas de %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Esta reseña ha sido editada.",
 		"$review.NoAuthor":                    "Las reseñas eliminadas no se pueden restaurar porque el autor no existe aquí",
 		"$review.DM":                          "Se ha escrito una nueva reseña.",
-    }
+	}
 }

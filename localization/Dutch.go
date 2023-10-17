@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Selecteer doel",
 		"#look.info.Description":              "Bekijk gebruikersinformatie",
 		"#look.reviews.Description":           "Bekijk de beoordelingen die het onderwerp heeft ontvangen",
-		"#allow-role.NeedPermissions":         "Bot heeft geen rechten - Beheer rollen",
-		"#allow-role.InProgress":              "lopende werkzaamheden",
-		"#allow-role.proc.Title":              "Opties wijzigen",
-		"#allow-role.proc.Description":        "Rollen toestaan",
-		"#allow-role.proc.InProgress":         "Doorgaan",
-		"#allow-role.proc.Done":               "compleet",
-		"#allow-role.Keep":                    "Er zijn geen instellingen gewijzigd",
+		"#admin.allow-role.NeedPermissions":   "Bot heeft geen rechten - Beheer rollen",
+		"#admin.allow-role.InProgress":        "lopende werkzaamheden",
+		"#admin.allow-role.proc.Title":        "Opties wijzigen",
+		"#admin.allow-role.proc.Description":  "Rollen toestaan",
+		"#admin.allow-role.proc.InProgress":   "Doorgaan",
+		"#admin.allow-role.proc.Done":         "compleet",
+		"#admin.allow-role.Keep":              "Er zijn geen instellingen gewijzigd",
 		"#look.info.IsNone":                   "Geen beoordelingen",
 		"#look.reviews.IsNone":                "Er zijn geen beoordelingen",
 		"#look.reviews.menu.Title":            "Beoordelingen voor %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Deze recensie is aangepast",
 		"$review.NoAuthor":                    "Verwijderde recensies kunnen niet worden hersteld omdat de auteur hier niet bestaat",
 		"$review.DM":                          "Er is een nieuwe recensie geschreven",
-    }
+	}
 }

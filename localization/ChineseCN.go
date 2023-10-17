@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "选择目标",
 		"#look.info.Description":              "查看用户信息",
 		"#look.reviews.Description":           "查看该主题收到的评论",
-		"#allow-role.NeedPermissions":         "机器人缺乏权限 - 管理角色",
-		"#allow-role.InProgress":              "工作正在进行中",
-		"#allow-role.proc.Title":              "修改选项",
-		"#allow-role.proc.Description":        "允许角色",
-		"#allow-role.proc.InProgress":         "论文集",
-		"#allow-role.proc.Done":               "完全的",
-		"#allow-role.Keep":                    "没有更改设置",
+		"#admin.allow-role.NeedPermissions":   "机器人缺乏权限 - 管理角色",
+		"#admin.allow-role.InProgress":        "工作正在进行中",
+		"#admin.allow-role.proc.Title":        "修改选项",
+		"#admin.allow-role.proc.Description":  "允许角色",
+		"#admin.allow-role.proc.InProgress":   "论文集",
+		"#admin.allow-role.proc.Done":         "完全的",
+		"#admin.allow-role.Keep":              "没有更改设置",
 		"#look.info.IsNone":                   "没有评论",
 		"#look.reviews.IsNone":                "没有评论",
 		"#look.reviews.menu.Title":            "对 %s 的评论",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "此评论已编辑",
 		"$review.NoAuthor":                    "已删除的评论无法恢复，因为这里不存在作者",
 		"$review.DM":                          "已撰写新评论",
-    }
+	}
 }

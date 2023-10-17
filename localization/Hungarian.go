@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Válassza ki a célt",
 		"#look.info.Description":              "Felhasználói adatok megtekintése",
 		"#look.reviews.Description":           "Tekintse meg az alany által kapott értékeléseket",
-		"#allow-role.NeedPermissions":         "A robotnak nincsenek engedélyei – Szerepkörök kezelése",
-		"#allow-role.InProgress":              "munka folyamatban",
-		"#allow-role.proc.Title":              "Beállítások módosítása",
-		"#allow-role.proc.Description":        "Szerepek engedélyezése",
-		"#allow-role.proc.InProgress":         "Folytatás",
-		"#allow-role.proc.Done":               "teljes",
-		"#allow-role.Keep":                    "A beállítások nem változtak",
+		"#admin.allow-role.NeedPermissions":   "A robotnak nincsenek engedélyei – Szerepkörök kezelése",
+		"#admin.allow-role.InProgress":        "munka folyamatban",
+		"#admin.allow-role.proc.Title":        "Beállítások módosítása",
+		"#admin.allow-role.proc.Description":  "Szerepek engedélyezése",
+		"#admin.allow-role.proc.InProgress":   "Folytatás",
+		"#admin.allow-role.proc.Done":         "teljes",
+		"#admin.allow-role.Keep":              "A beállítások nem változtak",
 		"#look.info.IsNone":                   "Nincs vélemény",
 		"#look.reviews.IsNone":                "Nincsenek értékelések",
 		"#look.reviews.menu.Title":            "Vélemények a következőről: %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Ezt a véleményt szerkesztették",
 		"$review.NoAuthor":                    "A törölt véleményeket nem lehet visszaállítani, mert a szerző nem létezik itt",
 		"$review.DM":                          "Új értékelés készült",
-    }
+	}
 }

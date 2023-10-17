@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Выберите цель",
 		"#look.info.Description":              "Просмотр информации о пользователе",
 		"#look.reviews.Description":           "Посмотрите отзывы, полученные субъектом",
-		"#allow-role.NeedPermissions":         "У бота нет разрешений – Управление ролями",
-		"#allow-role.InProgress":              "работа в процессе",
-		"#allow-role.proc.Title":              "Изменить параметры",
-		"#allow-role.proc.Description":        "Разрешить роли",
-		"#allow-role.proc.InProgress":         "Судебное разбирательство",
-		"#allow-role.proc.Done":               "полный",
-		"#allow-role.Keep":                    "Настройки не изменены",
+		"#admin.allow-role.NeedPermissions":   "У бота нет разрешений – Управление ролями",
+		"#admin.allow-role.InProgress":        "работа в процессе",
+		"#admin.allow-role.proc.Title":        "Изменить параметры",
+		"#admin.allow-role.proc.Description":  "Разрешить роли",
+		"#admin.allow-role.proc.InProgress":   "Судебное разбирательство",
+		"#admin.allow-role.proc.Done":         "полный",
+		"#admin.allow-role.Keep":              "Настройки не изменены",
 		"#look.info.IsNone":                   "Нет отзывов",
 		"#look.reviews.IsNone":                "Нет отзывов",
 		"#look.reviews.menu.Title":            "Отзывы для %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Этот отзыв был отредактирован",
 		"$review.NoAuthor":                    "Удаленные отзывы невозможно восстановить, поскольку автора здесь не существует.",
 		"$review.DM":                          "Написан новый отзыв",
-    }
+	}
 }

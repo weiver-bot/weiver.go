@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Ziel auswählen",
 		"#look.info.Description":              "Benutzerinformationen anzeigen",
 		"#look.reviews.Description":           "Sehen Sie sich die Bewertungen an, die das Thema erhalten hat",
-		"#allow-role.NeedPermissions":         "Dem Bot fehlen Berechtigungen – Rollen verwalten",
-		"#allow-role.InProgress":              "in Arbeit",
-		"#allow-role.proc.Title":              "Optionen ändern",
-		"#allow-role.proc.Description":        "Rollen zulassen",
-		"#allow-role.proc.InProgress":         "Weiter",
-		"#allow-role.proc.Done":               "vollständig",
-		"#allow-role.Keep":                    "Keine Einstellungen geändert",
+		"#admin.allow-role.NeedPermissions":   "Dem Bot fehlen Berechtigungen – Rollen verwalten",
+		"#admin.allow-role.InProgress":        "in Arbeit",
+		"#admin.allow-role.proc.Title":        "Optionen ändern",
+		"#admin.allow-role.proc.Description":  "Rollen zulassen",
+		"#admin.allow-role.proc.InProgress":   "Weiter",
+		"#admin.allow-role.proc.Done":         "vollständig",
+		"#admin.allow-role.Keep":              "Keine Einstellungen geändert",
 		"#look.info.IsNone":                   "Keine Bewertungen",
 		"#look.reviews.IsNone":                "Es gibt keine Bewertungen",
 		"#look.reviews.menu.Title":            "Bewertungen für %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Diese Rezension wurde bearbeitet",
 		"$review.NoAuthor":                    "Gelöschte Rezensionen können nicht wiederhergestellt werden, da der Autor hier nicht existiert",
 		"$review.DM":                          "Eine neue Rezension wurde verfasst",
-    }
+	}
 }

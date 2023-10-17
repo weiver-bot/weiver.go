@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Selectați ținta",
 		"#look.info.Description":              "Vizualizați informații despre utilizator",
 		"#look.reviews.Description":           "Vezi recenziile primite de subiect",
-		"#allow-role.NeedPermissions":         "Bot nu are permisiuni - Gestionați roluri",
-		"#allow-role.InProgress":              "lucru în curs",
-		"#allow-role.proc.Title":              "Modificați opțiuni",
-		"#allow-role.proc.Description":        "Permite roluri",
-		"#allow-role.proc.InProgress":         "Procedură",
-		"#allow-role.proc.Done":               "complet",
-		"#allow-role.Keep":                    "Nu s-au schimbat setări",
+		"#admin.allow-role.NeedPermissions":   "Bot nu are permisiuni - Gestionați roluri",
+		"#admin.allow-role.InProgress":        "lucru în curs",
+		"#admin.allow-role.proc.Title":        "Modificați opțiuni",
+		"#admin.allow-role.proc.Description":  "Permite roluri",
+		"#admin.allow-role.proc.InProgress":   "Procedură",
+		"#admin.allow-role.proc.Done":         "complet",
+		"#admin.allow-role.Keep":              "Nu s-au schimbat setări",
 		"#look.info.IsNone":                   "Nicio recenzie",
 		"#look.reviews.IsNone":                "Nu există recenzii",
 		"#look.reviews.menu.Title":            "Recenzii pentru %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Această recenzie a fost editată",
 		"$review.NoAuthor":                    "Recenziile șterse nu pot fi restaurate deoarece autorul nu există aici",
 		"$review.DM":                          "A fost scrisă o nouă recenzie",
-    }
+	}
 }

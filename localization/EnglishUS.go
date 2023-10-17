@@ -32,13 +32,13 @@ func init() {
 		"#look.reviews.Description": "Look reviews the subject has received",
 
 		// test outputs
-		"#allow-role.NeedPermissions":  "Bot lacks permissions - Manage Roles",
-		"#allow-role.InProgress":       "Process is in progress",
-		"#allow-role.proc.Title":       "Update option",
-		"#allow-role.proc.Description": "Allow role",
-		"#allow-role.proc.InProgress":  "in progress",
-		"#allow-role.proc.Done":        "done",
-		"#allow-role.Keep":             "Nothing changed",
+		"#admin.allow-role.NeedPermissions":  "Bot lacks permissions - Manage Roles",
+		"#admin.allow-role.InProgress":       "Process is in progress",
+		"#admin.allow-role.proc.Title":       "Update option",
+		"#admin.allow-role.proc.Description": "Allow role",
+		"#admin.allow-role.proc.InProgress":  "in progress",
+		"#admin.allow-role.proc.Done":        "done",
+		"#admin.allow-role.Keep":             "Nothing changed",
 
 		"#look.info.IsNone":        "No reviews",
 		"#look.reviews.IsNone":     "Review not exist",

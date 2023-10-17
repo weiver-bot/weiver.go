@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Valitse kohde",
 		"#look.info.Description":              "Katso käyttäjätiedot",
 		"#look.reviews.Description":           "Katso aiheen saamat arvostelut",
-		"#allow-role.NeedPermissions":         "Botilla ei ole käyttöoikeuksia - Hallitse rooleja",
-		"#allow-role.InProgress":              "Työn alla",
-		"#allow-role.proc.Title":              "Muokkaa asetuksia",
-		"#allow-role.proc.Description":        "Salli roolit",
-		"#allow-role.proc.InProgress":         "Jatketaan",
-		"#allow-role.proc.Done":               "saattaa loppuun",
-		"#allow-role.Keep":                    "Ei asetuksia muutettu",
+		"#admin.allow-role.NeedPermissions":   "Botilla ei ole käyttöoikeuksia - Hallitse rooleja",
+		"#admin.allow-role.InProgress":        "Työn alla",
+		"#admin.allow-role.proc.Title":        "Muokkaa asetuksia",
+		"#admin.allow-role.proc.Description":  "Salli roolit",
+		"#admin.allow-role.proc.InProgress":   "Jatketaan",
+		"#admin.allow-role.proc.Done":         "saattaa loppuun",
+		"#admin.allow-role.Keep":              "Ei asetuksia muutettu",
 		"#look.info.IsNone":                   "Ei arvosteluja",
 		"#look.reviews.IsNone":                "Ei arvosteluja",
 		"#look.reviews.menu.Title":            "Arvostelut kohteelle %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Tätä arvostelua on muokattu",
 		"$review.NoAuthor":                    "Poistettuja arvosteluja ei voi palauttaa, koska kirjoittajaa ei ole täällä",
 		"$review.DM":                          "Uusi arvostelu on kirjoitettu",
-    }
+	}
 }

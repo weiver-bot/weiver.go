@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Sélectionnez la cible",
 		"#look.info.Description":              "Afficher les informations sur l'utilisateur",
 		"#look.reviews.Description":           "Voir les avis que le sujet a reçus",
-		"#allow-role.NeedPermissions":         "Le bot ne dispose pas d'autorisations - Gérer les rôles",
-		"#allow-role.InProgress":              "travail en cours",
-		"#allow-role.proc.Title":              "Modifier les options",
-		"#allow-role.proc.Description":        "Autoriser les rôles",
-		"#allow-role.proc.InProgress":         "Procédure en cours",
-		"#allow-role.proc.Done":               "complet",
-		"#allow-role.Keep":                    "Aucun paramètre modifié",
+		"#admin.allow-role.NeedPermissions":   "Le bot ne dispose pas d'autorisations - Gérer les rôles",
+		"#admin.allow-role.InProgress":        "travail en cours",
+		"#admin.allow-role.proc.Title":        "Modifier les options",
+		"#admin.allow-role.proc.Description":  "Autoriser les rôles",
+		"#admin.allow-role.proc.InProgress":   "Procédure en cours",
+		"#admin.allow-role.proc.Done":         "complet",
+		"#admin.allow-role.Keep":              "Aucun paramètre modifié",
 		"#look.info.IsNone":                   "Aucun avis",
 		"#look.reviews.IsNone":                "Il n'y a pas de commentaires",
 		"#look.reviews.menu.Title":            "Commentaires pour %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Cet avis a été modifié",
 		"$review.NoAuthor":                    "Les avis supprimés ne peuvent pas être restaurés car l'auteur n'existe pas ici",
 		"$review.DM":                          "Une nouvelle critique a été rédigée",
-    }
+	}
 }

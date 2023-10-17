@@ -21,13 +21,13 @@ func init() {
 		"#.subject.Description":               "Selecione o alvo",
 		"#look.info.Description":              "Ver informações do usuário",
 		"#look.reviews.Description":           "Veja as avaliações que o assunto recebeu",
-		"#allow-role.NeedPermissions":         "O bot não tem permissões - Gerenciar funções",
-		"#allow-role.InProgress":              "trabalho em progresso",
-		"#allow-role.proc.Title":              "Modificar opções",
-		"#allow-role.proc.Description":        "Permitir funções",
-		"#allow-role.proc.InProgress":         "Processo",
-		"#allow-role.proc.Done":               "completo",
-		"#allow-role.Keep":                    "Nenhuma configuração foi alterada",
+		"#admin.allow-role.NeedPermissions":   "O bot não tem permissões - Gerenciar funções",
+		"#admin.allow-role.InProgress":        "trabalho em progresso",
+		"#admin.allow-role.proc.Title":        "Modificar opções",
+		"#admin.allow-role.proc.Description":  "Permitir funções",
+		"#admin.allow-role.proc.InProgress":   "Processo",
+		"#admin.allow-role.proc.Done":         "completo",
+		"#admin.allow-role.Keep":              "Nenhuma configuração foi alterada",
 		"#look.info.IsNone":                   "Sem comentários",
 		"#look.reviews.IsNone":                "Não há comentários",
 		"#look.reviews.menu.Title":            "Críticas para %s",
@@ -42,5 +42,5 @@ func init() {
 		"$review.IsEdited":                    "Esta avaliação foi editada",
 		"$review.NoAuthor":                    "As resenhas excluídas não podem ser restauradas porque o autor não existe aqui",
 		"$review.DM":                          "Uma nova revisão foi escrita",
-    }
+	}
 }
