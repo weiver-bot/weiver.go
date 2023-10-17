@@ -1,4 +1,4 @@
-package reviewutil
+package botutil
 
 import (
 	"fmt"

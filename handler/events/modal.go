@@ -6,6 +6,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	parse "github.com/y2hO0ol23/weiver/handler/events/modal"
+	botutil "github.com/y2hO0ol23/weiver/utils/bot"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
 	"github.com/y2hO0ol23/weiver/utils/role"
@@ -53,7 +54,7 @@ func init() {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			return
 		}
-		review, err = reviewutil.Resend(s, i, review)
+		review, err = reviewutil.Send(s, i, review)
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			return
@@ -65,7 +66,7 @@ func init() {
 				return
 			}
 		}
-		err = reviewutil.UpdateStatus(s)
+		err = botutil.UpdateStatus(s)
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			return

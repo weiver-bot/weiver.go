@@ -277,7 +277,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				} else {
 					_, err := s.GuildMember(review.GuildID, review.FromID)
 					if err == nil {
-						review, err = reviewutil.Resend(s, iter, review)
+						review, err = reviewutil.Send(s, iter, review)
 						if err != nil {
 							log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 							return

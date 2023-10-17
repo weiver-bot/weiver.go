@@ -8,7 +8,7 @@ import (
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
-func Resend(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.ReviewModel) (*db.ReviewModel, error) {
+func Send(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.ReviewModel) (*db.ReviewModel, error) {
 	to, err := s.GuildMember(i.GuildID, review.ToID)
 	if err != nil {
 		return nil, err

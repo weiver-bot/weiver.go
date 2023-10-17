@@ -5,8 +5,8 @@ import (
 	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
+	botutil "github.com/y2hO0ol23/weiver/utils/bot"
 	db "github.com/y2hO0ol23/weiver/utils/database"
-	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
 )
 
 func init() {
@@ -22,7 +22,7 @@ func init() {
 			}
 		}
 
-		err = reviewutil.UpdateStatus(s)
+		err = botutil.UpdateStatus(s)
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}

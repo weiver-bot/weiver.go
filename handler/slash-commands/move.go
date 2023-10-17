@@ -66,7 +66,7 @@ func init() {
 
 			_, err = s.ChannelMessage(review.ChannelID, review.MessageID)
 			if err != nil {
-				review, err := reviewutil.Resend(s, i, review)
+				review, err := reviewutil.Send(s, i, review)
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 					return
@@ -143,7 +143,7 @@ func init() {
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				}
-				review, err = reviewutil.Resend(s, iter, review)
+				review, err = reviewutil.Send(s, iter, review)
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				}
