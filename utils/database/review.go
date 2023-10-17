@@ -109,7 +109,6 @@ func UpdateDMMessageInfoByID(id int, channelID string, messageID string) (*Revie
 
 	err = db.Model(&ReviewModel{ID: id}).
 		Updates(ReviewModel{
-			DMChannelID: channelID,
 			DMMessageID: messageID,
 		}).
 		Take(&review).Error

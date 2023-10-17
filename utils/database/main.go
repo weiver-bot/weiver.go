@@ -34,7 +34,6 @@ type ReviewModel struct {
 	ChannelID string `gorm:"size:64;"`
 	GuildID   string `gorm:"size:64;"`
 
-	DMChannelID string `gorm:"size:64"`
 	DMMessageID string `gorm:"size:64"`
 
 	Score   int    `gorm:"not null;"`

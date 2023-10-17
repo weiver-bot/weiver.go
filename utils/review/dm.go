@@ -6,20 +6,24 @@ import (
 )
 
 func SendDM(s *discordgo.Session, review *db.ReviewModel, locale discordgo.Locale) error {
-	s.ChannelMessageDelete(review.DMChannelID, review.DMMessageID)
-
-	channel, _ := s.UserChannelCreate(review.ToID)
-	if channel == nil {
+	channel, err := s.UserChannelCreate(review.ToID)
+	if err != nil {
 		return nil
 	}
+	s.ChannelMessageDelete(channel.ID, review.DMMessageID)
 
-	msg, err := s.ChannelMessageSendEmbed(channel.ID, embedDM(review, locale))
-	if err == nil {
+	msg, _ := s.ChannelMessageSendEmbed(channel.ID, embedDM(review, locale))
+	if msg != nil {
 		_, err = db.UpdateDMMessageInfoByID(review.ID, channel.ID, msg.ID)
+		return err
 	}
-	return err
+	return nil
 }
 
 func ModifyDM(s *discordgo.Session, review *db.ReviewModel, locale discordgo.Locale) {
-	s.ChannelMessageEditEmbed(review.DMChannelID, review.DMMessageID, embedDM(review, locale))
+	channel, err := s.UserChannelCreate(review.ToID)
+	if err != nil {
+		return
+	}
+	s.ChannelMessageEditEmbed(channel.ID, review.DMMessageID, embedDM(review, locale))
 }
