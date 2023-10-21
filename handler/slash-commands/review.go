@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	slashcommands "github.com/y2hO0ol23/weiver/handler/slash-commands/include"
 	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
@@ -15,8 +16,8 @@ import (
 func init() {
 	var DMPermission bool = false
 
-	commands = append(commands, form{
-		data: &discordgo.ApplicationCommand{
+	slashcommands.List = append(slashcommands.List, slashcommands.Form{
+		Data: &discordgo.ApplicationCommand{
 			Name:                     "review",
 			Description:              "review_Description",
 			NameLocalizations:        localization.LoadList("#review"),
@@ -33,7 +34,7 @@ func init() {
 				},
 			},
 		},
-		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		Execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			locale := i.Locale
 
 			options := i.ApplicationCommandData().Options
@@ -41,8 +42,8 @@ func init() {
 			toID := options[0].Value.(string)
 
 			if fromID == toID {
-				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#review.SelfReview")),
+				err := s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
+					Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#review.SelfReview")),
 					Flags:           discordgo.MessageFlagsEphemeral,
 					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))

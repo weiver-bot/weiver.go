@@ -2,27 +2,18 @@ package botutil
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
 func UpdateStatus(s *discordgo.Session) error {
-	var (
-		IdleSince int     = 0
-		avg       float64 = 0
-		count     int64
-	)
+	var IdleSince int = 0
 
-	count, err := db.GetReviewsCount()
+	text, err := StateText()
 	if err != nil {
 		return err
-	}
-	if count > 0 {
-		avg, err = db.GetReviewsScoreAvg()
-		if err != nil {
-			return err
-		}
 	}
 
 	return s.UpdateStatusComplex(discordgo.UpdateStatusData{
@@ -31,8 +22,28 @@ func UpdateStatus(s *discordgo.Session) error {
 			{
 				Name:  "Reviews total count",
 				Type:  discordgo.ActivityTypeCustom,
-				State: fmt.Sprintf("Total ⭐%.1f (%d)", avg, count),
+				State: text,
 			},
 		},
 	})
+}
+
+func StateText() (string, error) {
+	var (
+		avg   float64 = 0
+		count int64
+	)
+
+	count, err := db.GetReviewsCount()
+	if err != nil {
+		return "", err
+	}
+	if count > 0 {
+		avg, err = db.GetReviewsScoreAvg()
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return fmt.Sprintf("Total "+os.Getenv("ROLE_FORMAT")+" (%v)", avg, count), nil
 }

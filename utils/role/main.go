@@ -7,8 +7,6 @@ import (
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
-var roleFormat string = os.Getenv("ROLE_FORMAT")
-
 func GetDisplay(memberID string) (string, error) {
 	count, err := db.GetUserReviewCount(memberID)
 	if err != nil {
@@ -22,5 +20,5 @@ func GetDisplay(memberID string) (string, error) {
 			return "", err
 		}
 	}
-	return fmt.Sprintf(roleFormat, avg), nil
+	return fmt.Sprintf(os.Getenv("ROLE_FORMAT"), avg), nil
 }

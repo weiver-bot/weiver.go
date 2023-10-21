@@ -6,6 +6,7 @@ import (
 	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
+	slashcommands "github.com/y2hO0ol23/weiver/handler/slash-commands/include"
 	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
@@ -17,8 +18,8 @@ func init() {
 		DMPermission bool = false
 	)
 
-	commands = append(commands, form{
-		data: &discordgo.ApplicationCommand{
+	slashcommands.List = append(slashcommands.List, slashcommands.Form{
+		Data: &discordgo.ApplicationCommand{
 			Name:                     "move",
 			Description:              "move_Description",
 			NameLocalizations:        localization.LoadList("#move"),
@@ -35,7 +36,7 @@ func init() {
 				},
 			},
 		},
-		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		Execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			locale := i.Locale
 
 			options := i.ApplicationCommandData().Options
@@ -48,7 +49,7 @@ func init() {
 			}
 			if review == nil {
 				err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#move.IsNone")),
+					Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#move.IsNone")),
 					Flags:           discordgo.MessageFlagsEphemeral,
 					AllowedMentions: &discordgo.MessageAllowedMentions{},
 				}))
@@ -80,7 +81,7 @@ func init() {
 			err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 				Embeds: []*discordgo.MessageEmbed{
 					reviewutil.EmbedBody(review, subject.AvatarURL("")).
-						SetDescription(fmt.Sprintf("https://discord.com/channels/%s/%s/%s", review.GuildID, review.ChannelID, review.MessageID)).
+						SetDescription(fmt.Sprintf("https://discord.com/channels/%v/%v/%v", review.GuildID, review.ChannelID, review.MessageID)).
 						MessageEmbed,
 				},
 				Components: []discordgo.MessageComponent{
@@ -130,7 +131,7 @@ func init() {
 					err := s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 						Embeds: []*discordgo.MessageEmbed{
 							builder.Embed().
-								SetDescription(fmt.Sprintf("❌ %s", localization.Load(locale, "$review.IsEdited"))).
+								SetDescription(fmt.Sprintf("❌ %v", localization.Load(locale, "$review.IsEdited"))).
 								MessageEmbed,
 						},
 					}))

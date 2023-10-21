@@ -5,6 +5,7 @@ import (
 	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
+	events "github.com/y2hO0ol23/weiver/handler/events/include"
 	parse "github.com/y2hO0ol23/weiver/handler/events/modal"
 	botutil "github.com/y2hO0ol23/weiver/utils/bot"
 	db "github.com/y2hO0ol23/weiver/utils/database"
@@ -13,7 +14,7 @@ import (
 )
 
 func init() {
-	events = append(events, func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	events.List = append(events.List, func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if i.Type != discordgo.InteractionModalSubmit {
 			return
 		}
@@ -31,7 +32,7 @@ func init() {
 		}
 
 		// remove old reivew
-		err = reviewutil.DeleteMessage(s, fromID, toID)
+		err := reviewutil.DeleteMessage(s, fromID, toID)
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 		}

@@ -75,7 +75,7 @@ type RoleModel struct {
 func init() {
 	db, err = gorm.Open(mysql.Open(os.Getenv("MYSQL_URL")), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("Error loading mysql\n%v", err)
+		log.Panicf("Error loading mysql\n%v", err)
 	}
 
 	db.AutoMigrate(&UserModel{}, &GuildModel{})

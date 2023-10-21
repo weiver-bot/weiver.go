@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/bwmarrin/discordgo"
+	slashcommands "github.com/y2hO0ol23/weiver/handler/slash-commands/include"
 	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
@@ -19,8 +20,8 @@ func init() {
 		DefaultMemberPermissions int64 = discordgo.PermissionManageRoles
 	)
 
-	commands = append(commands, form{
-		data: &discordgo.ApplicationCommand{
+	slashcommands.List = append(slashcommands.List, slashcommands.Form{
+		Data: &discordgo.ApplicationCommand{
 			Name:                     "admin",
 			Description:              "admin_Description",
 			NameLocalizations:        localization.LoadList("#admin"),
@@ -59,7 +60,7 @@ func init() {
 			},
 			DefaultMemberPermissions: &DefaultMemberPermissions,
 		},
-		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		Execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			options := i.ApplicationCommandData().Options
 			if len(options) == 0 {
 				return
@@ -85,7 +86,7 @@ func admin_AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, optio
 	}
 	if guildDB.InProgress == true {
 		err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-			Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#admin.allow-role.InProgress")),
+			Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.InProgress")),
 			Flags:           discordgo.MessageFlagsEphemeral,
 			AllowedMentions: &discordgo.MessageAllowedMentions{},
 		}))
@@ -101,7 +102,7 @@ func admin_AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, optio
 		}
 		if p&discordgo.PermissionManageRoles == 0 {
 			err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-				Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#admin.allow-role.NeedPermissions")),
+				Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.NeedPermissions")),
 				Flags:           discordgo.MessageFlagsEphemeral,
 				AllowedMentions: &discordgo.MessageAllowedMentions{},
 			}))
@@ -117,7 +118,7 @@ func admin_AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, optio
 		err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 			Embeds: []*discordgo.MessageEmbed{
 				builder.Embed().
-					SetDescription(fmt.Sprintf("**%s** `%s` - %s",
+					SetDescription(fmt.Sprintf("**%v** `%v` - %v",
 						localization.Load(locale, "#admin.allow-role.proc.Title"),
 						localization.Load(locale, "#admin.allow-role.proc.Description"),
 						localization.Load(locale, "#admin.allow-role.proc.InProgress"),
@@ -172,7 +173,7 @@ func admin_AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, optio
 		_, err = s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
 			Embeds: &[]*discordgo.MessageEmbed{
 				builder.Embed().
-					SetDescription(fmt.Sprintf("**%s** `%s` - %s",
+					SetDescription(fmt.Sprintf("**%v** `%v` - %v",
 						localization.Load(locale, "#admin.allow-role.proc.Title"),
 						localization.Load(locale, "#admin.allow-role.proc.Description"),
 						localization.Load(locale, "#admin.allow-role.proc.Done"),
@@ -187,7 +188,7 @@ func admin_AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, optio
 		db.EndOFGuildProgress(i.GuildID)
 	} else {
 		err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-			Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#admin.allow-role.Keep")),
+			Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.Keep")),
 			Flags:           discordgo.MessageFlagsEphemeral,
 			AllowedMentions: &discordgo.MessageAllowedMentions{},
 		}))

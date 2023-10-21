@@ -7,12 +7,15 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	parse "github.com/y2hO0ol23/weiver/handler/events/button"
+	events "github.com/y2hO0ol23/weiver/handler/events/include"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
 )
 
 func init() {
-	events = append(events, func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	var err error
+
+	events.List = append(events.List, func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if i.Type != discordgo.InteractionMessageComponent {
 			return
 		}
@@ -47,7 +50,7 @@ func init() {
 			}
 
 			embed := reviewutil.EmbedMost(review, to.AvatarURL("")).
-				SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID))
+				SetDescription(fmt.Sprintf("<@%v> → <@%v>", review.FromID, review.ToID))
 
 			_, err = s.ChannelMessageEditEmbeds(review.ChannelID, review.MessageID, []*discordgo.MessageEmbed{
 				embed.MessageEmbed,

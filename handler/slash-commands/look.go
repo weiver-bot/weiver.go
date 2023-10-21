@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	slashcommands "github.com/y2hO0ol23/weiver/handler/slash-commands/include"
 	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
@@ -18,8 +19,8 @@ import (
 func init() {
 	var DMPermission bool = false
 
-	commands = append(commands, form{
-		data: &discordgo.ApplicationCommand{
+	slashcommands.List = append(slashcommands.List, slashcommands.Form{
+		Data: &discordgo.ApplicationCommand{
 			Name:                     "look",
 			Description:              "look_Description",
 			NameLocalizations:        localization.LoadList("#look"),
@@ -62,7 +63,7 @@ func init() {
 				},
 			},
 		},
-		execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		Execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			options := i.ApplicationCommandData().Options
 			if len(options) == 0 {
 				return
@@ -107,18 +108,18 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 		} else if count >= 50 {
 			return "50+"
 		}
-		return fmt.Sprintf("%d", count)
+		return fmt.Sprintf("%v", count)
 	}()
 
 	embed := builder.Embed().
-		SetDescription(fmt.Sprintf("<@%s> **⭐%.1f (%s)**", subjectID, avg, countOutput)).
+		SetDescription(fmt.Sprintf("<@%v> **"+os.Getenv("ROLE_FORMAT")+" (%v)**", subjectID, avg, countOutput)).
 		SetThumbnail(&discordgo.MessageEmbedThumbnail{
 			URL: subject.AvatarURL(""),
 		})
 
 	if count == 0 {
 		embed.SetFields(&discordgo.MessageEmbedField{
-			Name:  fmt.Sprintf("📑 %s", localization.Load(locale, "#look.info.IsNone")),
+			Name:  fmt.Sprintf("📑 %v", localization.Load(locale, "#look.info.IsNone")),
 			Value: "``` ```",
 		})
 	} else {
@@ -129,11 +130,11 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 		}
 		embed.
 			SetFields(&discordgo.MessageEmbedField{
-				Name:  fmt.Sprintf("📑 %s 〔%s%s〕", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-				Value: fmt.Sprintf("```%s```", review.Content),
+				Name:  fmt.Sprintf("📑 %v 〔%v%v〕", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
+				Value: fmt.Sprintf("```%v```", review.Content),
 			}).
 			SetFooter(&discordgo.MessageEmbedFooter{
-				Text: fmt.Sprintf("👍 %d", review.LikeTotal),
+				Text: fmt.Sprintf("👍 %v", review.LikeTotal),
 			})
 	}
 
@@ -153,6 +154,7 @@ func look_info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID s
 var pageRow int
 
 func init() {
+	var err error
 	pageRow, err = strconv.Atoi(os.Getenv("PAGE_ROW"))
 	if err != nil || pageRow < 1 || 25 < pageRow {
 		pageRow = 10
@@ -175,7 +177,7 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 	}
 	if reviews == nil {
 		message := builder.Message(&discordgo.InteractionResponseData{
-			Content:         fmt.Sprintf("`%s`", localization.Load(locale, "#look.reviews.IsNone")),
+			Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#look.reviews.IsNone")),
 			Flags:           discordgo.MessageFlagsEphemeral,
 			AllowedMentions: &discordgo.MessageAllowedMentions{},
 		})
@@ -261,15 +263,15 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
 			}
-			if review == nil || data[1] != fmt.Sprintf("%d", review.TimeStamp.Unix()) {
-				embed.SetDescription(fmt.Sprintf("❌ %s", localization.Load(locale, "$review.IsEdited")))
+			if review == nil || data[1] != fmt.Sprintf("%v", review.TimeStamp.Unix()) {
+				embed.SetDescription(fmt.Sprintf("❌ %v", localization.Load(locale, "$review.IsEdited")))
 			} else {
 				_, err := s.ChannelMessage(review.ChannelID, review.MessageID)
 				if err == nil {
-					embed.SetDescription(fmt.Sprintf("https://discord.com/channels/%s/%s/%s", review.GuildID, review.ChannelID, review.MessageID)).
+					embed.SetDescription(fmt.Sprintf("https://discord.com/channels/%v/%v/%v", review.GuildID, review.ChannelID, review.MessageID)).
 						SetFields(&discordgo.MessageEmbedField{
-							Name:  fmt.Sprintf("📝 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-							Value: fmt.Sprintf("```%s```", review.Content),
+							Name:  fmt.Sprintf("📝 %v [%v%v]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
+							Value: fmt.Sprintf("```%v```", review.Content),
 						}).
 						SetThumbnail(&discordgo.MessageEmbedThumbnail{
 							URL: subject.AvatarURL(""),
@@ -291,10 +293,10 @@ func look_reviewList(s *discordgo.Session, i *discordgo.InteractionCreate, subje
 						}
 						return
 					} else {
-						embed.SetDescription(fmt.Sprintf("https://discord.com/channels/%s/%s/%s", review.GuildID, review.ChannelID, review.MessageID)).
+						embed.SetDescription(fmt.Sprintf("https://discord.com/channels/%v/%v/%v", review.GuildID, review.ChannelID, review.MessageID)).
 							SetFields(&discordgo.MessageEmbedField{
-								Name:  fmt.Sprintf("🔒 %s [%s%s]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
-								Value: fmt.Sprintf("`%s`", localization.Load(locale, "$review.NoAuthor")),
+								Name:  fmt.Sprintf("🔒 %v [%v%v]", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:]),
+								Value: fmt.Sprintf("`%v`", localization.Load(locale, "$review.NoAuthor")),
 							})
 					}
 				}
@@ -320,13 +322,13 @@ func BuildSelectMenu(reviews []db.ReviewModel, locale discordgo.Locale, subjectN
 
 	selectMenu := builder.SelectMenu().
 		SetCustomID("reviews").
-		SetPlaceholder(fmt.Sprintf(localization.Load(locale, "#look.reviews.menu.Title")+" (%d/%d)", subjectName, pageNow, pageCount))
+		SetPlaceholder(fmt.Sprintf(localization.Load(locale, "#look.reviews.menu.Title")+" (%v/%v)", subjectName, pageNow, pageCount))
 
 	if pageCount > 1 {
 		selectMenu.AddOptions(
 			builder.SelectMenuOption().
 				SetLabel("▲").
-				SetValue(fmt.Sprintf("page/back:%d", pageBack)).
+				SetValue(fmt.Sprintf("page/back:%v", pageBack)).
 				SetDescription(fmt.Sprintf(localization.Load(locale, "#look.reviews.menu.Page"), pageBack)),
 		)
 	}
@@ -339,9 +341,9 @@ func BuildSelectMenu(reviews []db.ReviewModel, locale discordgo.Locale, subjectN
 		review := reviews[i]
 		selectMenu.AddOptions(
 			builder.SelectMenuOption().
-				SetLabel(fmt.Sprintf("%s 〔%s%s〕", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:])).
-				SetDescription(fmt.Sprintf("👍 %d", review.LikeTotal)).
-				SetValue(fmt.Sprintf("review:%d#%d", review.ID, review.TimeStamp.Unix())),
+				SetLabel(fmt.Sprintf("%v 〔%v%v〕", review.Title, "★★★★★"[:review.Score*3], "☆☆☆☆☆"[review.Score*3:])).
+				SetDescription(fmt.Sprintf("👍 %v", review.LikeTotal)).
+				SetValue(fmt.Sprintf("review:%v#%v", review.ID, review.TimeStamp.Unix())),
 		)
 	}
 
@@ -349,7 +351,7 @@ func BuildSelectMenu(reviews []db.ReviewModel, locale discordgo.Locale, subjectN
 		selectMenu.AddOptions(
 			builder.SelectMenuOption().
 				SetLabel("▼").
-				SetValue(fmt.Sprintf("page/next:%d", pageNext)).
+				SetValue(fmt.Sprintf("page/next:%v", pageNext)).
 				SetDescription(fmt.Sprintf(localization.Load(locale, "#look.reviews.menu.Page"), pageNext)),
 		)
 	}

@@ -42,14 +42,14 @@ func init() {
 
 		"#look.info.IsNone":        "리뷰 없음",
 		"#look.reviews.IsNone":     "리뷰가 존재하지 않습니다",
-		"#look.reviews.menu.Title": "%s에 대한 리뷰",
-		"#look.reviews.menu.Page":  "%d페이지",
+		"#look.reviews.menu.Title": "%v에 대한 리뷰",
+		"#look.reviews.menu.Page":  "%v페이지",
 
 		"#move.IsNone": "대상에게 작성한 리뷰가 없습니다",
 		"#move.Move":   "이곳으로 옮기기",
 
 		"#review.SelfReview":    "자신을 리뷰할 수 없습니다",
-		"#review.modal.Title":   "%s 리뷰하기",
+		"#review.modal.Title":   "%v 리뷰하기",
 		"#review.lable.Score":   "점수",
 		"#review.lable.Title":   "제목",
 		"#review.lable.Content": "내용",

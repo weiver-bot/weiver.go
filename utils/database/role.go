@@ -46,7 +46,7 @@ func CreateRole(roleID string, guildID string, display string) (*RoleModel, erro
 		GuildID: guildID,
 		RoleID:  roleID,
 		Display: display,
-		ID:      fmt.Sprintf("%s#%s", guildID, roleID),
+		ID:      fmt.Sprintf("%v#%v", guildID, roleID),
 	}
 	return role, db.Create(role).Error
 }

@@ -15,19 +15,19 @@ func Send(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.Revie
 	}
 
 	button_good := builder.Button().
-		SetCustomID(fmt.Sprintf("like_review_%d", review.ID)).
+		SetCustomID(fmt.Sprintf("like_review_%v", review.ID)).
 		SetLable("👍").
 		SetStyle(discordgo.SecondaryButton)
 
 	button_bad := builder.Button().
-		SetCustomID(fmt.Sprintf("hate_review_%d", review.ID)).
+		SetCustomID(fmt.Sprintf("hate_review_%v", review.ID)).
 		SetLable("👎").
 		SetStyle(discordgo.SecondaryButton)
 
 	err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 		Embeds: []*discordgo.MessageEmbed{
 			EmbedMost(review, to.AvatarURL("")).
-				SetDescription(fmt.Sprintf("<@%s> → <@%s>", review.FromID, review.ToID)).
+				SetDescription(fmt.Sprintf("<@%v> → <@%v>", review.FromID, review.ToID)).
 				MessageEmbed,
 		},
 		Components: []discordgo.MessageComponent{

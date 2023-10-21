@@ -42,14 +42,14 @@ func init() {
 
 		"#look.info.IsNone":        "No reviews",
 		"#look.reviews.IsNone":     "Review not exist",
-		"#look.reviews.menu.Title": "Reviews to %s",
-		"#look.reviews.menu.Page":  "page %d",
+		"#look.reviews.menu.Title": "Reviews to %v",
+		"#look.reviews.menu.Page":  "page %v",
 
 		"#move.IsNone": "No review on this subject",
 		"#move.Move":   "Move here",
 
 		"#review.SelfReview":    "Cannot review yourself",
-		"#review.modal.Title":   "Review %s",
+		"#review.modal.Title":   "Review %v",
 		"#review.lable.Score":   "score",
 		"#review.lable.Title":   "title",
 		"#review.lable.Content": "content",

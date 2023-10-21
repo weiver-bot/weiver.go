@@ -8,8 +8,8 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/y2hO0ol23/weiver/handler/events"
-	slashcmds "github.com/y2hO0ol23/weiver/handler/slash-commands"
+	webapi "github.com/y2hO0ol23/weiver/api"
+	"github.com/y2hO0ol23/weiver/handler"
 	_ "github.com/y2hO0ol23/weiver/localization"
 	_ "github.com/y2hO0ol23/weiver/utils/database"
 	_ "github.com/y2hO0ol23/weiver/utils/env"
@@ -18,28 +18,31 @@ import (
 func main() {
 	s, err := discordgo.New("Bot " + os.Getenv("TOKEN"))
 	if err != nil {
-		log.Fatalf("Error creating Discord session\n%v", err)
+		log.Panicf("Error creating Discord session\n%v", err)
 	}
+
+	go webapi.Start(os.Getenv("API_PORT"), s)
 
 	s.Identify.Intents = 0 |
 		discordgo.IntentsGuilds |
 		discordgo.IntentsGuildMessages |
 		discordgo.IntentsGuildMembers
 
-	events.Setup(s)
+	handler.SetupEvents(s)
 
 	err = s.Open()
 	if err != nil {
-		log.Fatalf("Error opening connection\n%v", err)
+		log.Panicf("Error opening connection\n%v", err)
 	}
 	defer s.Close()
 
 	// need appID, so execute after session is open
-	slashcmds.Setup(s)
+	handler.SetupSlashCommands(s)
 	if os.Getenv("REMOVE_CMD") != "" {
-		defer slashcmds.RemoveCommands(s)
+		defer handler.RemoveCommands(s)
 	}
 
+	log.Println("[*] End of settings")
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-stop
