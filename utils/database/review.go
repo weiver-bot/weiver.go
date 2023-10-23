@@ -232,3 +232,23 @@ func GetReviewsCount() (int64, error) {
 
 	return count, err
 }
+
+func GetReviews(from int, count int) (*[]ReviewModel, error) {
+	var reviews []ReviewModel
+
+	form := db.Model(&ReviewModel{}).
+		Order("Like_Total desc, Time_Stamp asc").
+		Offset(from)
+
+	if count > 0 {
+		form.Limit(count)
+	}
+
+	err = form.Find(&reviews).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &reviews, nil
+}
