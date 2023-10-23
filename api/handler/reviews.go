@@ -16,6 +16,7 @@ func init() {
 	type form struct {
 		ID        int    `json:"id"`
 		Title     string `json:"title"`
+		Score     int    `json:"score"`
 		Content   string `json:"content"`
 		Like      int64  `json:"like"`
 		Timestamp string `json:"timestamp"`
@@ -48,6 +49,7 @@ func init() {
 							list = append(list, form{
 								ID:        e.ID,
 								Title:     e.Title,
+								Score:     e.Score,
 								Content:   e.Content,
 								Like:      e.LikeTotal,
 								Timestamp: e.TimeStamp.Format(builder.ISO8601),
