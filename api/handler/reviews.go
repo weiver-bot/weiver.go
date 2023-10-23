@@ -8,7 +8,6 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	handlers "github.com/y2hO0ol23/weiver/api/handler/include"
-	"github.com/y2hO0ol23/weiver/utils/builder"
 	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
@@ -16,7 +15,7 @@ func init() {
 	type form struct {
 		ID        int    `json:"id"`
 		Title     string `json:"title"`
-		Score     int    `json:"score"`
+		Score     string `json:"score"`
 		Content   string `json:"content"`
 		Like      int64  `json:"like"`
 		Timestamp string `json:"timestamp"`
@@ -49,10 +48,10 @@ func init() {
 							list = append(list, form{
 								ID:        e.ID,
 								Title:     e.Title,
-								Score:     e.Score,
+								Score:     fmt.Sprintf("%v%v", "★★★★★"[:e.Score*3], "☆☆☆☆☆"[e.Score*3:]),
 								Content:   e.Content,
 								Like:      e.LikeTotal,
-								Timestamp: e.TimeStamp.Format(builder.ISO8601),
+								Timestamp: e.TimeStamp.Format("2006.01.02 15:04 Mon"),
 								URL:       fmt.Sprintf("https://discord.com/channels/%v/%v/%v", e.GuildID, e.ChannelID, e.MessageID),
 							})
 						}
