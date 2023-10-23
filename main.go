@@ -21,8 +21,6 @@ func main() {
 		log.Panicf("Error creating Discord session\n%v", err)
 	}
 
-	go webapi.Start(os.Getenv("API_PORT"), s)
-
 	s.Identify.Intents = 0 |
 		discordgo.IntentsGuilds |
 		discordgo.IntentsGuildMessages |
@@ -35,6 +33,8 @@ func main() {
 		log.Panicf("Error opening connection\n%v", err)
 	}
 	defer s.Close()
+
+	go webapi.Start(os.Getenv("API_PORT"), s)
 
 	// need appID, so execute after session is open
 	handler.SetupSlashCommands(s)
