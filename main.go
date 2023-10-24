@@ -34,9 +34,9 @@ func main() {
 	}
 	defer s.Close()
 
+	// need appID, so execute after session is open
 	go webapi.Start(os.Getenv("API_PORT"), s)
 
-	// need appID, so execute after session is open
 	handler.SetupSlashCommands(s)
 	if os.Getenv("REMOVE_CMD") != "" {
 		defer handler.RemoveCommands(s)

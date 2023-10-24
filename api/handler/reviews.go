@@ -23,7 +23,7 @@ func init() {
 	}
 
 	handlers.List = append(handlers.List, handlers.Form{
-		Path: "/reviews",
+		Path: "/reviews/list",
 		Execute: func(session *discordgo.Session) http.HandlerFunc {
 			return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 				//s := session
@@ -32,14 +32,17 @@ func init() {
 				case http.MethodGet:
 					var (
 						reviews *[]db.ReviewModel
-						count   = 5
 						list    = []form{}
+						count   = 0
 					)
-
 					from, err := strconv.Atoi(r.URL.Query().Get("from"))
 					if err != nil {
 						from = 0
-						count = 0
+					} else {
+						count, err = strconv.Atoi(r.URL.Query().Get("count"))
+						if err != nil || count > 100 {
+							count = 100
+						}
 					}
 
 					reviews, err = db.GetReviews(from, count)
@@ -57,6 +60,30 @@ func init() {
 						}
 					}
 					json.NewEncoder(rw).Encode(list)
+				}
+			})
+		},
+	})
+}
+
+func init() {
+	type form struct {
+		Count int64 `json:"count"`
+	}
+
+	handlers.List = append(handlers.List, handlers.Form{
+		Path: "/reviews/count",
+		Execute: func(session *discordgo.Session) http.HandlerFunc {
+			return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+				//s := session
+
+				switch r.Method {
+				case http.MethodGet:
+					count, err := db.GetReviewsCount()
+					if err != nil {
+						count = 0
+					}
+					json.NewEncoder(rw).Encode(form{Count: count})
 				}
 			})
 		},

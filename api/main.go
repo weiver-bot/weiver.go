@@ -11,7 +11,7 @@ import (
 	_ "github.com/y2hO0ol23/weiver/api/handler"
 )
 
-func jsonContentTypeMiddleware(next http.Handler) http.Handler {
+func Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		rw.Header().Add("Access-Control-Allow-Credentials", "true")
 		rw.Header().Add("Access-Control-Allow-Origin", os.Getenv("WEB_URL"))
@@ -27,7 +27,7 @@ func Start(port string, s *discordgo.Session) {
 
 	mux := http.NewServeMux()
 	for _, v := range handlers.List {
-		mux.Handle(v.Path, jsonContentTypeMiddleware(v.Execute(s)))
+		mux.Handle(v.Path, Middleware(v.Execute(s)))
 	}
 
 	err := http.ListenAndServe(":"+port, mux)
