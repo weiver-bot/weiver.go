@@ -3,7 +3,7 @@ package database
 func LoadUserByID(id string) (*UserModel, error) {
 	var users []UserModel
 
-	err = db.Model(&UserModel{}).
+	err := db.Model(&UserModel{}).
 		Where(&UserModel{
 			ID: id,
 		}).Limit(1).
@@ -25,7 +25,7 @@ func LoadUserByID(id string) (*UserModel, error) {
 func GetUserReviewCount(id string) (int64, error) {
 	var count int64
 
-	err = db.Model(&ReviewModel{}).
+	err := db.Model(&ReviewModel{}).
 		Where(ReviewModel{
 			ToID: id,
 		}).Count(&count).Error
@@ -36,7 +36,7 @@ func GetUserReviewCount(id string) (int64, error) {
 func GetUserScore(id string) (float64, error) {
 	var res float64
 
-	err = db.Model(&ReviewModel{}).
+	err := db.Model(&ReviewModel{}).
 		Where(ReviewModel{
 			ToID: id,
 		}).Select("avg(Score)").Row().

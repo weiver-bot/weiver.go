@@ -3,7 +3,7 @@ package database
 func LoadGuildByID(id string) (*GuildModel, error) {
 	var guilds []GuildModel
 
-	err = db.Model(&GuildModel{}).
+	err := db.Model(&GuildModel{}).
 		Where(&GuildModel{
 			ID: id,
 		}).Limit(1).

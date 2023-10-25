@@ -8,7 +8,8 @@ import (
 
 type Form struct {
 	Path    string
-	Execute func(s *discordgo.Session) http.HandlerFunc
+	Handler http.HandlerFunc
 }
 
 var List = []Form{}
+var Session *discordgo.Session

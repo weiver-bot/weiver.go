@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"github.com/bwmarrin/discordgo"
 	handlers "github.com/y2hO0ol23/weiver/api/handler/include"
 	botutil "github.com/y2hO0ol23/weiver/utils/bot"
 )
@@ -21,24 +20,20 @@ func init() {
 
 	handlers.List = append(handlers.List, handlers.Form{
 		Path: "/state",
-		Execute: func(session *discordgo.Session) http.HandlerFunc {
-			return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-				s := session
-
-				switch r.Method {
-				case http.MethodGet:
-					state, err := botutil.StateText()
-					if err != nil {
-						log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-						state = fmt.Sprintf("Hello, I am %v", s.State.User.Username)
-					}
-					json.NewEncoder(rw).Encode(form{
-						Name:  s.State.User.Username,
-						ID:    fmt.Sprintf("%v#%v", s.State.User.Username, s.State.User.Discriminator),
-						State: state,
-					})
+		Handler: func(rw http.ResponseWriter, r *http.Request) {
+			switch r.Method {
+			case http.MethodGet:
+				state, err := botutil.StateText()
+				if err != nil {
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+					state = fmt.Sprintf("Hello, I am %v", handlers.Session.State.User.Username)
 				}
-			})
+				json.NewEncoder(rw).Encode(form{
+					Name:  handlers.Session.State.User.Username,
+					ID:    fmt.Sprintf("%v#%v", handlers.Session.State.User.Username, handlers.Session.State.User.Discriminator),
+					State: state,
+				})
+			}
 		},
 	})
 }

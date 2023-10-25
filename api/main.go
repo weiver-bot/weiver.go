@@ -25,9 +25,11 @@ func Start(port string, s *discordgo.Session) {
 		return
 	}
 
+	handlers.Session = s
+
 	mux := http.NewServeMux()
 	for _, v := range handlers.List {
-		mux.Handle(v.Path, Middleware(v.Execute(s)))
+		mux.Handle(v.Path, Middleware(v.Handler))
 	}
 
 	err := http.ListenAndServe(":"+port, mux)

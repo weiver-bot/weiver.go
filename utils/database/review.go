@@ -7,7 +7,7 @@ import (
 func LoadReivewByID(id int) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
-	err = db.Model(&ReviewModel{}).
+	err := db.Model(&ReviewModel{}).
 		Where(ReviewModel{
 			ID: id,
 		}).Limit(1).
@@ -25,7 +25,7 @@ func LoadReivewByID(id int) (*ReviewModel, error) {
 func LoadReivewByInfo(fromID string, toID string) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
-	err = db.Model(&ReviewModel{}).
+	err := db.Model(&ReviewModel{}).
 		Where(ReviewModel{
 			FromID: fromID,
 			ToID:   toID,
@@ -93,7 +93,7 @@ func ModifyReviewByInfo(fromID string, toID string, score int, title string, con
 func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID string) (*ReviewModel, error) {
 	var review ReviewModel
 
-	err = db.Model(&ReviewModel{ID: id}).
+	err := db.Model(&ReviewModel{ID: id}).
 		Updates(ReviewModel{
 			ChannelID: channelID,
 			MessageID: messageID,
@@ -107,7 +107,7 @@ func UpdateMessageInfoByID(id int, guildID string, channelID string, messageID s
 func UpdateDMMessageInfoByID(id int, channelID string, messageID string) (*ReviewModel, error) {
 	var review ReviewModel
 
-	err = db.Model(&ReviewModel{ID: id}).
+	err := db.Model(&ReviewModel{ID: id}).
 		Updates(ReviewModel{
 			DMMessageID: messageID,
 		}).
@@ -119,7 +119,7 @@ func UpdateDMMessageInfoByID(id int, channelID string, messageID string) (*Revie
 func GetReviewBest(id string) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
-	err = db.Model(&ReviewModel{}).
+	err := db.Model(&ReviewModel{}).
 		Where(&ReviewModel{
 			ToID: id,
 		}).Order("Like_Total desc, Time_Stamp asc").Limit(1).
@@ -137,7 +137,7 @@ func GetReviewBest(id string) (*ReviewModel, error) {
 var (
 	ReviewButtonHandler = map[string]func(reviewID int, userID string) (*ReviewModel, error){
 		"like": func(reviewID int, userID string) (*ReviewModel, error) {
-			err = db.Model(&ReviewModel{ID: reviewID}).
+			err := db.Model(&ReviewModel{ID: reviewID}).
 				Association("Like").
 				Append(&UserModel{
 					ID: userID,
@@ -158,7 +158,7 @@ var (
 			return reviewButtonHandlerFianl(reviewID)
 		},
 		"hate": func(reviewID int, userID string) (*ReviewModel, error) {
-			err = db.Model(&ReviewModel{ID: reviewID}).
+			err := db.Model(&ReviewModel{ID: reviewID}).
 				Association("Hate").
 				Append(&UserModel{
 					ID: userID,
@@ -187,7 +187,7 @@ func reviewButtonHandlerFianl(reviewID int) (*ReviewModel, error) {
 	likeCount := db.Model(&ReviewModel{ID: reviewID}).Association("Like").Count()
 	hateCount := db.Model(&ReviewModel{ID: reviewID}).Association("Hate").Count()
 
-	err = db.Model(&ReviewModel{ID: reviewID}).
+	err := db.Model(&ReviewModel{ID: reviewID}).
 		Updates(map[string]interface{}{
 			"LikeTotal": likeCount - hateCount,
 		}).
@@ -199,7 +199,7 @@ func reviewButtonHandlerFianl(reviewID int) (*ReviewModel, error) {
 func GetReviewsByUserID(id string) (*[]ReviewModel, error) {
 	var reviews []ReviewModel
 
-	err = db.Model(&ReviewModel{}).
+	err := db.Model(&ReviewModel{}).
 		Where(&ReviewModel{
 			ToID: id,
 		}).Order("Like_Total desc, Time_Stamp asc").
@@ -233,22 +233,13 @@ func GetReviewsCount() (int64, error) {
 	return count, err
 }
 
-func GetReviews(from int, count int) (*[]ReviewModel, error) {
+func GetReviews(from int, count int, OrderBy string) (*[]ReviewModel, error) {
 	var reviews []ReviewModel
 
-	form := db.Model(&ReviewModel{}).
-		Order("Like_Total desc, Time_Stamp asc").
-		Offset(from)
+	err := db.Model(&ReviewModel{}).
+		Order(OrderBy).
+		Offset(from).Limit(count).
+		Find(&reviews).Error
 
-	if count > 0 {
-		form.Limit(count)
-	}
-
-	err = form.Find(&reviews).Error
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &reviews, nil
+	return &reviews, err
 }

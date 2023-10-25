@@ -8,11 +8,11 @@ import (
 	_ "github.com/y2hO0ol23/weiver/utils/env"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var (
-	db  *gorm.DB
-	err error
+	db *gorm.DB
 )
 
 type UserModel struct {
@@ -73,7 +73,10 @@ type RoleModel struct {
 }
 
 func init() {
-	db, err = gorm.Open(mysql.Open(os.Getenv("MYSQL_URL")), &gorm.Config{})
+	var err error
+	db, err = gorm.Open(mysql.Open(os.Getenv("MYSQL_URL")), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
 		log.Panicf("Error loading mysql\n%v", err)
 	}
