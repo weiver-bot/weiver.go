@@ -71,7 +71,7 @@ func RemoveRoleOnUser(id string, userID string) (bool, error) {
 
 	count := db.Model(&RoleModel{ID: id}).Association("User").Count()
 	if count == 0 {
-		return false, db.Delete(&RoleModel{ID: id}).Error
+		return false, db.Unscoped().Delete(&RoleModel{ID: id}).Error
 	}
 	return true, nil
 }
