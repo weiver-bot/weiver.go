@@ -97,7 +97,6 @@ func init() {
 		for _, e := range *res {
 			var permission bool
 			if user != "" {
-				fmt.Println(user, e.ChannelID)
 				value, err := g.Session.UserChannelPermissions(user, e.ChannelID)
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
