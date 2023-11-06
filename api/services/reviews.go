@@ -58,7 +58,7 @@ func init() {
 			queries = c.Queries()
 			from    int
 			count   int
-			user    string
+			user    string = ""
 			orderby string = "Like_Total desc, Time_Stamp asc"
 			err     error
 		)
@@ -97,6 +97,7 @@ func init() {
 		for _, e := range *res {
 			var permission bool
 			if user != "" {
+				fmt.Println(user, e.ChannelID)
 				value, err := g.Session.UserChannelPermissions(user, e.ChannelID)
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
