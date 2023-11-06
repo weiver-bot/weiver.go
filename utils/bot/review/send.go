@@ -1,15 +1,15 @@
-package reviewutil
+package ReviewUtils
 
 import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+	db "github.com/y2hO0ol23/weiver/database"
 	"github.com/y2hO0ol23/weiver/utils/builder"
-	db "github.com/y2hO0ol23/weiver/utils/database"
 )
 
-func Send(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.ReviewModel) (*db.ReviewModel, error) {
-	to, err := s.GuildMember(i.GuildID, review.ToID)
+func SendReview(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.ReviewModel) (*db.ReviewModel, error) {
+	to, err := s.GuildMember(i.GuildID, review.SubjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -26,8 +26,8 @@ func Send(s *discordgo.Session, i *discordgo.InteractionCreate, review *db.Revie
 
 	err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 		Embeds: []*discordgo.MessageEmbed{
-			EmbedMost(review, to.AvatarURL("")).
-				SetDescription(fmt.Sprintf("<@%v> → <@%v>", review.FromID, review.ToID)).
+			BaseEmbedWithFooter(review, to.AvatarURL("")).
+				SetDescription(fmt.Sprintf("<@%v> → <@%v>", review.AuthorID, review.SubjectID)).
 				MessageEmbed,
 		},
 		Components: []discordgo.MessageComponent{

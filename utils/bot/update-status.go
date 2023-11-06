@@ -1,11 +1,11 @@
-package botutil
+package BotUtilss
 
 import (
 	"fmt"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
-	db "github.com/y2hO0ol23/weiver/utils/database"
+	db "github.com/y2hO0ol23/weiver/database"
 )
 
 func UpdateStatus(s *discordgo.Session) error {
@@ -45,5 +45,5 @@ func StateText() (string, error) {
 		}
 	}
 
-	return fmt.Sprintf("Total "+os.Getenv("ROLE_FORMAT")+" (%v)", avg, count), nil
+	return fmt.Sprintf("Total "+os.Getenv("SCORE_UI_SHORT")+" (%v)", avg, count), nil
 }

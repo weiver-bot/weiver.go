@@ -8,11 +8,14 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 
-	webapi "github.com/y2hO0ol23/weiver/api"
-	"github.com/y2hO0ol23/weiver/handler"
+	_ "github.com/y2hO0ol23/weiver/api/include"
+	_ "github.com/y2hO0ol23/weiver/database"
+	_ "github.com/y2hO0ol23/weiver/env"
+	_ "github.com/y2hO0ol23/weiver/handler/include"
 	_ "github.com/y2hO0ol23/weiver/localization"
-	_ "github.com/y2hO0ol23/weiver/utils/database"
-	_ "github.com/y2hO0ol23/weiver/utils/env"
+
+	"github.com/y2hO0ol23/weiver/api"
+	"github.com/y2hO0ol23/weiver/handler"
 )
 
 func main() {
@@ -34,9 +37,9 @@ func main() {
 	}
 	defer s.Close()
 
-	// need appID, so execute after session is open
-	go webapi.Start(os.Getenv("API_PORT"), s)
+	go api.Start(s)
 
+	// need appID, so execute after session is open
 	handler.SetupSlashCommands(s)
 	if os.Getenv("REMOVE_CMD") != "" {
 		defer handler.RemoveCommands(s)

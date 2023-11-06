@@ -22,13 +22,13 @@ func LoadReivewByID(id int) (*ReviewModel, error) {
 	return &reviews[0], nil
 }
 
-func LoadReivewByInfo(fromID string, toID string) (*ReviewModel, error) {
+func LoadReivewByInfo(authorID string, subjectID string) (*ReviewModel, error) {
 	var reviews []ReviewModel
 
 	err := db.Model(&ReviewModel{}).
 		Where(ReviewModel{
-			FromID: fromID,
-			ToID:   toID,
+			AuthorID:  authorID,
+			SubjectID: subjectID,
 		}).Limit(1).
 		Find(&reviews).Error
 	if err != nil {
@@ -41,22 +41,22 @@ func LoadReivewByInfo(fromID string, toID string) (*ReviewModel, error) {
 	return &reviews[0], nil
 }
 
-func ModifyReviewByInfo(fromID string, toID string, score int, title string, content string) (*ReviewModel, error) {
-	review, err := LoadReivewByInfo(fromID, toID)
+func ModifyReviewByInfo(authorID string, subjectID string, score int, title string, content string) (*ReviewModel, error) {
+	review, err := LoadReivewByInfo(authorID, subjectID)
 	if err != nil {
 		return nil, err
 	}
 
-	LoadUserByID(fromID)
-	LoadUserByID(toID)
+	LoadUserByID(authorID)
+	LoadUserByID(subjectID)
 
 	if review == nil {
 		review = &ReviewModel{
 			Score:     score,
 			Title:     title,
 			Content:   content,
-			ToID:      toID,
-			FromID:    fromID,
+			SubjectID: subjectID,
+			AuthorID:  authorID,
 			TimeStamp: time.Now(),
 		}
 		return review, db.Create(review).Error
@@ -121,7 +121,7 @@ func GetReviewBest(id string) (*ReviewModel, error) {
 
 	err := db.Model(&ReviewModel{}).
 		Where(&ReviewModel{
-			ToID: id,
+			SubjectID: id,
 		}).Order("Like_Total desc, Time_Stamp asc").Limit(1).
 		Find(&reviews).Error
 	if err != nil {
@@ -201,7 +201,7 @@ func GetReviewsByUserID(id string) (*[]ReviewModel, error) {
 
 	err := db.Model(&ReviewModel{}).
 		Where(&ReviewModel{
-			ToID: id,
+			SubjectID: id,
 		}).Order("Like_Total desc, Time_Stamp asc").
 		Find(&reviews).Error
 	if err != nil {
@@ -233,11 +233,11 @@ func GetReviewsCount() (int64, error) {
 	return count, err
 }
 
-func GetReviews(from int, count int, OrderBy string) (*[]ReviewModel, error) {
+func GetReviews(from int, count int, orderby string) (*[]ReviewModel, error) {
 	var reviews []ReviewModel
 
 	err := db.Model(&ReviewModel{}).
-		Order(OrderBy).
+		Order(orderby).
 		Offset(from).Limit(count).
 		Find(&reviews).Error
 

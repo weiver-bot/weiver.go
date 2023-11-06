@@ -1,11 +1,11 @@
-package role
+package TagUtils
 
 import (
 	"github.com/bwmarrin/discordgo"
-	db "github.com/y2hO0ol23/weiver/utils/database"
+	db "github.com/y2hO0ol23/weiver/database"
 )
 
-func Set(s *discordgo.Session, guildID string, memberID string, display string) error {
+func AddTag(s *discordgo.Session, guildID string, memberID string, display string) error {
 	roleDB, err := db.GetRoleByInfo(guildID, display)
 	if err != nil {
 		return err

@@ -27,7 +27,7 @@ func GetUserReviewCount(id string) (int64, error) {
 
 	err := db.Model(&ReviewModel{}).
 		Where(ReviewModel{
-			ToID: id,
+			SubjectID: id,
 		}).Count(&count).Error
 
 	return count, err
@@ -38,7 +38,7 @@ func GetUserScore(id string) (float64, error) {
 
 	err := db.Model(&ReviewModel{}).
 		Where(ReviewModel{
-			ToID: id,
+			SubjectID: id,
 		}).Select("avg(Score)").Row().
 		Scan(&res)
 

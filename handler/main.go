@@ -4,23 +4,25 @@ import (
 	"log"
 
 	"github.com/bwmarrin/discordgo"
-	events "github.com/y2hO0ol23/weiver/handler/events/include"
-	slashcommands "github.com/y2hO0ol23/weiver/handler/slash-commands/include"
-
-	_ "github.com/y2hO0ol23/weiver/handler/events"
-	_ "github.com/y2hO0ol23/weiver/handler/slash-commands"
 )
 
+type CMDForm struct {
+	Data    *discordgo.ApplicationCommand
+	Execute func(s *discordgo.Session, i *discordgo.InteractionCreate)
+}
+
+var CMDList = []CMDForm{}
+var EventList = make([]interface{}, 0)
+
 func SetupEvents(s *discordgo.Session) {
-	for _, v := range events.List {
-		s.AddHandler(v)
+	for _, e := range EventList {
+		s.AddHandler(e)
 	}
 }
 
 var registeredCommands = []*discordgo.ApplicationCommand{}
 
 func SetupSlashCommands(s *discordgo.Session) {
-	registeredCommands = make([]*discordgo.ApplicationCommand, len(slashcommands.List))
 	commandHandlers := map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){}
 
 	s.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
@@ -33,22 +35,22 @@ func SetupSlashCommands(s *discordgo.Session) {
 		}
 	})
 
-	for i, v := range slashcommands.List {
-		commandHandlers[v.Data.Name] = v.Execute
-		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", v.Data)
+	for _, e := range CMDList {
+		commandHandlers[e.Data.Name] = e.Execute
+		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", e.Data)
 		if err != nil {
-			log.Panicf("Cannot create %q\n%v", v.Data.Name, err)
+			log.Panicf("Error creating command: %q\n%v", e.Data.Name, err)
 			RemoveCommands(s)
 		}
-		registeredCommands[i] = cmd
+		registeredCommands = append(registeredCommands, cmd)
 	}
 }
 
 func RemoveCommands(s *discordgo.Session) {
-	for _, v := range registeredCommands {
-		err := s.ApplicationCommandDelete(s.State.User.ID, "", v.ID)
+	for _, e := range registeredCommands {
+		err := s.ApplicationCommandDelete(s.State.User.ID, "", e.ID)
 		if err != nil {
-			log.Println("Cannot delete slash command:", v.Name, v.ID)
+			log.Println("Cannot delete slash command:", e.Name, e.ID)
 		}
 	}
 }

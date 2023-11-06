@@ -1,13 +1,13 @@
-package role
+package TagUtils
 
 import (
 	"fmt"
 	"os"
 
-	db "github.com/y2hO0ol23/weiver/utils/database"
+	db "github.com/y2hO0ol23/weiver/database"
 )
 
-func GetDisplay(memberID string) (string, error) {
+func GetScoreUIShort(memberID string) (string, error) {
 	count, err := db.GetUserReviewCount(memberID)
 	if err != nil {
 		return "", err
@@ -20,5 +20,5 @@ func GetDisplay(memberID string) (string, error) {
 			return "", err
 		}
 	}
-	return fmt.Sprintf(os.Getenv("ROLE_FORMAT"), avg), nil
+	return fmt.Sprintf(os.Getenv("SCORE_UI_SHORT"), avg), nil
 }

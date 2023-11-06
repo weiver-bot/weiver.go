@@ -6,11 +6,12 @@ import (
 	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
-	slashcommands "github.com/y2hO0ol23/weiver/handler/slash-commands/include"
+	db "github.com/y2hO0ol23/weiver/database"
 	"github.com/y2hO0ol23/weiver/localization"
+	ReviewUtils "github.com/y2hO0ol23/weiver/utils/bot/review"
 	"github.com/y2hO0ol23/weiver/utils/builder"
-	db "github.com/y2hO0ol23/weiver/utils/database"
-	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
+
+	g "github.com/y2hO0ol23/weiver/handler"
 )
 
 func init() {
@@ -18,7 +19,7 @@ func init() {
 		DMPermission bool = false
 	)
 
-	slashcommands.List = append(slashcommands.List, slashcommands.Form{
+	g.CMDList = append(g.CMDList, g.CMDForm{
 		Data: &discordgo.ApplicationCommand{
 			Name:                     "move",
 			Description:              "move_Description",
@@ -40,10 +41,10 @@ func init() {
 			locale := i.Locale
 
 			options := i.ApplicationCommandData().Options
-			fromID := i.Interaction.Member.User.ID
-			toID := options[0].Value.(string)
+			authorID := i.Interaction.Member.User.ID
+			subjectID := options[0].Value.(string)
 
-			review, err := db.LoadReivewByInfo(fromID, toID)
+			review, err := db.LoadReivewByInfo(authorID, subjectID)
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			}
@@ -59,7 +60,7 @@ func init() {
 				return
 			}
 
-			subject, err := s.GuildMember(i.GuildID, toID)
+			subject, err := s.GuildMember(i.GuildID, subjectID)
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
@@ -67,20 +68,20 @@ func init() {
 
 			_, err = s.ChannelMessage(review.ChannelID, review.MessageID)
 			if err != nil {
-				review, err := reviewutil.Send(s, i, review)
+				review, err := ReviewUtils.SendReview(s, i, review)
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 					return
 				}
 				if review != nil {
-					reviewutil.ModifyDM(s, review, locale)
+					ReviewUtils.ModifyReviewDM(s, review, locale)
 				}
 				return
 			}
 
 			err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 				Embeds: []*discordgo.MessageEmbed{
-					reviewutil.EmbedBody(review, subject.AvatarURL("")).
+					ReviewUtils.BaseEmbed(review, subject.AvatarURL("")).
 						SetDescription(fmt.Sprintf("https://discord.com/channels/%v/%v/%v", review.GuildID, review.ChannelID, review.MessageID)).
 						MessageEmbed,
 				},
@@ -122,7 +123,7 @@ func init() {
 				}
 
 				s.InteractionResponseDelete(i.Interaction)
-				reviewNow, err := db.LoadReivewByInfo(fromID, toID)
+				reviewNow, err := db.LoadReivewByInfo(authorID, subjectID)
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 					return
@@ -140,16 +141,16 @@ func init() {
 					}
 					return
 				}
-				err = reviewutil.DeleteMessage(s, fromID, toID)
+				err = ReviewUtils.DeleteLastMessage(s, authorID, subjectID)
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				}
-				review, err = reviewutil.Send(s, iter, review)
+				review, err = ReviewUtils.SendReview(s, iter, review)
 				if err != nil {
 					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				}
 				if review != nil {
-					reviewutil.ModifyDM(s, review, locale)
+					ReviewUtils.ModifyReviewDM(s, review, locale)
 				}
 			}
 			s.AddHandlerOnce(handler)

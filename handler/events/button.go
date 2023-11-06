@@ -6,16 +6,17 @@ import (
 	"runtime/debug"
 
 	"github.com/bwmarrin/discordgo"
-	parse "github.com/y2hO0ol23/weiver/handler/events/button"
-	events "github.com/y2hO0ol23/weiver/handler/events/include"
-	db "github.com/y2hO0ol23/weiver/utils/database"
-	reviewutil "github.com/y2hO0ol23/weiver/utils/review"
+	db "github.com/y2hO0ol23/weiver/database"
+	"github.com/y2hO0ol23/weiver/handler/events/button"
+	ReviewUtils "github.com/y2hO0ol23/weiver/utils/bot/review"
+
+	g "github.com/y2hO0ol23/weiver/handler"
 )
 
 func init() {
 	var err error
 
-	events.List = append(events.List, func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	g.EventList = append(g.EventList, func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if i.Type != discordgo.InteractionMessageComponent {
 			return
 		}
@@ -28,7 +29,7 @@ func init() {
 		for name, handler := range db.ReviewButtonHandler {
 			var review *db.ReviewModel
 
-			if reviewID, ok := parse.Like.CustomID(data.CustomID, name); ok {
+			if reviewID, ok := button.Parse.CustomID(data.CustomID, name); ok {
 				s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 					Type: discordgo.InteractionResponseDeferredMessageUpdate,
 				})
@@ -43,14 +44,14 @@ func init() {
 				continue
 			}
 
-			to, err := s.GuildMember(i.GuildID, review.ToID)
+			subject, err := s.GuildMember(i.GuildID, review.SubjectID)
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
 			}
 
-			embed := reviewutil.EmbedMost(review, to.AvatarURL("")).
-				SetDescription(fmt.Sprintf("<@%v> → <@%v>", review.FromID, review.ToID))
+			embed := ReviewUtils.BaseEmbedWithFooter(review, subject.AvatarURL("")).
+				SetDescription(fmt.Sprintf("<@%v> → <@%v>", review.AuthorID, review.SubjectID))
 
 			_, err = s.ChannelMessageEditEmbeds(review.ChannelID, review.MessageID, []*discordgo.MessageEmbed{
 				embed.MessageEmbed,

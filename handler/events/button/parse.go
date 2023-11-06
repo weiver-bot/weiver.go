@@ -1,17 +1,17 @@
-package button_events
+package button
 
 import (
 	"strconv"
 	"strings"
 )
 
-type like struct{}
+type s struct{}
 
 var (
-	Like like
+	Parse s
 )
 
-func (_ like) CustomID(value string, name string) (int, bool) {
+func (_ s) CustomID(value string, name string) (int, bool) {
 	if strings.HasPrefix(value, name+"_review_") {
 		data, err := strconv.Atoi(value[len(name)+8:])
 		if err == nil {

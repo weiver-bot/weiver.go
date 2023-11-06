@@ -1,4 +1,4 @@
-package modal_events
+package modal
 
 import (
 	"strings"
@@ -6,13 +6,13 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-type review struct{}
+type s struct{}
 
 var (
-	Review review
+	Parse s
 )
 
-func (_ review) CustomID(value string) (string, string, bool) {
+func (_ s) CustomID(value string) (string, string, bool) {
 	if strings.HasPrefix(value, "review") {
 		data := strings.Split(value, "#")
 		if len(data) == 3 {
@@ -22,7 +22,7 @@ func (_ review) CustomID(value string) (string, string, bool) {
 	return "", "", false
 }
 
-func (_ review) ModalComponents(components []discordgo.MessageComponent) (int, string, string, bool) {
+func (_ s) ModalComponents(components []discordgo.MessageComponent) (int, string, string, bool) {
 	if len(components) == 3 {
 		score := func() int {
 			count := strings.Count(components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value, "★")

@@ -5,10 +5,11 @@ import (
 	"os"
 	"time"
 
-	_ "github.com/y2hO0ol23/weiver/utils/env"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+
+	_ "github.com/y2hO0ol23/weiver/env"
 )
 
 var (
@@ -19,8 +20,8 @@ type UserModel struct {
 	gorm.Model
 	ID string `gorm:"primaryKey;size:64;"`
 
-	Wrote   []ReviewModel  `gorm:"foreignKey:FromID;"`
-	Written []ReviewModel  `gorm:"foreignKey:ToID;"`
+	Wrote   []ReviewModel  `gorm:"foreignKey:AuthorID;"`
+	Written []ReviewModel  `gorm:"foreignKey:SubjectID;"`
 	Like    []*ReviewModel `gorm:"many2many:like;"`
 	Hate    []*ReviewModel `gorm:"many2many:hate;"`
 
@@ -40,8 +41,8 @@ type ReviewModel struct {
 	Title   string `gorm:"not null;size:20;"`
 	Content string `gorm:"not null;size:300;"`
 
-	FromID string `gorm:"not null;size:64;"`
-	ToID   string `gorm:"not null;size:64;"`
+	AuthorID  string `gorm:"not null;size:64;"`
+	SubjectID string `gorm:"not null;size:64;"`
 
 	Like []*UserModel `gorm:"many2many:like;"`
 	Hate []*UserModel `gorm:"many2many:hate;"`

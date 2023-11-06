@@ -7,16 +7,17 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	slashcommands "github.com/y2hO0ol23/weiver/handler/slash-commands/include"
+	db "github.com/y2hO0ol23/weiver/database"
 	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
-	db "github.com/y2hO0ol23/weiver/utils/database"
+
+	g "github.com/y2hO0ol23/weiver/handler"
 )
 
 func init() {
 	var DMPermission bool = false
 
-	slashcommands.List = append(slashcommands.List, slashcommands.Form{
+	g.CMDList = append(g.CMDList, g.CMDForm{
 		Data: &discordgo.ApplicationCommand{
 			Name:                     "review",
 			Description:              "review_Description",
@@ -38,10 +39,10 @@ func init() {
 			locale := i.Locale
 
 			options := i.ApplicationCommandData().Options
-			fromID := i.Interaction.Member.User.ID
-			toID := options[0].Value.(string)
+			authorID := i.Interaction.Member.User.ID
+			subjectID := options[0].Value.(string)
 
-			if fromID == toID {
+			if authorID == subjectID {
 				err := s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
 					Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#review.SelfReview")),
 					Flags:           discordgo.MessageFlagsEphemeral,
@@ -53,21 +54,21 @@ func init() {
 				return
 			}
 
-			to, err := s.GuildMember(i.GuildID, toID)
+			subject, err := s.GuildMember(i.GuildID, subjectID)
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return // can not find subject
 			}
 
-			review, err := db.LoadReivewByInfo(fromID, toID)
+			review, err := db.LoadReivewByInfo(authorID, subjectID)
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
 			}
 
 			modal := builder.Modal().
-				SetCustomID("review#" + fromID + "#" + toID).
-				SetTitle(fmt.Sprintf(localization.Load(locale, "#review.modal.Title"), to.User.Username))
+				SetCustomID("review#" + authorID + "#" + subjectID).
+				SetTitle(fmt.Sprintf(localization.Load(locale, "#review.modal.Title"), subject.User.Username))
 
 			score := builder.TextInput().
 				SetCustomID("score").
