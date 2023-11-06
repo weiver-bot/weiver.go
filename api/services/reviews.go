@@ -2,12 +2,9 @@ package services
 
 import (
 	"fmt"
-	"log"
-	"runtime/debug"
 	"strconv"
 	"time"
 
-	"github.com/bwmarrin/discordgo"
 	"github.com/gofiber/fiber/v2"
 	g "github.com/y2hO0ol23/weiver/api"
 	db "github.com/y2hO0ol23/weiver/database"
@@ -49,8 +46,6 @@ func init() {
 			Likes int64 `json:"likes"`
 
 			TimeStamp time.Time `json:"timestamp"`
-
-			Permission bool `json:"permission"`
 		}
 
 		// check params
@@ -58,7 +53,6 @@ func init() {
 			queries = c.Queries()
 			from    int
 			count   int
-			user    string = ""
 			orderby string = "Like_Total desc, Time_Stamp asc"
 			err     error
 		)
@@ -81,9 +75,6 @@ func init() {
 		if v, ok := queries["orderby"]; ok {
 			orderby = v
 		}
-		if v, ok := queries["user"]; ok {
-			user = v
-		}
 
 		// get reviews
 		res, err := db.GetReviews(from, count, orderby)
@@ -95,27 +86,14 @@ func init() {
 
 		List := []form{}
 		for _, e := range *res {
-			var permission bool
-			if user != "" {
-				value, err := g.Session.UserChannelPermissions(user, e.ChannelID)
-				if err != nil {
-					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-					permission = true
-				} else {
-					permission = (value & discordgo.PermissionViewChannel) != 0
-				}
-			} else {
-				permission = true
-			}
 			List = append(List, form{
-				ID:         e.ID,
-				Title:      e.Title,
-				Score:      e.Score,
-				Content:    e.Content,
-				Likes:      e.LikeTotal,
-				TimeStamp:  e.TimeStamp,
-				URL:        fmt.Sprintf("https://discord.com/channels/%v/%v/%v", e.GuildID, e.ChannelID, e.MessageID),
-				Permission: permission,
+				ID:        e.ID,
+				Title:     e.Title,
+				Score:     e.Score,
+				Content:   e.Content,
+				Likes:     e.LikeTotal,
+				TimeStamp: e.TimeStamp,
+				URL:       fmt.Sprintf("https://discord.com/channels/%v/%v/%v", e.GuildID, e.ChannelID, e.MessageID),
 			})
 		}
 
