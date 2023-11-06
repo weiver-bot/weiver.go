@@ -224,20 +224,28 @@ func GetReviewsScoreAvg() (float64, error) {
 	return avg, err
 }
 
-func GetReviewsCount() (int64, error) {
+func GetReviewsCount(relate string) (int64, error) {
 	var count int64
 
-	err := db.Model(&ReviewModel{}).
-		Count(&count).Error
+	this := db.Model(&ReviewModel{})
 
-	return count, err
+	if relate != "" {
+		this.Where("author_id = ?", relate).Or("subject_id = ?", relate)
+	}
+
+	return count, this.Count(&count).Error
 }
 
-func GetReviews(from int, count int, orderby string) (*[]ReviewModel, error) {
+func GetReviews(from int, count int, orderby string, relate string) (*[]ReviewModel, error) {
 	var reviews []ReviewModel
 
-	err := db.Model(&ReviewModel{}).
-		Order(orderby).
+	this := db.Model(&ReviewModel{})
+
+	if relate != "" {
+		this.Where("author_id = ?", relate).Or("subject_id = ?", relate)
+	}
+
+	err := this.Order(orderby).
 		Offset(from).Limit(count).
 		Find(&reviews).Error
 

@@ -34,7 +34,7 @@ func StateText() (string, error) {
 		count int64
 	)
 
-	count, err := db.GetReviewsCount()
+	count, err := db.GetReviewsCount("")
 	if err != nil {
 		return "", err
 	}
