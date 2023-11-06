@@ -82,6 +82,7 @@ func init() {
 			orderby = v
 		}
 		if v, ok := queries["user"]; ok {
+			fmt.Println(v)
 			user = v
 		}
 
