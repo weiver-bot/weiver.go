@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"log"
+	"runtime/debug"
 	"strconv"
 	"time"
 
@@ -81,7 +82,6 @@ func init() {
 			orderby = v
 		}
 		if v, ok := queries["user"]; ok {
-			fmt.Println(v)
 			user = v
 		}
 
@@ -99,8 +99,7 @@ func init() {
 			if user != "" {
 				value, err := g.Session.UserChannelPermissions(user, e.ChannelID)
 				if err != nil {
-					log.Println("Error!")
-					//log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
+					log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 					permission = true
 				} else {
 					permission = (value & discordgo.PermissionViewChannel) != 0
