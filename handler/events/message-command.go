@@ -73,6 +73,7 @@ func init() {
 			data := i.MessageComponentData()
 			if i.Message.ID != reply.ID || data.ComponentType != discordgo.ButtonComponent {
 				s.ChannelMessageDelete(m.ChannelID, m.ID)
+				s.ChannelMessageDelete(reply.ChannelID, reply.ID)
 				return
 			}
 
