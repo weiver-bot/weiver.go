@@ -72,7 +72,7 @@ func init() {
 			}
 		},
 		Message: func(s *discordgo.Session, i *discordgo.InteractionCreate, locale discordgo.Locale, queries []string) string {
-			if len(queries) < 1 {
+			if len(queries) == 0 {
 				return fmt.Sprintf(
 					"`/%v %v ... or\n/%v %v ...`",
 					localization.Load(locale, "#look"), localization.Load(locale, "#look.info"),
@@ -82,7 +82,7 @@ func init() {
 
 			switch queries[0] {
 			case localization.Load(locale, "#look.info"):
-				if len(queries) >= 2 {
+				if len(queries) != 1 {
 					if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
 						this.Info(s, i, *id)
 					}
@@ -94,7 +94,7 @@ func init() {
 					localization.Load(locale, "#.subject"),
 				)
 			case localization.Load(locale, "#look.reviews"):
-				if len(queries) >= 2 {
+				if len(queries) != 1 {
 					if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
 						this.Reviews(s, i, *id)
 					}

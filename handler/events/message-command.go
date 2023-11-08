@@ -51,6 +51,9 @@ func init() {
 				ChannelID: m.ChannelID,
 				GuildID:   m.GuildID,
 			},
+			AllowedMentions: &discordgo.MessageAllowedMentions{
+				RepliedUser: false,
+			},
 		})
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -86,9 +89,8 @@ func init() {
 
 			if content != "" {
 				s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-					Content:         content,
-					Flags:           discordgo.MessageFlagsEphemeral,
-					AllowedMentions: &discordgo.MessageAllowedMentions{},
+					Content: content,
+					Flags:   discordgo.MessageFlagsEphemeral,
 				}))
 			}
 

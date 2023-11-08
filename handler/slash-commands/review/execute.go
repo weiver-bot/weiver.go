@@ -17,9 +17,8 @@ func Execute(s *discordgo.Session, i *discordgo.InteractionCreate, locale discor
 
 	if authorID == subjectID {
 		err := s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-			Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#review.SelfReview")),
-			Flags:           discordgo.MessageFlagsEphemeral,
-			AllowedMentions: &discordgo.MessageAllowedMentions{},
+			Content: fmt.Sprintf("`%v`", localization.Load(locale, "#review.SelfReview")),
+			Flags:   discordgo.MessageFlagsEphemeral,
 		}))
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))

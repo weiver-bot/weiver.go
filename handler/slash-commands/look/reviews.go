@@ -43,9 +43,8 @@ func Reviews(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID str
 	}
 	if reviews == nil { // if no reviews
 		message := builder.Message(&discordgo.InteractionResponseData{
-			Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#look.reviews.IsNone")),
-			Flags:           discordgo.MessageFlagsEphemeral,
-			AllowedMentions: &discordgo.MessageAllowedMentions{},
+			Content: fmt.Sprintf("`%v`", localization.Load(locale, "#look.reviews.IsNone")),
+			Flags:   discordgo.MessageFlagsEphemeral,
 		})
 		err = s.InteractionRespond(i.Interaction, message)
 		if err != nil {
@@ -64,8 +63,7 @@ func Reviews(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID str
 		Components: []discordgo.MessageComponent{
 			builder.ActionRow().AddComponents(selectMenu).ActionsRow,
 		},
-		Flags:           discordgo.MessageFlagsEphemeral,
-		AllowedMentions: &discordgo.MessageAllowedMentions{},
+		Flags: discordgo.MessageFlagsEphemeral,
 	}))
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))

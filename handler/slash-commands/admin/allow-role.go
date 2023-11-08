@@ -24,9 +24,8 @@ func AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, options []*
 	}
 	if guildDB.InProgress == true {
 		err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-			Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.InProgress")),
-			Flags:           discordgo.MessageFlagsEphemeral,
-			AllowedMentions: &discordgo.MessageAllowedMentions{},
+			Content: fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.InProgress")),
+			Flags:   discordgo.MessageFlagsEphemeral,
 		}))
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -40,9 +39,8 @@ func AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, options []*
 		}
 		if p&discordgo.PermissionManageRoles == 0 {
 			err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-				Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.NeedPermissions")),
-				Flags:           discordgo.MessageFlagsEphemeral,
-				AllowedMentions: &discordgo.MessageAllowedMentions{},
+				Content: fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.NeedPermissions")),
+				Flags:   discordgo.MessageFlagsEphemeral,
 			}))
 			if err != nil {
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -63,7 +61,6 @@ func AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, options []*
 					)).
 					MessageEmbed,
 			},
-			AllowedMentions: &discordgo.MessageAllowedMentions{},
 		}))
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
@@ -126,9 +123,11 @@ func AllowRole(s *discordgo.Session, i *discordgo.InteractionCreate, options []*
 		db.EndOFGuildProgress(i.GuildID)
 	} else {
 		err = s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
-			Content:         fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.Keep")),
-			Flags:           discordgo.MessageFlagsEphemeral,
-			AllowedMentions: &discordgo.MessageAllowedMentions{},
+			Content: fmt.Sprintf("`%v`", localization.Load(locale, "#admin.allow-role.Keep")),
+			Flags:   discordgo.MessageFlagsEphemeral,
+			AllowedMentions: &discordgo.MessageAllowedMentions{
+				RepliedUser: false,
+			},
 		}))
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))

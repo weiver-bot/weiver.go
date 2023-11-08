@@ -33,7 +33,6 @@ func SendReview(s *discordgo.Session, i *discordgo.InteractionCreate, review *db
 		Components: []discordgo.MessageComponent{
 			builder.ActionRow().AddComponents(button_good, button_bad).ActionsRow,
 		},
-		AllowedMentions: &discordgo.MessageAllowedMentions{},
 	}))
 	if err != nil {
 		return nil, err

@@ -78,8 +78,7 @@ func Info(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID string
 		Embeds: []*discordgo.MessageEmbed{
 			embed.MessageEmbed,
 		},
-		Flags:           discordgo.MessageFlagsEphemeral,
-		AllowedMentions: &discordgo.MessageAllowedMentions{},
+		Flags: discordgo.MessageFlagsEphemeral,
 	}))
 	if err != nil {
 		log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
