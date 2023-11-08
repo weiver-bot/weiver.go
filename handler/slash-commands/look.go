@@ -81,7 +81,7 @@ func init() {
 			}
 
 			switch queries[0] {
-			case "info":
+			case localization.Load(locale, "#look.info"):
 				if len(queries) >= 2 {
 					if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
 						this.Info(s, i, *id)
@@ -93,7 +93,7 @@ func init() {
 					localization.Load(locale, "#look.info"),
 					localization.Load(locale, "#.subject"),
 				)
-			case "reviews":
+			case localization.Load(locale, "#look.reviews"):
 				if len(queries) >= 2 {
 					if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
 						this.Reviews(s, i, *id)
