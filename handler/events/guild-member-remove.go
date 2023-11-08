@@ -18,7 +18,7 @@ func init() {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			return
 		}
-		if guildDB.AllowRole != true {
+		if !guildDB.AllowRole {
 			return
 		}
 

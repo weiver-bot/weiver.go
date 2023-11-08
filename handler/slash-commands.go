@@ -2,41 +2,26 @@ package handler
 
 import (
 	"log"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 type CMDForm struct {
 	Data    *discordgo.ApplicationCommand
-	Execute func(s *discordgo.Session, i *discordgo.InteractionCreate)
+	Slash   func(s *discordgo.Session, i *discordgo.InteractionCreate)
+	Message func(s *discordgo.Session, i *discordgo.InteractionCreate, locale discordgo.Locale, queries []string) string
 }
 
 var CMDList = []CMDForm{}
-var EventList = make([]interface{}, 0)
-
-func SetupEvents(s *discordgo.Session) {
-	for _, e := range EventList {
-		s.AddHandler(e)
-	}
-}
+var CommandHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){}
 
 var registeredCommands = []*discordgo.ApplicationCommand{}
 
 func SetupSlashCommands(s *discordgo.Session) {
-	commandHandlers := map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){}
-
-	s.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		if i.Type != discordgo.InteractionApplicationCommand {
-			return
-		}
-
-		if exec, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
-			exec(s, i)
-		}
-	})
-
+	// register slash commands
 	for _, e := range CMDList {
-		commandHandlers[e.Data.Name] = e.Execute
+		CommandHandlers[e.Data.Name] = e.Slash
 		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", e.Data)
 		if err != nil {
 			log.Panicf("Error creating command: %q\n%v", e.Data.Name, err)
@@ -53,4 +38,19 @@ func RemoveCommands(s *discordgo.Session) {
 			log.Println("Cannot delete slash command:", e.Name, e.ID)
 		}
 	}
+}
+
+func ParseOptionUser(s *discordgo.Session, guildID string, data string) *string {
+	if !strings.HasPrefix(data, "<@") || !strings.HasSuffix(data, ">") {
+		return nil
+	}
+
+	memberID := data[2 : len(data)-1]
+
+	_, err := s.GuildMember(guildID, memberID)
+	if err != nil {
+		return nil
+	}
+
+	return &memberID
 }

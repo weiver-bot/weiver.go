@@ -2,7 +2,7 @@ package slashcommands
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/y2hO0ol23/weiver/handler/slash-commands/admin"
+	this "github.com/y2hO0ol23/weiver/handler/slash-commands/admin"
 	"github.com/y2hO0ol23/weiver/localization"
 
 	g "github.com/y2hO0ol23/weiver/handler"
@@ -54,7 +54,7 @@ func init() {
 			},
 			DefaultMemberPermissions: &DefaultMemberPermissions,
 		},
-		Execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		Slash: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			options := i.ApplicationCommandData().Options
 			if len(options) == 0 {
 				return
@@ -63,7 +63,7 @@ func init() {
 
 			switch cmdName {
 			case "allow-role":
-				admin.AllowRole(s, i, options[0].Options)
+				this.AllowRole(s, i, options[0].Options)
 			}
 		},
 	})

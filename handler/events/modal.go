@@ -6,7 +6,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/database"
-	"github.com/y2hO0ol23/weiver/handler/events/modal"
+	this "github.com/y2hO0ol23/weiver/handler/events/modal"
 	BotUtils "github.com/y2hO0ol23/weiver/utils/bot"
 	ReviewUtils "github.com/y2hO0ol23/weiver/utils/bot/review"
 	TagUtils "github.com/y2hO0ol23/weiver/utils/bot/tag"
@@ -21,12 +21,12 @@ func init() {
 		}
 
 		data := i.ModalSubmitData()
-		authorID, subjectID, ok := modal.Parse.CustomID(data.CustomID)
+		authorID, subjectID, ok := this.Parse.CustomID(data.CustomID)
 		if !ok {
 			log.Println("Error on parse CustomID")
 			return
 		}
-		score, title, content, ok := modal.Parse.ModalComponents(data.Components)
+		score, title, content, ok := this.Parse.ModalComponents(data.Components)
 		if !ok {
 			log.Println("Error on parse ModalComponents")
 			return

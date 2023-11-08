@@ -1,8 +1,10 @@
 package slashcommands
 
 import (
+	"fmt"
+
 	"github.com/bwmarrin/discordgo"
-	"github.com/y2hO0ol23/weiver/handler/slash-commands/look"
+	this "github.com/y2hO0ol23/weiver/handler/slash-commands/look"
 	"github.com/y2hO0ol23/weiver/localization"
 
 	g "github.com/y2hO0ol23/weiver/handler"
@@ -55,7 +57,7 @@ func init() {
 				},
 			},
 		},
-		Execute: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+		Slash: func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			options := i.ApplicationCommandData().Options
 			if len(options) == 0 {
 				return
@@ -64,10 +66,51 @@ func init() {
 
 			switch cmdName {
 			case "info":
-				look.Info(s, i, options[0].Options[0].Value.(string))
+				this.Info(s, i, options[0].Options[0].Value.(string))
 			case "reviews":
-				look.Reviews(s, i, options[0].Options[0].Value.(string))
+				this.Reviews(s, i, options[0].Options[0].Value.(string))
 			}
+		},
+		Message: func(s *discordgo.Session, i *discordgo.InteractionCreate, locale discordgo.Locale, queries []string) string {
+			if len(queries) < 2 {
+				return fmt.Sprintf(
+					"`/%v %v ... or\n/%v %v ...`",
+					localization.Load(locale, "#look"), localization.Load(locale, "#look.info"),
+					localization.Load(locale, "#look"), localization.Load(locale, "#look.reviews"),
+				)
+			}
+
+			switch queries[0] {
+			case "info":
+				if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
+					this.Info(s, i, *id)
+				} else {
+					return fmt.Sprintf(
+						"`/%v %v @%v`",
+						localization.Load(locale, "#look"),
+						localization.Load(locale, "#look.info"),
+						localization.Load(locale, "#.subject"),
+					)
+				}
+			case "reviews":
+				if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
+					this.Reviews(s, i, *id)
+				} else {
+					return fmt.Sprintf(
+						"`/%v %v @%v`",
+						localization.Load(locale, "#look"),
+						localization.Load(locale, "#look.reviews"),
+						localization.Load(locale, "#.subject"),
+					)
+				}
+			default:
+				return fmt.Sprintf(
+					"`/%v %v ... or\n/%v %v ...`",
+					localization.Load(locale, "#look"), localization.Load(locale, "#look.info"),
+					localization.Load(locale, "#look"), localization.Load(locale, "#look.reviews"),
+				)
+			}
+			return ""
 		},
 	})
 }

@@ -24,3 +24,8 @@ func (b *ButtonStructure) SetStyle(value discordgo.ButtonStyle) *ButtonStructure
 	b.Style = value
 	return b
 }
+
+func (b *ButtonStructure) SetDisabled(value bool) *ButtonStructure {
+	b.Disabled = value
+	return b
+}

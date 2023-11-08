@@ -7,7 +7,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/database"
-	"github.com/y2hO0ol23/weiver/handler/events/button"
+	this "github.com/y2hO0ol23/weiver/handler/events/button"
 	ReviewUtils "github.com/y2hO0ol23/weiver/utils/bot/review"
 
 	g "github.com/y2hO0ol23/weiver/handler"
@@ -29,7 +29,7 @@ func init() {
 		for name, handler := range db.ReviewButtonHandler {
 			var review *db.ReviewModel
 
-			if reviewID, ok := button.Parse.CustomID(data.CustomID, name); ok {
+			if reviewID, ok := this.Parse.CustomID(data.CustomID, name); ok {
 				s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 					Type: discordgo.InteractionResponseDeferredMessageUpdate,
 				})

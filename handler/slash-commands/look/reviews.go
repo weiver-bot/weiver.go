@@ -10,7 +10,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/database"
-	"github.com/y2hO0ol23/weiver/handler/slash-commands/look/handle"
+	this "github.com/y2hO0ol23/weiver/handler/slash-commands/look/reviews"
 	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 )
@@ -77,10 +77,10 @@ func Reviews(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID str
 	}
 
 	// make handler because bot can not find message that has ephemeral flag
-	var handler func(*discordgo.Session, *discordgo.InteractionCreate)
-	handler = func(s *discordgo.Session, iter *discordgo.InteractionCreate) {
+	var handle func(*discordgo.Session, *discordgo.InteractionCreate)
+	handle = func(s *discordgo.Session, iter *discordgo.InteractionCreate) {
 		if iter.Type != discordgo.InteractionMessageComponent || i.Interaction.Member.User.ID != iter.Interaction.Member.User.ID {
-			s.AddHandlerOnce(handler)
+			s.AddHandlerOnce(handle)
 			return
 		}
 		if iter.Interaction.Message.ID != msg.ID {
@@ -102,9 +102,9 @@ func Reviews(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID str
 				return
 			}
 			selectMenu = SelectMenu(*reviews, locale, subject.User.Username, pageNow, pageCount)
-			handle.MovePage(s, iter, i, selectMenu)
+			this.MovePage(s, iter, i, selectMenu)
 
-			s.AddHandlerOnce(handler)
+			s.AddHandlerOnce(handle)
 		} else if strings.HasPrefix(value, "review") { // show page link
 			id_timestamp := strings.Split(value[7:], "#")
 			// parse id
@@ -113,8 +113,8 @@ func Reviews(s *discordgo.Session, i *discordgo.InteractionCreate, subjectID str
 				log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 				return
 			}
-			handle.Selected(s, iter, i, id, id_timestamp[1], locale)
+			this.Selected(s, iter, i, id, id_timestamp[1], locale)
 		}
 	}
-	s.AddHandlerOnce(handler)
+	s.AddHandlerOnce(handle)
 }
