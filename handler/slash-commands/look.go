@@ -72,7 +72,7 @@ func init() {
 			}
 		},
 		Message: func(s *discordgo.Session, i *discordgo.InteractionCreate, locale discordgo.Locale, queries []string) string {
-			if len(queries) < 2 {
+			if len(queries) < 1 {
 				return fmt.Sprintf(
 					"`/%v %v ... or\n/%v %v ...`",
 					localization.Load(locale, "#look"), localization.Load(locale, "#look.info"),
@@ -82,27 +82,29 @@ func init() {
 
 			switch queries[0] {
 			case "info":
-				if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
-					this.Info(s, i, *id)
-				} else {
-					return fmt.Sprintf(
-						"`/%v %v @%v`",
-						localization.Load(locale, "#look"),
-						localization.Load(locale, "#look.info"),
-						localization.Load(locale, "#.subject"),
-					)
+				if len(queries) >= 2 {
+					if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
+						this.Info(s, i, *id)
+					}
 				}
+				return fmt.Sprintf(
+					"`/%v %v @%v`",
+					localization.Load(locale, "#look"),
+					localization.Load(locale, "#look.info"),
+					localization.Load(locale, "#.subject"),
+				)
 			case "reviews":
-				if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
-					this.Reviews(s, i, *id)
-				} else {
-					return fmt.Sprintf(
-						"`/%v %v @%v`",
-						localization.Load(locale, "#look"),
-						localization.Load(locale, "#look.reviews"),
-						localization.Load(locale, "#.subject"),
-					)
+				if len(queries) >= 2 {
+					if id := g.ParseOptionUser(s, i.GuildID, queries[1]); id != nil {
+						this.Reviews(s, i, *id)
+					}
 				}
+				return fmt.Sprintf(
+					"`/%v %v @%v`",
+					localization.Load(locale, "#look"),
+					localization.Load(locale, "#look.reviews"),
+					localization.Load(locale, "#.subject"),
+				)
 			default:
 				return fmt.Sprintf(
 					"`/%v %v ... or\n/%v %v ...`",
@@ -110,7 +112,6 @@ func init() {
 					localization.Load(locale, "#look"), localization.Load(locale, "#look.reviews"),
 				)
 			}
-			return ""
 		},
 	})
 }
