@@ -51,6 +51,17 @@ func init() {
 			return
 		}
 
+		locale, handler := func() (*discordgo.Locale, *g.CMDForm) {
+			for _, handler := range g.CMDList {
+				for locale, name := range *(handler.Data.NameLocalizations) {
+					if name == queries[0] && handler.Message != nil {
+						return &locale, &handler
+					}
+				}
+			}
+			return nil, nil
+		}()
+
 		var handle func(*discordgo.Session, *discordgo.InteractionCreate)
 		handle = func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			if i.Type != discordgo.InteractionMessageComponent || i.Interaction.Member.User.ID != m.Author.ID {
@@ -68,16 +79,10 @@ func init() {
 				return
 			}
 
-			content := func() string {
-				for _, e := range g.CMDList {
-					for locale, name := range *(e.Data.NameLocalizations) {
-						if name == queries[0] && e.Message != nil {
-							return e.Message(s, i, locale, queries[1:])
-						}
-					}
-				}
-				return fmt.Sprintf("`Invalid command: /%v`", queries[0])
-			}()
+			content := fmt.Sprintf("`Invalid command: /%v`", queries[0])
+			if handler == nil {
+				content = handler.Message(s, i, *locale, queries[1:])
+			}
 
 			if content != "" {
 				s.InteractionRespond(i.Interaction, builder.Message(&discordgo.InteractionResponseData{
