@@ -26,7 +26,7 @@ func init() {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			return
 		}
-		if permission&discordgo.PermissionUseSlashCommands == 0 {
+		if permission&discordgo.PermissionUseSlashCommands != 0 {
 			return
 		}
 
