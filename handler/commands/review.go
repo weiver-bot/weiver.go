@@ -7,7 +7,7 @@ import (
 	"github.com/y2hO0ol23/weiver/localization"
 
 	g "github.com/y2hO0ol23/weiver/handler"
-	this "github.com/y2hO0ol23/weiver/handler/slash-commands/review"
+	this "github.com/y2hO0ol23/weiver/handler/commands/review"
 )
 
 func init() {

@@ -2,7 +2,7 @@ package slashcommands
 
 import (
 	"github.com/bwmarrin/discordgo"
-	this "github.com/y2hO0ol23/weiver/handler/slash-commands/admin"
+	this "github.com/y2hO0ol23/weiver/handler/commands/admin"
 	"github.com/y2hO0ol23/weiver/localization"
 
 	g "github.com/y2hO0ol23/weiver/handler"

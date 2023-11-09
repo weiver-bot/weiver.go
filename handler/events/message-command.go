@@ -79,7 +79,7 @@ func init() {
 				return
 			}
 
-			content := fmt.Sprintf("`Invalid command: /%v`", queries[0])
+			content := "`/? <locale>`"
 			if handler != nil {
 				content = handler.Message(s, i, *locale, queries[1:])
 			}

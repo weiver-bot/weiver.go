@@ -10,7 +10,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	db "github.com/y2hO0ol23/weiver/database"
-	this "github.com/y2hO0ol23/weiver/handler/slash-commands/look/reviews"
+	this "github.com/y2hO0ol23/weiver/handler/commands/look/reviews"
 	"github.com/y2hO0ol23/weiver/localization"
 	"github.com/y2hO0ol23/weiver/utils/builder"
 )

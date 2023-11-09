@@ -27,8 +27,7 @@ func main() {
 	s.Identify.Intents = 0 |
 		discordgo.IntentsGuilds |
 		discordgo.IntentsGuildMessages |
-		discordgo.IntentsGuildMembers |
-		discordgo.IntentsGuildPresences
+		discordgo.IntentsGuildMembers
 
 	err = s.Open()
 	if err != nil {

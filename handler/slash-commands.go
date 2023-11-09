@@ -21,13 +21,15 @@ var registeredCommands = []*discordgo.ApplicationCommand{}
 func SetupSlashCommands(s *discordgo.Session) {
 	// register slash commands
 	for _, e := range CMDList {
-		CommandHandlers[e.Data.Name] = e.Slash
-		cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", e.Data)
-		if err != nil {
-			log.Panicf("Error creating command: %q\n%v", e.Data.Name, err)
-			RemoveCommands(s)
+		if e.Slash != nil {
+			CommandHandlers[e.Data.Name] = e.Slash
+			cmd, err := s.ApplicationCommandCreate(s.State.User.ID, "", e.Data)
+			if err != nil {
+				log.Panicf("Error creating command: %q\n%v", e.Data.Name, err)
+				RemoveCommands(s)
+			}
+			registeredCommands = append(registeredCommands, cmd)
 		}
-		registeredCommands = append(registeredCommands, cmd)
 	}
 }
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
-	this "github.com/y2hO0ol23/weiver/handler/slash-commands/look"
+	this "github.com/y2hO0ol23/weiver/handler/commands/look"
 	"github.com/y2hO0ol23/weiver/localization"
 
 	g "github.com/y2hO0ol23/weiver/handler"
