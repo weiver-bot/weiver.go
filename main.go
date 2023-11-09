@@ -27,9 +27,8 @@ func main() {
 	s.Identify.Intents = 0 |
 		discordgo.IntentsGuilds |
 		discordgo.IntentsGuildMessages |
-		discordgo.IntentsGuildMembers
-
-	handler.SetupEvents(s)
+		discordgo.IntentsGuildMembers |
+		discordgo.IntentsGuildPresences
 
 	err = s.Open()
 	if err != nil {
@@ -39,8 +38,9 @@ func main() {
 
 	go api.Start(s)
 
-	// need appID, so execute after session is open
+	handler.SetupEvents(s)
 	handler.SetupSlashCommands(s)
+
 	if os.Getenv("REMOVE_CMD") != "" {
 		defer handler.RemoveCommands(s)
 	}

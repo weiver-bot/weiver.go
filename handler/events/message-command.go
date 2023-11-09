@@ -21,15 +21,6 @@ func init() {
 			return
 		}
 
-		permission, err := s.State.UserChannelPermissions(m.Author.ID, m.ChannelID)
-		if err != nil {
-			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
-			return
-		}
-		if permission&discordgo.PermissionUseSlashCommands != 0 {
-			return
-		}
-
 		queries := strings.Split(m.Content[len(prefix):], " ")
 
 		if len(queries) == 0 {
