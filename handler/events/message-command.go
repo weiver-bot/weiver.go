@@ -21,7 +21,7 @@ func init() {
 			return
 		}
 
-		permission, err := s.UserChannelPermissions(m.Author.ID, m.ChannelID)
+		permission, err := s.State.UserChannelPermissions(m.Author.ID, m.ChannelID)
 		if err != nil {
 			log.Printf("[ERROR] %v\n%v\n", err, string(debug.Stack()))
 			return
